@@ -1,0 +1,2 @@
+# On a persistent Node host, invoke every six hours. Source intervals are enforced server-side.
+17 */6 * * * cd /app && /usr/bin/node --env-file=.env scripts/run-sync.mjs

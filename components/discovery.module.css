@@ -1,0 +1,1569 @@
+.opportunitiesSection,
+.learningSection {
+  position: relative;
+  padding: 108px 0 98px;
+  scroll-margin-top: 90px;
+}
+.opportunitiesSection {
+  background: #081522;
+  border-top: 1px solid #172638;
+}
+.learningSection {
+  background: #071321;
+  border-top: 1px solid #172638;
+  padding-top: 102px;
+}
+.sectionHeading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 32px;
+  margin-bottom: 43px;
+}
+.sectionHeading h2 {
+  margin-bottom: 18px;
+}
+.mutedHeading {
+  color: #a7b7cb;
+}
+.localNote {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 14px 0 14px 22px;
+  border-left: 1px solid #253448;
+  margin-bottom: 4px;
+}
+.localIcon {
+  width: 45px;
+  height: 45px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #11243b;
+  color: #6da9ff;
+}
+.localNote strong,
+.localNote span:not(.localIcon) {
+  display: block;
+}
+.localNote strong {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #e7edf5;
+  font-weight: 600;
+}
+.localNote div > span {
+  font-size: 12px;
+  line-height: 1.7;
+  color: #a5b7ce;
+}
+.discoveryTools {
+  border: 1px solid #26364a;
+  border-radius: 13px;
+  background: #0d1b2a;
+  overflow: hidden;
+}
+.toolTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #243345;
+  padding: 7px 15px 0;
+}
+.kindTabs {
+  display: flex;
+  gap: 25px;
+}
+.kindTabs button {
+  background: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  padding: 15px 4px 17px;
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 500;
+  color: #abbbd0;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.2s;
+}
+.kindTabs button:hover {
+  color: #fff;
+}
+.kindTabs button.activeKind {
+  color: #f4f7fc;
+  border-bottom-color: #ffd446;
+}
+.kindTabs button.activeKind svg {
+  color: #ffd446;
+}
+.toolsCaption {
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #a9b8cd;
+  padding-right: 5px;
+}
+.searchRow {
+  display: flex;
+  gap: 12px;
+  padding: 14px;
+}
+.searchInput {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  border: 1px solid #2a3a4e;
+  background: #091624;
+  border-radius: 7px;
+  flex: 1;
+  min-width: 0;
+  color: #99aac2;
+  padding: 0 14px;
+  min-height: 47px;
+  transition: border-color 0.2s;
+}
+.searchInput:focus-within {
+  border-color: #5697f9;
+  box-shadow: 0 0 0 2px #1466ed20;
+}
+.searchInput input {
+  width: 100%;
+  background: none;
+  border: 0;
+  outline: 0;
+  font: inherit;
+  font-size: 12px;
+  color: #eaf0f8;
+  min-width: 0;
+  padding: 13px 0;
+}
+.searchInput input::placeholder {
+  color: #96a8bf;
+}
+.searchInput button {
+  padding: 4px;
+  display: flex;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  color: #b2c3d8;
+}
+.filterButton {
+  background: #142439;
+  border: 1px solid #304056;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #d2deec;
+  cursor: pointer;
+  padding: 0 16px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+.filterButton:hover,
+.filterButtonActive {
+  background: #1a304b;
+  border-color: #466482;
+}
+.filterButton > span {
+  font-size: 10px;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 20px;
+  background: #ffd446;
+  color: #071322;
+  display: grid;
+  place-items: center;
+}
+.rotated {
+  transform: rotate(180deg);
+}
+.extraFilters {
+  padding: 7px 14px 18px;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 0.85fr 1.15fr 1fr;
+  gap: 13px;
+  border-top: 1px solid #233348;
+}
+.extraFilters > label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 11px;
+  color: #bfcee0;
+  padding-top: 10px;
+}
+.extraFilters select,
+.learningSearchRow > select {
+  width: 100%;
+  background: #0a1828;
+  color: #c1cede;
+  border: 1px solid #2b3a4d;
+  border-radius: 7px;
+  padding: 11px 9px;
+  font-size: 11px;
+  font-family: inherit;
+  min-width: 0;
+  color-scheme: dark;
+  outline: 0;
+  cursor: pointer;
+}
+.extraFilters select:focus,
+.learningSearchRow > select:focus {
+  border-color: #5697f9;
+}
+.extraFilters label.savedToggle {
+  grid-column: 1/3;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  padding-top: 0;
+}
+.savedToggle input {
+  accent-color: #ffd446;
+  width: 14px;
+  height: 14px;
+  margin: 0;
+}
+.filterHelp {
+  grid-column: 3/-1;
+  color: #99abc2;
+  font-size: 10px;
+  line-height: 1.7;
+  align-self: center;
+  margin: 0;
+}
+.resultsBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin: 20px 0 21px;
+  min-height: 22px;
+}
+.resultsBar p {
+  font-size: 11px;
+  color: #b4c4d8;
+  margin: 0;
+}
+.resultsBar strong {
+  color: #dfe7f1;
+  font-weight: 600;
+}
+.resultsBar p > span {
+  color: #899cb5;
+}
+.resultsBar button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 0;
+  background: none;
+  color: #83b5ff;
+  font-size: 11px;
+  padding: 3px 0;
+  cursor: pointer;
+}
+.opportunityGrid,
+.certificationGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 19px;
+}
+.opportunityCard,
+.certificationCard {
+  border: 1px solid #26374a;
+  background: #0d1c2d;
+  border-radius: 11px;
+  padding: 25px 23px 0;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  transition:
+    border-color 0.2s,
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+.opportunityCard:hover,
+.certificationCard:hover {
+  border-color: #456385;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px #0002;
+}
+.cardTop {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 19px;
+  min-height: 43px;
+}
+.orgLogo {
+  width: 42px;
+  height: 42px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-weight: 800;
+  font-size: 24px;
+  letter-spacing: -1px;
+  font-family: Arial, sans-serif;
+  background: #fff;
+  color: #112c4e;
+  box-shadow: inset 0 0 0 1px #ffffff10;
+}
+.brampton {
+  background: #fbfcff;
+  color: #144f97;
+  font-family: Georgia, serif;
+  font-size: 31px;
+  font-style: italic;
+}
+.library {
+  background: #dbf0db;
+  color: #2d6737;
+  letter-spacing: -3px;
+  font-size: 29px;
+}
+.mbc {
+  background: #b0e3bd;
+  color: #185433;
+  font-family: Georgia, serif;
+  font-style: italic;
+}
+.canada {
+  background: #f8e4e5;
+  color: #ca2632;
+  font-size: 16px;
+  letter-spacing: -0.8px;
+}
+.mcdonalds {
+  background: #db292b;
+  color: #ffd643;
+  font-size: 30px;
+}
+.ontario {
+  background: #eee;
+  color: #171d24;
+  font-size: 17px;
+  letter-spacing: -1px;
+}
+.oyap {
+  background: #e99536;
+  color: #101d2c;
+  font-size: 17px;
+}
+.ja {
+  background: #168451;
+  color: #fff;
+  font-size: 19px;
+  font-style: italic;
+}
+.typeBadge {
+  font-size: 9px;
+  padding: 5px 7px;
+  border: 1px solid;
+  border-radius: 4px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.volunteerBadge {
+  color: #8dd4b2;
+  background: #15393080;
+  border-color: #285b48;
+}
+.jobBadge {
+  color: #8db8ff;
+  background: #132d53;
+  border-color: #27456e;
+}
+.programBadge {
+  color: #d1b1fb;
+  background: #34234a80;
+  border-color: #52386b;
+}
+.saveButton {
+  margin-left: auto;
+  background: none;
+  border: 0;
+  color: #96acc6;
+  cursor: pointer;
+  padding: 4px;
+  align-self: flex-start;
+  display: flex;
+  transition: color 0.2s;
+}
+.saveButton:hover,
+.saveButton.isSaved {
+  color: #ffd446;
+}
+.organization {
+  font-size: 10px;
+  font-weight: 500;
+  color: #b4c4d8;
+  line-height: 1.6;
+  margin: 0 0 8px;
+  min-height: 16px;
+  letter-spacing: 0.05px;
+}
+.opportunityCard h3,
+.certificationCard h3 {
+  font-size: 19px;
+  line-height: 1.36;
+  letter-spacing: -0.45px;
+  font-weight: 600;
+  color: #f4f7fb;
+  margin: 0 0 12px;
+  max-width: 260px;
+}
+.cardDescription {
+  font-size: 11.5px;
+  color: #a9bbd2;
+  line-height: 1.8;
+  margin: 0 0 22px;
+  min-height: 83px;
+}
+.cardMeta {
+  display: flex;
+  gap: 13px;
+  flex-wrap: wrap;
+  color: #b4c4d9;
+  font-size: 10px;
+  line-height: 1.6;
+  margin-top: auto;
+  margin-bottom: 16px;
+}
+.cardMeta > span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.cardMeta svg {
+  color: #90aaca;
+}
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 22px;
+}
+.tags > span {
+  font-size: 9px;
+  line-height: 1.5;
+  letter-spacing: 0.05px;
+  color: #c0d0e4;
+  background: #14263a;
+  padding: 4px 7px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+.cardBottom {
+  margin: 0 -23px;
+  padding: 16px 22px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px;
+  border-top: 1px solid #263548;
+  align-items: center;
+  min-height: 58px;
+}
+.cardBottom > span {
+  font-size: 9px;
+  color: #99adc6;
+}
+.cardBottom > a,
+.courseLink {
+  font-size: 10px;
+  color: #86b5ff;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.cardBottom > a:hover,
+.courseLink:hover {
+  color: #b7d4ff;
+}
+.cardBottom > a svg,
+.courseLink svg {
+  transition: transform 0.2s;
+}
+.cardBottom > a:hover svg,
+.courseLink:hover svg {
+  transform: translateX(3px);
+}
+.sourceNote {
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+  color: #899cb3;
+  max-width: 980px;
+  margin: 22px 0 0;
+}
+.sourceNote > svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: #9bafc6;
+}
+.sourceNote p {
+  font-size: 10px;
+  line-height: 1.8;
+  margin: 0;
+}
+.guidanceNudge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-top: 1px solid #1e3044;
+  margin-top: 30px;
+  padding-top: 24px;
+  color: #9bb1ca;
+  font-size: 11px;
+}
+.guidanceNudge > svg {
+  color: #99c0eb;
+}
+.guidanceNudge > a {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #bedeeb;
+  text-decoration: none;
+  margin-left: 6px;
+}
+.guidanceNudge > a:hover {
+  color: #fff;
+}
+.learningCallout {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding-bottom: 4px;
+}
+.learningCallout > span {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  background: #3b341c75;
+  color: #ffd446;
+  border-radius: 11px;
+  border: 1px solid #5c4f29;
+}
+.learningCallout p {
+  font-size: 12px;
+  color: #b2c2d8;
+  line-height: 1.8;
+  margin: 0;
+}
+.learningCallout strong {
+  font-size: 12px;
+  color: #e6edf7;
+  font-weight: 500;
+}
+.learningTools {
+  margin-top: 8px;
+}
+.learningTabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.learningTabs button {
+  border: 1px solid #2b3c50;
+  border-radius: 6px;
+  background: transparent;
+  padding: 9px 16px;
+  color: #b7c5d8;
+  font-size: 11px;
+  font-family: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+}
+.learningTabs button:hover {
+  border-color: #5b7391;
+  color: #e7edf6;
+}
+.learningTabs button.activeLearningTab {
+  background: #ffd446;
+  color: #101c2c;
+  border-color: #ffd446;
+  font-weight: 600;
+}
+.learningSearchRow {
+  display: flex;
+  gap: 12px;
+}
+.learningSearchRow > select {
+  flex: 0 0 155px;
+  padding: 12px 15px;
+  background: #0c1a2b;
+  font-size: 11px;
+}
+.learningSearchRow > select:last-child {
+  flex-basis: 190px;
+}
+.learningSearchRow .searchInput {
+  min-height: 45px;
+  background: #0a1828;
+}
+.certificationGrid {
+  row-gap: 22px;
+}
+.certificationCard {
+  padding-top: 23px;
+}
+.certificationCard .cardTop {
+  margin-bottom: 20px;
+  justify-content: space-between;
+}
+.learningLogo {
+  width: 43px;
+  height: 43px;
+}
+.hp {
+  background: #169cd0;
+  color: #fff;
+  font-style: italic;
+  font-size: 31px;
+  font-family: Arial, sans-serif;
+  border-radius: 50%;
+  font-weight: 500;
+  letter-spacing: -3px;
+  padding-right: 3px;
+}
+.hubspot {
+  background: #ffe9dd;
+  color: #e66b42;
+  font-size: 17px;
+  letter-spacing: -1px;
+}
+.ibm {
+  background: #e8f0ff;
+  color: #1761be;
+  font-size: 16px;
+  letter-spacing: 0.1px;
+}
+.cisco {
+  background: #e3f4fa;
+  color: #1185aa;
+  font-size: 14px;
+  letter-spacing: -0.5px;
+}
+.openlearn {
+  background: #0a6789;
+  color: #fff;
+  font-size: 20px;
+  font-family: Georgia, serif;
+  font-weight: 500;
+  letter-spacing: -1px;
+}
+.microsoft {
+  color: transparent;
+  background:
+    linear-gradient(#f35325, #f35325) 8px 8px/12px 12px no-repeat,
+    linear-gradient(#81bc06, #81bc06) 22px 8px/12px 12px no-repeat,
+    linear-gradient(#05a6f0, #05a6f0) 8px 22px/12px 12px no-repeat,
+    linear-gradient(#ffba08, #ffba08) 22px 22px/12px 12px no-repeat,
+    #f5f7fb;
+}
+.salesforce {
+  background: #119ed9;
+  color: #fff;
+  font-size: 23px;
+  font-style: italic;
+  letter-spacing: -2px;
+}
+.freeBadge {
+  font-size: 9px;
+  color: #b5d7bf;
+  border: 1px solid #2b4c3c;
+  border-radius: 4px;
+  background: #122f2480;
+  padding: 5px 8px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.freeBadge > span {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #81c69e;
+}
+.certificationCard h3 {
+  max-width: 270px;
+  min-height: 52px;
+}
+.certificationCard .cardDescription {
+  min-height: 62px;
+  margin-bottom: 19px;
+}
+.learningMeta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  color: #b3c4d9;
+  font-size: 9px;
+  margin-top: auto;
+  margin-bottom: 15px;
+  align-items: center;
+}
+.learningMeta > span {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+.learningMeta > span + span:before {
+  content: "";
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #52647b;
+  margin-right: 3px;
+}
+.certificationCard .tags {
+  margin-bottom: 18px;
+}
+.credential {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 13px 0 15px;
+  border-top: 1px solid #22354a;
+  min-height: 68px;
+}
+.credential > svg {
+  flex-shrink: 0;
+  color: #a3c2eb;
+  margin-top: 1px;
+}
+.credential span {
+  display: block;
+  font-size: 10px;
+  color: #c3cfe1;
+  line-height: 1.5;
+}
+.credential small {
+  display: block;
+  font-size: 8.5px;
+  color: #94aac4;
+  line-height: 1.6;
+  margin-top: 3px;
+}
+.courseLink {
+  border-top: 1px solid #263548;
+  margin: 0 -23px;
+  padding: 17px 23px;
+  justify-content: space-between;
+  font-size: 11px;
+  min-height: 54px;
+}
+.viewMore {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+.viewMore > button {
+  font-size: 11px;
+  min-height: 44px;
+  gap: 15px;
+}
+.learningSection .sourceNote {
+  max-width: 1030px;
+  margin-top: 23px;
+}
+.linkedInGuide {
+  border: 1px solid #2a405b;
+  border-radius: 9px;
+  background: #0d2035;
+  margin-top: 35px;
+  overflow: hidden;
+}
+.linkedInTrigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-align: left;
+  background: none;
+  border: 0;
+  color: #e6edf7;
+  padding: 22px 25px;
+  cursor: pointer;
+}
+.linkedInLogo {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  color: white;
+  font:
+    bold 29px Arial,
+    sans-serif;
+  background: #1477b8;
+  border-radius: 6px;
+  letter-spacing: -1px;
+  padding-top: 1px;
+}
+.linkedInTrigger > span:nth-child(2) {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.linkedInTrigger strong {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.15px;
+}
+.linkedInTrigger small {
+  font-size: 10px;
+  color: #abc1dc;
+}
+.guideAction {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+  color: #b4d6eb;
+  margin-left: auto;
+  white-space: nowrap;
+}
+.guideAction svg {
+  transition: transform 0.2s;
+}
+.linkedInGuideOpen .linkedInTrigger {
+  border-bottom: 1px solid #2b4059;
+}
+.linkedInContent {
+  padding: 22px 25px 24px;
+  font-size: 12px;
+  color: #bacce4;
+  line-height: 1.8;
+}
+.linkedInContent > p:first-child {
+  margin: 0 0 20px;
+}
+.linkedInContent strong {
+  color: #d8e6f7;
+  font-weight: 500;
+}
+.linkedInContent ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 21px;
+}
+.linkedInContent li {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+}
+.linkedInContent li > span {
+  flex-shrink: 0;
+  width: 25px;
+  height: 25px;
+  border-radius: 5px;
+  background: #183451;
+  display: grid;
+  place-items: center;
+  font-size: 9px;
+  color: #7caeea;
+  font-weight: 600;
+  margin-top: 1px;
+}
+.linkedInContent li p {
+  font-size: 10px;
+  line-height: 1.7;
+  margin: 4px 0 0;
+  color: #abc1dc;
+}
+.ageNote {
+  border-top: 1px solid #263e59;
+  padding-top: 18px;
+  margin: 22px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+  font-size: 10px;
+  color: #99b2d1;
+  line-height: 1.7;
+}
+.ageNote > svg {
+  margin-right: 3px;
+}
+.ageNote > a {
+  color: #b5dceb;
+  text-decoration: underline;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+.emptyState {
+  padding: 55px 20px;
+  border: 1px dashed #3a4f69;
+  border-radius: 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 13px;
+  background: #0c1c2d;
+}
+.emptyState > svg {
+  color: #8aafdf;
+}
+.emptyState h3 {
+  font-size: 23px;
+  color: #eaf1fa;
+  margin: 0;
+  font-weight: 500;
+}
+.emptyState p {
+  font-size: 12px;
+  line-height: 1.8;
+  color: #a7bdd9;
+  max-width: 430px;
+  margin: 0 0 8px;
+}
+.emptyState > button {
+  font-size: 11px;
+}
+.compactCard .cardDescription {
+  min-height: 65px;
+}
+.compactCard .cardMeta {
+  font-size: 9px;
+}
+.compactCard .tags {
+  margin-bottom: 15px;
+}
+@media (min-width: 1280px) {
+  .cardBottom {
+    flex-wrap: nowrap;
+  }
+  .cardBottom > a {
+    font-size: 9px;
+  }
+  .cardBottom > span {
+    font-size: 8px;
+  }
+  .opportunityCard h3 {
+    max-width: 260px;
+  }
+}
+@media (max-width: 1000px) {
+  .opportunitiesSection,
+  .learningSection {
+    padding: 80px 0;
+  }
+  .localNote {
+    padding-left: 15px;
+  }
+  .sectionHeading {
+    gap: 20px;
+  }
+  .opportunityGrid,
+  .certificationGrid {
+    gap: 14px;
+  }
+  .opportunityCard,
+  .certificationCard {
+    padding: 20px 18px 0;
+  }
+  .cardTop {
+    gap: 7px;
+  }
+  .orgLogo {
+    width: 37px;
+    height: 37px;
+  }
+  .typeBadge {
+    font-size: 8px;
+    padding: 4px 5px;
+  }
+  .cardBottom,
+  .courseLink {
+    margin-left: -18px;
+    margin-right: -18px;
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+  .cardBottom {
+    gap: 7px;
+  }
+  .cardBottom > span {
+    font-size: 8px;
+  }
+  .cardBottom > a {
+    font-size: 9px;
+  }
+  .cardDescription {
+    font-size: 11px;
+    min-height: 100px;
+  }
+  .opportunityCard h3,
+  .certificationCard h3 {
+    font-size: 17px;
+  }
+  .certificationCard .cardDescription {
+    min-height: 80px;
+  }
+  .cardMeta {
+    gap: 8px;
+    font-size: 9px;
+  }
+  .tags > span {
+    font-size: 8px;
+    padding: 4px 6px;
+  }
+  .learningCallout > span {
+    width: 40px;
+    height: 40px;
+  }
+  .learningCallout p,
+  .learningCallout strong {
+    font-size: 11px;
+  }
+  .extraFilters {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .extraFilters label.savedToggle {
+    grid-column: auto;
+    padding-top: 28px;
+  }
+  .filterHelp {
+    grid-column: 1/-1;
+  }
+  .learningTabs {
+    gap: 6px;
+  }
+  .learningTabs button {
+    padding: 9px 14px;
+  }
+  .learningSearchRow > select {
+    flex-basis: 140px;
+  }
+  .learningSearchRow > select:last-child {
+    flex-basis: 165px;
+  }
+  .microsoft {
+    background:
+      linear-gradient(#f35325, #f35325) 6px 6px/11px 11px no-repeat,
+      linear-gradient(#81bc06, #81bc06) 19px 6px/11px 11px no-repeat,
+      linear-gradient(#05a6f0, #05a6f0) 6px 19px/11px 11px no-repeat,
+      linear-gradient(#ffba08, #ffba08) 19px 19px/11px 11px no-repeat,
+      #f5f7fb;
+  }
+  .credential small {
+    font-size: 8px;
+  }
+  .learningMeta {
+    gap: 8px;
+    font-size: 8px;
+  }
+  .credential span {
+    font-size: 9px;
+  }
+}
+@media (max-width: 760px) {
+  .opportunitiesSection,
+  .learningSection {
+    padding: 65px 0;
+    scroll-margin-top: 75px;
+  }
+  .sectionHeading {
+    align-items: flex-start;
+    margin-bottom: 29px;
+  }
+  .localNote,
+  .learningCallout {
+    display: none;
+  }
+  .sectionHeading h2 {
+    margin-bottom: 14px;
+  }
+  .opportunityGrid,
+  .certificationGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .toolsCaption {
+    display: none;
+  }
+  .kindTabs {
+    width: 100%;
+    gap: 0;
+    justify-content: space-around;
+  }
+  .kindTabs button {
+    font-size: 11px;
+    padding: 14px 5px 16px;
+    gap: 6px;
+  }
+  .toolTop {
+    padding: 5px 8px 0;
+  }
+  .searchRow {
+    gap: 8px;
+    padding: 11px;
+  }
+  .filterButton {
+    font-size: 10px;
+    padding: 0 11px;
+    gap: 6px;
+  }
+  .filterButton > svg:last-child {
+    display: none;
+  }
+  .searchInput {
+    min-height: 44px;
+    padding: 0 11px;
+    gap: 8px;
+  }
+  .searchInput input {
+    font-size: 10px;
+  }
+  .searchInput > svg {
+    width: 15px;
+  }
+  .resultsBar p {
+    font-size: 10px;
+  }
+  .resultsBar p > span {
+    display: none;
+  }
+  .opportunityCard,
+  .certificationCard {
+    padding: 21px 19px 0;
+  }
+  .cardDescription {
+    min-height: 80px;
+    font-size: 11px;
+  }
+  .opportunityCard h3,
+  .certificationCard h3 {
+    font-size: 18px;
+  }
+  .cardBottom,
+  .courseLink {
+    margin-left: -19px;
+    margin-right: -19px;
+    padding-left: 19px;
+    padding-right: 19px;
+  }
+  .cardBottom {
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
+  .cardBottom > span {
+    width: 100%;
+    font-size: 9px;
+  }
+  .cardBottom > a {
+    font-size: 10px;
+  }
+  .sourceNote p {
+    font-size: 9px;
+    line-height: 1.85;
+  }
+  .guidanceNudge {
+    font-size: 10px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .guidanceNudge > a {
+    font-size: 10px;
+  }
+  .learningTabs {
+    gap: 6px;
+    margin-bottom: 15px;
+  }
+  .learningTabs button {
+    padding: 8px 12px;
+    font-size: 10px;
+  }
+  .learningSearchRow {
+    flex-wrap: wrap;
+    gap: 9px;
+  }
+  .learningSearchRow .searchInput {
+    flex: 0 0 100%;
+  }
+  .learningSearchRow > select,
+  .learningSearchRow > select:last-child {
+    flex: 1;
+    min-height: 42px;
+  }
+  .certificationCard .cardDescription {
+    min-height: 80px;
+  }
+  .learningMeta {
+    gap: 7px;
+    font-size: 9px;
+  }
+  .credential span {
+    font-size: 9px;
+  }
+  .credential small {
+    font-size: 8px;
+  }
+  .credential {
+    min-height: 76px;
+  }
+  .linkedInTrigger {
+    padding: 19px;
+    gap: 12px;
+  }
+  .linkedInTrigger strong {
+    font-size: 12px;
+  }
+  .linkedInTrigger small {
+    font-size: 9px;
+    line-height: 1.5;
+  }
+  .guideAction {
+    font-size: 0;
+    gap: 0;
+  }
+  .guideAction svg {
+    width: 19px;
+  }
+  .linkedInContent {
+    padding: 20px;
+  }
+  .linkedInContent ol {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .extraFilters {
+    padding: 5px 11px 14px;
+    gap: 10px;
+  }
+  .extraFilters > label {
+    font-size: 10px;
+  }
+  .extraFilters select {
+    font-size: 10px;
+    padding: 10px 7px;
+  }
+  .filterHelp {
+    font-size: 9px;
+  }
+  .freeBadge {
+    font-size: 8px;
+    padding: 4px 6px;
+  }
+}
+@media (max-width: 500px) {
+  .opportunityGrid,
+  .certificationGrid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+  .opportunityCard,
+  .certificationCard {
+    padding: 24px 23px 0;
+  }
+  .cardTop {
+    margin-bottom: 17px;
+  }
+  .orgLogo {
+    width: 41px;
+    height: 41px;
+  }
+  .typeBadge {
+    font-size: 9px;
+    padding: 5px 8px;
+  }
+  .opportunityCard h3,
+  .certificationCard h3 {
+    font-size: 21px;
+    max-width: 100%;
+    min-height: 0;
+    margin-bottom: 12px;
+  }
+  .organization {
+    font-size: 11px;
+    margin-bottom: 8px;
+  }
+  .cardDescription,
+  .certificationCard .cardDescription {
+    min-height: 0;
+    font-size: 12px;
+    line-height: 1.8;
+    margin-bottom: 20px;
+  }
+  .cardMeta {
+    font-size: 10px;
+    margin-bottom: 16px;
+    gap: 18px;
+  }
+  .tags > span {
+    font-size: 9px;
+    padding: 5px 8px;
+  }
+  .cardBottom,
+  .courseLink {
+    margin-left: -23px;
+    margin-right: -23px;
+    padding-left: 23px;
+    padding-right: 23px;
+  }
+  .cardBottom {
+    flex-wrap: nowrap;
+    padding-top: 17px;
+    padding-bottom: 17px;
+    gap: 8px;
+  }
+  .cardBottom > span {
+    width: auto;
+    font-size: 8.5px;
+  }
+  .cardBottom > a {
+    font-size: 9.5px;
+  }
+  .cardBottom > a svg {
+    width: 13px;
+  }
+  .kindTabs button {
+    font-size: 10px;
+    gap: 6px;
+  }
+  .kindTabs button > svg {
+    width: 14px;
+  }
+  .searchRow {
+    flex-wrap: wrap;
+  }
+  .searchRow .searchInput {
+    min-width: 0;
+    flex-basis: 100%;
+  }
+  .filterButton {
+    min-height: 35px;
+    margin-left: auto;
+    padding: 0 12px;
+    font-size: 10px;
+  }
+  .filterButton > svg:last-child {
+    display: block;
+  }
+  .resultsBar {
+    margin-top: 18px;
+    margin-bottom: 18px;
+  }
+  .extraFilters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .extraFilters label.savedToggle {
+    padding-top: 26px;
+  }
+  .desktopBreak {
+    display: none;
+  }
+  .guidanceNudge {
+    padding-top: 20px;
+    margin-top: 23px;
+  }
+  .guidanceNudge > a {
+    flex-basis: 100%;
+    justify-content: center;
+    margin: 1px 0 0;
+  }
+  .learningTabs button {
+    font-size: 10px;
+    padding: 8px 11px;
+  }
+  .learningMeta {
+    font-size: 10px;
+    margin-bottom: 18px;
+    gap: 13px;
+  }
+  .credential {
+    min-height: 0;
+    padding: 15px 0 18px;
+  }
+  .credential span {
+    font-size: 11px;
+  }
+  .credential small {
+    font-size: 9px;
+  }
+  .courseLink {
+    font-size: 12px;
+    padding-top: 18px;
+    padding-bottom: 18px;
+  }
+  .freeBadge {
+    font-size: 9px;
+    padding: 5px 8px;
+  }
+  .linkedInTrigger {
+    padding: 17px 15px;
+    gap: 10px;
+  }
+  .linkedInLogo {
+    width: 34px;
+    height: 34px;
+    font-size: 25px;
+  }
+  .linkedInTrigger strong {
+    font-size: 11px;
+  }
+  .linkedInTrigger small {
+    font-size: 8px;
+    max-width: 230px;
+  }
+  .linkedInContent ol {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .linkedInContent li p {
+    font-size: 11px;
+  }
+  .linkedInContent > p:first-child {
+    font-size: 11px;
+  }
+  .learningSection .sourceNote {
+    margin-top: 20px;
+  }
+  .viewMore {
+    margin-top: 23px;
+  }
+  .sourceNote {
+    margin-top: 19px;
+  }
+  .microsoft {
+    background:
+      linear-gradient(#f35325, #f35325) 7px 7px/12px 12px no-repeat,
+      linear-gradient(#81bc06, #81bc06) 21px 7px/12px 12px no-repeat,
+      linear-gradient(#05a6f0, #05a6f0) 7px 21px/12px 12px no-repeat,
+      linear-gradient(#ffba08, #ffba08) 21px 21px/12px 12px no-repeat,
+      #f5f7fb;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .opportunityCard,
+  .certificationCard,
+  .cardBottom > a svg,
+  .courseLink svg {
+    transition: none;
+  }
+  .opportunityCard:hover,
+  .certificationCard:hover {
+    transform: none;
+  }
+}
+/* Keep descriptions and supporting details readable on small screens. */
+.cardDescription,
+.certificationCard .cardDescription {
+  font-size: 13px;
+  line-height: 1.8;
+}
+.organization {
+  font-size: 11px;
+}
+.cardMeta {
+  font-size: 11px;
+}
+.sourceNote p {
+  font-size: 11px;
+}
+.filterHelp {
+  font-size: 11px;
+}
+.cardBottom > a {
+  font-size: 11px;
+}
+.cardBottom > span {
+  font-size: 9px;
+}
+.credential span {
+  font-size: 11px;
+}
+.credential small {
+  font-size: 10px;
+}
+.linkedInTrigger small {
+  font-size: 11px;
+}
+.learningMeta {
+  font-size: 11px;
+}
+@media (max-width: 500px) {
+  .cardBottom {
+    flex-wrap: wrap;
+  }
+  .cardBottom > span {
+    font-size: 10px;
+  }
+  .cardBottom > a {
+    min-height: 32px;
+    font-size: 12px;
+  }
+  .kindTabs {
+    gap: 8px;
+  }
+  .kindTabs button {
+    font-size: 11px;
+    min-height: 48px;
+  }
+  .filterButton {
+    min-height: 44px;
+  }
+  .sourceNote p {
+    font-size: 11px;
+  }
+  .searchInput input {
+    font-size: 13px;
+  }
+  .extraFilters select {
+    font-size: 12px;
+  }
+  .linkedInTrigger small {
+    font-size: 10px;
+  }
+}
+.hubspot {
+  color: #a74424;
+}
+.cisco {
+  color: #087292;
+}
+@media (max-width: 360px) {
+  .kindTabs {
+    gap: 0;
+  }
+  .kindTabs button {
+    flex: 1;
+    justify-content: center;
+    padding-inline: 3px;
+    font-size: 11px;
+  }
+  .kindTabs button > svg {
+    display: none;
+  }
+}

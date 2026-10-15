@@ -1,0 +1,67 @@
+[
+  {
+    "id": "brampton-careers",
+    "name": "City of Brampton careers",
+    "url": "https://www.brampton.ca/EN/City-Hall/Employment/Pages/Welcome.aspx",
+    "organization": "City of Brampton",
+    "trust": "government",
+    "adapter": "jsonld",
+    "intervalHours": 6,
+    "automationApproved": false,
+    "approvalNote": "Network access and automation terms could not be verified. Obtain an approved feed or permission before enabling; a directory is not a vacancy.",
+    "completeFeed": false,
+    "allowedHosts": ["www.brampton.ca"]
+  },
+  {
+    "id": "job-bank",
+    "name": "Government of Canada Job Bank",
+    "url": "https://www.jobbank.gc.ca/jobsearch/jobsearch?searchstring=student&locationstring=Brampton%2C+ON",
+    "organization": "Government of Canada Job Bank",
+    "trust": "government",
+    "adapter": "jsonld",
+    "intervalHours": 6,
+    "automationApproved": false,
+    "approvalNote": "No approved Job Bank API/feed or redistribution arrangement is configured. Do not scrape restricted search results.",
+    "completeFeed": false,
+    "allowedHosts": ["www.jobbank.gc.ca"]
+  },
+  {
+    "id": "brampton-volunteer",
+    "name": "City of Brampton volunteering",
+    "url": "https://www.brampton.ca/EN/City-Hall/Employment/Volunteer-Opportunities/Pages/Welcome.aspx",
+    "organization": "City of Brampton",
+    "trust": "government",
+    "adapter": "jsonld",
+    "intervalHours": 24,
+    "automationApproved": false,
+    "approvalNote": "Directory only. Confirm permitted automated access and listing-level structured data before enabling.",
+    "completeFeed": false,
+    "allowedHosts": ["www.brampton.ca"]
+  },
+  {
+    "id": "brampton-library",
+    "name": "Brampton Library events",
+    "url": "https://www.bramptonlibrary.ca/",
+    "organization": "Brampton Library",
+    "trust": "official",
+    "adapter": "jsonld",
+    "intervalHours": 24,
+    "automationApproved": false,
+    "approvalNote": "Request an official iCalendar or JSON events feed and confirm reuse terms. No dates or events have been invented.",
+    "completeFeed": false,
+    "allowedHosts": ["www.bramptonlibrary.ca"]
+  },
+  {
+    "id": "peel-youth",
+    "name": "Region of Peel youth programs",
+    "url": "https://www.peelregion.ca/",
+    "organization": "Region of Peel",
+    "trust": "government",
+    "adapter": "jsonld",
+    "intervalHours": 24,
+    "automationApproved": false,
+    "approvalNote": "Confirm an official machine-readable program source and permission before enabling.",
+    "completeFeed": false,
+    "allowedHosts": ["www.peelregion.ca"]
+  }
+]
