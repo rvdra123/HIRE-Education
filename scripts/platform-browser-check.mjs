@@ -1,7 +1,13 @@
 import { chromium } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import assert from "node:assert/strict";
-import { writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
+import {
+  studentResume,
+  studentPosting,
+  pdfResumeBytes,
+  docxResumeBytes,
+} from "../tests/fixtures/local-resume.mjs";
 const origin = process.env.HIRE_TEST_URL || "http://127.0.0.1:3000";
 const browser = await chromium.launch({
   executablePath: "/usr/bin/chromium",
@@ -156,93 +162,64 @@ assert.ok(
     t.includes("Volunteering"),
   ),
 );
-await page.goto(`${origin}/resume-reviewer`, {
-  waitUntil: "networkidle",
+const reviewRequests = [];
+const sentInputs = [];
+const writeRequests = [];
+page.on("request", (request) => {
+  if (!["GET", "HEAD"].includes(request.method()))
+    writeRequests.push(request.url());
+  if (request.url().includes("/api/resume-review"))
+    reviewRequests.push(request.url());
+  const payload = `${request.url()} ${request.postData() || ""}`;
+  if (
+    payload.includes("Avery") ||
+    payload.includes("fictional-resume") ||
+    payload.includes("Responsible for organizing materials") ||
+    payload.includes("Retail assistant. Help customers")
+  )
+    sentInputs.push(request.url());
 });
+// Any accidental call to the old service fails. The checker must still work.
+await page.route("**/api/resume-review", (route) => route.abort());
+await page.goto(`${origin}/resume-reviewer`, { waitUntil: "networkidle" });
 assert.equal(
-  await page.getByRole("button", { name: "Review my resume" }).isDisabled(),
+  await page.getByRole("button", { name: "Check my resume" }).isDisabled(),
   true,
 );
-await scan("reviewer-unconfigured");
-const fixture = {
-  overallScore: 80,
-  summary:
-    "Test fixture only. Your school experience provides useful evidence.",
-  scores: {
-    formatting: 8,
-    content: 8,
-    experience: 8,
-    skills: 8,
-    ats: 8,
-    professionalism: 8,
-    jobRelevance: 8,
-  },
-  strongestSections: ["Experience"],
-  strengths: ["Specific school project examples."],
-  weaknesses: ["Some wording is vague."],
-  improvements: ["Explain your contribution."],
-  missingSections: [],
-  grammarIssues: [],
-  bulletRewrites: [
-    {
-      original: "Helped with a school event.",
-      suggested: "Supported setup and registration at a school event.",
-      why: "Uses clear actions without invented results.",
-    },
-  ],
-  atsFeedback: {
-    summary: "Use plain headings.",
-    concerns: [],
-    limitations: "Not a real employer ATS test.",
-  },
-  jobMatch: {
-    score: 78,
-    summary: "Relevant student experience.",
-    relevantStrengths: ["Teamwork"],
-    emphasizedSkills: ["Communication"],
-    highlightExperience: ["School project"],
-    potentialGaps: ["Availability is not stated."],
-    topChanges: ["State your real availability."],
-  },
-  topActions: [
-    "Tailor the skills.",
-    "Proofread the dates.",
-    "Check the employer requirements.",
-  ],
-};
-await page.route("**/api/resume-review", async (route) =>
-  route.fulfill({
-    json:
-      route.request().method() === "GET"
-        ? { available: true }
-        : { review: fixture },
-  }),
+await scan("reviewer-local");
+await page.setViewportSize({ width: 390, height: 900 });
+assert.ok(
+  (await page.evaluate(() => document.documentElement.scrollWidth)) <= 390,
 );
-await page.reload({ waitUntil: "networkidle" });
-await page.locator("#resume-file").setInputFiles({
-  name: "test-resume.pdf",
-  mimeType: "application/pdf",
-  buffer: Buffer.from("%PDF-1.4\nTEST FIXTURE\n%%EOF"),
-});
+await scan("reviewer-form-mobile");
+await page.setViewportSize({ width: 1440, height: 1000 });
+await page.getByLabel("Resume text", { exact: true }).fill(studentResume);
 await page.getByLabel("Target role", { exact: true }).fill("Retail assistant");
 await page
   .getByLabel("Job posting or opportunity description")
-  .fill(
-    "A fictional test posting asking for communication, teamwork, reliability and weekend availability.",
-  );
-await page.locator(".consent-check input").check();
-await page.getByRole("button", { name: "Review my resume" }).click();
+  .fill(studentPosting);
+await page.getByRole("button", { name: "Check my resume" }).click();
 await page
-  .getByRole("heading", { name: "Your resume review", exact: true })
+  .getByRole("heading", { name: "Your resume checklist results", exact: true })
   .waitFor();
 await scan("reviewer-results");
-await page.getByRole("button", { name: "Role match", exact: true }).click();
+await page.locator(".checker-method summary").click();
+assert.ok(await page.getByLabel("Checks for Sections & structure").isVisible());
 await page
-  .getByRole("heading", { name: "How your experience fits the posting" })
+  .getByRole("button", { name: "Posting keywords", exact: true })
+  .click();
+await page
+  .getByRole("heading", { name: "Terms found in your resume" })
   .waitFor();
-await page.getByRole("button", { name: /Bullet rewrites/ }).click();
-await page.getByRole("button", { name: "Copy suggestion" }).waitFor();
-await page.getByRole("button", { name: "Writing & layout" }).click();
+assert.ok((await page.locator(".keyword-found").count()) > 0);
+assert.ok(
+  (await page.locator(".keyword-chips").allTextContents())
+    .join(" ")
+    .includes("Cash handling"),
+);
+await page.getByRole("button", { name: /Bullet edits/ }).click();
+await page.getByRole("button", { name: "Copy suggestion" }).first().waitFor();
+await page.getByRole("button", { name: "Writing & text" }).click();
 await scan("reviewer-writing");
 await page.getByRole("button", { name: "Overview", exact: true }).click();
 await page.locator(".dashboard-actions input").first().check();
@@ -255,6 +232,9 @@ const [feedback] = await Promise.all([
   page.getByRole("button", { name: "Download feedback" }).click(),
 ]);
 assert.match(feedback.suggestedFilename(), /resume-feedback/);
+const feedbackText = readFileSync(await feedback.path(), "utf8");
+assert.match(feedbackText, /checklist-based/);
+assert.match(feedbackText, /All checks/);
 for (const width of [320, 390, 768]) {
   await page.setViewportSize({ width, height: 900 });
   assert.ok(
@@ -263,7 +243,6 @@ for (const width of [320, 390, 768]) {
   );
   if (width === 390) {
     await scan("dashboard-mobile");
-    await page.evaluate(() => window.scrollTo(0, 0));
     await page.screenshot({
       path: "/tmp/hire-dashboard-mobile.png",
       fullPage: true,
@@ -271,41 +250,105 @@ for (const width of [320, 390, 768]) {
   }
 }
 await page.setViewportSize({ width: 1440, height: 1000 });
+await page.getByRole("button", { name: "Edit and check again" }).click();
+assert.equal(
+  await page.getByLabel("Resume text", { exact: true }).inputValue(),
+  studentResume,
+);
+await page
+  .getByLabel("Resume text", { exact: true })
+  .fill(`${studentResume}\nCash handling, stocking, cleaning`);
+await page.getByRole("button", { name: "Check my resume" }).click();
+await page
+  .getByRole("heading", { name: "Your resume checklist results", exact: true })
+  .waitFor();
 await page.getByRole("button", { name: "Clear review", exact: true }).click();
 assert.equal(
   await page.getByLabel("Target role", { exact: true }).inputValue(),
   "",
 );
-await page.unroute("**/api/resume-review");
-await page.route("**/api/resume-review", async (route) =>
-  route.fulfill({
-    status: route.request().method() === "GET" ? 200 : 503,
-    json:
-      route.request().method() === "GET"
-        ? { available: true }
-        : {
-            error: "TEST FIXTURE: API billing needs attention.",
-            code: "AI_BILLING_REQUIRED",
-          },
-  }),
+assert.equal(
+  await page.getByLabel("Resume text", { exact: true }).inputValue(),
+  "",
 );
-await page.getByRole("button", { name: "Paste resume text" }).click();
-await page
-  .getByRole("textbox", { name: "Resume text", exact: true })
-  .fill(
-    "TEST FIXTURE student resume. Helped organize a class project and prepare school event materials. This is fictional test content.",
-  );
-await page.getByLabel("Target role", { exact: true }).fill("Test role");
-await page
-  .getByLabel("Job posting or opportunity description")
-  .fill(
-    "TEST FIXTURE posting: a fictional student role asking for teamwork, communication, and reliability.",
-  );
-await page.locator(".consent-check input").check();
-await page.getByRole("button", { name: "Review my resume" }).click();
+assert.equal(
+  await page.getByLabel("Job posting or opportunity description").inputValue(),
+  "",
+);
+await page.getByRole("button", { name: "Open a file", exact: true }).click();
+for (const [extension, mimeType, data] of [
+  ["pdf", "application/pdf", pdfResumeBytes()],
+  [
+    "docx",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    docxResumeBytes(),
+  ],
+  ["txt", "text/plain", new TextEncoder().encode(studentResume)],
+]) {
+  await page.locator("#resume-file").setInputFiles({
+    name: `fictional-resume.${extension}`,
+    mimeType,
+    buffer: Buffer.from(data),
+  });
+  await page
+    .getByText("Review and edit the extracted text", { exact: true })
+    .waitFor();
+  const extracted = await page
+    .getByLabel("Resume text", { exact: true })
+    .inputValue();
+  assert.match(extracted, /Example Secondary School/);
+  assert.match(extracted, /Education/);
+  assert.match(extracted, /Google Sheets/);
+  assert.ok(extracted.split("\n").length >= 10);
+  await page.getByRole("button", { name: "Clear all fields" }).click();
+}
+await page.locator("#resume-file").setInputFiles({
+  name: "broken.pdf",
+  mimeType: "application/pdf",
+  buffer: Buffer.from("Not a PDF"),
+});
 await page
   .getByRole("alert")
-  .filter({ hasText: "AI_BILLING_REQUIRED" })
+  .filter({ hasText: "could not be read" })
+  .waitFor();
+await page.getByRole("button", { name: "Paste resume text" }).click();
+await page
+  .getByLabel("Resume text", { exact: true })
+  .fill("Short text that is insufficient for analysis.");
+await page.getByLabel("Target role", { exact: true }).fill("Retail assistant");
+await page
+  .getByLabel("Job posting or opportunity description")
+  .fill(studentPosting);
+await page.getByRole("button", { name: "Check my resume" }).click();
+await page.getByRole("alert").filter({ hasText: "40 words" }).waitFor();
+assert.deepEqual(reviewRequests, []);
+assert.deepEqual(sentInputs, []);
+assert.deepEqual(writeRequests, []);
+assert.equal(
+  await page.evaluate(() =>
+    Object.entries(localStorage).some(([key, value]) =>
+      /Avery|Retail assistant|Responsible for organizing/.test(
+        `${key} ${value}`,
+      ),
+    ),
+  ),
+  false,
+);
+await page.reload({ waitUntil: "networkidle" });
+assert.equal(
+  await page.getByLabel("Resume text", { exact: true }).inputValue(),
+  "",
+);
+await page.getByRole("button", { name: "Privacy settings" }).click();
+await page.getByRole("button", { name: "Decline optional storage" }).click();
+await page.getByLabel("Resume text", { exact: true }).fill(studentResume);
+await page.getByLabel("Target role", { exact: true }).fill("Retail assistant");
+await page
+  .getByLabel("Job posting or opportunity description")
+  .fill(studentPosting);
+await page.getByRole("button", { name: "Check my resume" }).click();
+await page
+  .getByRole("heading", { name: "Your resume checklist results", exact: true })
   .waitFor();
 await page.getByRole("button", { name: "Privacy settings" }).click();
 await page.getByRole("button", { name: "Decline optional storage" }).click();

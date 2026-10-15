@@ -464,10 +464,10 @@ export default function ApplicationTools() {
 
         <div className="reviewer-launch">
           <div>
-            <h3>Get an AI resume review</h3>
+            <h3>Check your resume before you apply</h3>
             <p>
-              Compare your PDF or DOCX resume with a job description. See
-              strengths, improvements, and suggested bullet rewrites.
+              Get free, checklist-based feedback on structure, posting keywords,
+              and bullet points. Your documents stay on your device.
             </p>
           </div>
           <Link

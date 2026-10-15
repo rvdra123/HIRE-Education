@@ -3580,6 +3580,120 @@ p {
   font-size: 17px;
   line-height: 1.5;
 }
+
+.local-checker-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 18px;
+  margin: 0 0 24px;
+  background: rgba(46, 177, 175, 0.08);
+  border: 1px solid rgba(92, 211, 198, 0.25);
+  border-radius: 12px;
+  color: #dcecf0;
+}
+.local-checker-note svg {
+  color: #7ee2cf;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+.local-checker-note p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.75;
+}
+.local-checker-note strong {
+  color: #f0fffa;
+}
+.checker-clear {
+  margin: 14px 0 0;
+  color: #d4e2f0;
+  background: none;
+  border: 0;
+  padding: 8px 0;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.checker-evidence {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 0;
+  display: grid;
+  gap: 10px;
+}
+.checker-method {
+  margin-top: 18px;
+  border-top: 1px solid #30435e;
+  padding-top: 16px;
+}
+.checker-method summary {
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  color: #b9d5ff;
+}
+.checker-evidence li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 13px;
+  border: 1px solid #30435e;
+  border-radius: 10px;
+  background: #112139;
+}
+.checker-evidence li > span {
+  flex: 0 0 54px;
+  color: #ffe2a3;
+  font-size: 11px;
+  font-weight: 700;
+  padding-top: 3px;
+}
+.checker-evidence li[data-passed="true"] > span {
+  color: #7ee2cf;
+}
+.checker-evidence strong {
+  color: #f0f5ff;
+  font-size: 13px;
+}
+.checker-evidence p {
+  margin: 3px 0 0;
+  color: #d0dbec;
+  font-size: 12px;
+  line-height: 1.75;
+  overflow-wrap: anywhere;
+}
+.keyword-groups {
+  display: grid;
+  gap: 24px;
+  margin: 24px 0;
+}
+.keyword-groups h4 {
+  font-size: 13px;
+  color: #e1ecfc;
+  margin-bottom: 12px;
+}
+.keyword-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.keyword-chips > span {
+  color: #ffe5af;
+  border: 1px solid #645739;
+  background: #27283a;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.keyword-chips > .keyword-found {
+  color: #a1eedc;
+  background: #153a39;
+  border-color: #2b655b;
+}
+.reviewer-form fieldset > textarea {
+  width: 100%;
+}
 .dashboard-tabs {
   margin-top: 10px;
   overflow: auto;

@@ -1,16 +1,14 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import SiteHeader from "@/components/SiteHeader";
-import { reviewConfiguration } from "@/lib/ai/config";
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Privacy Policy | HIRE Education",
   description:
-    "How HIRE Education handles optional browser storage, resume reviews, and website data.",
+    "How HIRE Education handles browser-only resume checking, optional saved progress, and website data.",
 };
 export default function PrivacyPage() {
   const email = process.env.PRIVACY_CONTACT_EMAIL;
-  const ai = reviewConfiguration();
   return (
     <>
       <SiteHeader />
@@ -44,9 +42,9 @@ export default function PrivacyPage() {
               </>
             ) : (
               <>
-                A privacy contact has not been configured yet. The operator must
-                publish a working privacy contact before making resume analysis
-                publicly available.
+                A privacy contact has not been published yet. The site operator
+                is responsible for adding a working contact for questions and
+                requests.
               </>
             )}
           </p>
@@ -57,9 +55,11 @@ export default function PrivacyPage() {
             <li>
               <strong>Browsing:</strong> our application does not use
               advertising trackers, third-party analytics, or account
-              registration. Our hosting and security providers may process
-              standard request information, such as IP addresses, timestamps,
-              and browser information, under their own retention settings.
+              registration. Hosting and security providers may process standard
+              request information, such as IP addresses, timestamps, and browser
+              information, under their own retention settings. Loading the
+              website and its document-reading software generates normal asset
+              requests.
             </li>
             <li>
               <strong>Privacy choice:</strong> we save your accept or decline
@@ -67,157 +67,98 @@ export default function PrivacyPage() {
             </li>
             <li>
               <strong>Optional saved progress:</strong> if you accept optional
-              storage, bookmarks and checklist progress are stored in your
-              browser’s local storage. They are not uploaded to a HIRE Education
-              account or database.
+              storage, bookmarks and application checklist progress are stored
+              in your browser’s local storage. They are not uploaded to a HIRE
+              Education account or database. Resume contents, job descriptions,
+              interview drafts, and resume results are excluded.
             </li>
             <li>
-              <strong>Resume reviews:</strong> the file, selected grade if
-              provided, opportunity type, target title, and pasted description
-              are sent to our server and then to {ai.providerName} only after
-              your separate agreement for that review.
+              <strong>Resume checking:</strong> your selected file is read
+              locally in your browser. Its name, extracted text, pasted resume,
+              target role, posting, and checklist results are not sent to our
+              server or an AI provider by this checker.
             </li>
             <li>
-              <strong>Abuse prevention:</strong> we keep temporary usage
-              counters and, when a trusted hosting IP header is available, a
-              keyed hash of that identifier. We do not store raw IP addresses in
-              the application’s rate-limit table. Infrastructure logs are
-              separate.
+              <strong>Public catalogue:</strong> opportunity filters, search
+              terms, and page numbers may be sent to our catalogue service to
+              return public listings. Do not enter personal documents in public
+              search fields.
             </li>
           </ul>
         </section>
-        <section id="ai-processing">
-          <h2>AI resume processing</h2>
+        <section id="resume-processing">
+          <span id="ai-processing" />
+          <h2>Browser-only resume checking</h2>
           <p>
-            Your resume is used only to generate your review. Avoid including
-            information you do not want analyzed. Remove your home address, date
-            of birth, SIN, banking details, identification documents, and any
-            information about other people that you do not have permission to
-            share.
+            The free checker uses fixed text rules on your device. It is not an
+            AI service and does not require an API key. PDF, DOCX, and TXT files
+            are read into page memory; you can inspect and edit the extracted
+            text before running the checks. PDF-reading software is served with
+            this website. The checker does not upload documents or call a model
+            provider.
           </p>
           <p>
-            We process uploads in memory, without writing resume contents to
-            disk or our database. DOCX files are converted to plain text. PDFs
-            are passed to the configured AI provider for analysis. The target
-            description and resume are treated as untrusted data, and the
-            reviewer is instructed not to follow instructions contained in them.
-          </p>
-          {ai.provider === "openai" ? (
-            <p>
-              We send the document or its extracted text directly in an OpenAI
-              Responses API request with the storage option set to false. We do
-              not create a separate uploaded file in the provider’s Files
-              service. This is not a promise of zero provider retention: OpenAI
-              may retain security and abuse-monitoring information under its API
-              data policies. Processing may take place outside Canada.
-            </p>
-          ) : (
-            <div className="notice-box">
-              <p>
-                Google Gemini has been selected, but student processing is
-                currently disabled until its service terms and permitted
-                audience are confirmed. Guardian consent does not override a
-                provider’s age or service restrictions.
-              </p>
-              <p>
-                If an eligible Google service is activated, resume text or a PDF
-                would be sent directly to Google’s API without creating a
-                separate provider file. Unpaid Google API services may use
-                submitted content and generated responses to improve products
-                and may involve human review. Confidential, sensitive, and
-                identifying information should not be submitted. Paid-service
-                data handling can differ. No promise of zero provider retention
-                is made.
-              </p>
-              <p>
-                See{" "}
-                <a
-                  href="https://ai.google.dev/gemini-api/terms"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Google’s current Gemini API terms
-                </a>{" "}
-                and{" "}
-                <a
-                  href="https://ai.google.dev/gemini-api/docs/usage-policies"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  usage policies
-                </a>
-                . Processing may take place outside Canada.
-              </p>
-            </div>
-          )}
-          <p>
-            Review results stay in this page’s memory and are not saved to your
-            browser’s optional storage or our database. Closing or reloading the
-            page clears the displayed review. We do not use your submissions to
-            train our own AI model, sell resumes, or use them for advertising.
+            The file name, text, posting, results, and dashboard progress are
+            held in page memory, not saved to local storage, a HIRE Education
+            database, or an account. They remain available while you edit and
+            check again. Use Clear all fields or Clear review to remove them
+            from the page. Reloading or leaving the page also clears application
+            state. Your browser may manage its own history, caches, extensions,
+            or session restoration outside our control.
           </p>
           <p>
-            Read{" "}
-            <a
-              href={
-                ai.provider === "openai"
-                  ? "https://openai.com/policies/privacy-policy/"
-                  : "https://policies.google.com/privacy"
-              }
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {ai.provider === "openai"
-                ? "OpenAI’s privacy policy"
-                : "Google’s privacy policy"}
-            </a>{" "}
-            and{" "}
-            <a
-              href={
-                ai.provider === "openai"
-                  ? "https://platform.openai.com/docs/guides/your-data"
-                  : "https://ai.google.dev/gemini-api/terms"
-              }
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              API data controls documentation
-            </a>{" "}
-            for its current practices. AI feedback can be incomplete or
-            incorrect. Scores are educational guidance and do not predict
-            employment or reproduce a real employer’s screening system.
+            Downloading feedback creates a text file on your device only when
+            you choose Download feedback. Using Copy suggestion places the
+            selected text in your system clipboard. You control these local
+            copies, including on shared or school-managed devices.
+          </p>
+          <p>
+            Leave out your SIN, banking details, date of birth, identification
+            documents, exact home address, and unnecessary information about
+            other people. The checker does not need these details. Only open
+            documents you are entitled to use.
+          </p>
+          <p>
+            Scores measure checklist completion and selected posting-term
+            coverage. They do not assess your ability, verify qualifications,
+            reproduce an employer’s screening system, check spelling, or predict
+            employment. Review the original document and posting yourself.
+          </p>
+          <p>
+            The former server-based resume review endpoint is disabled. Existing
+            API keys do not activate an external review flow. If external AI
+            processing is introduced later, its provider, purposes, data
+            handling, eligibility rules, and a separate choice will be explained
+            before any submission.
           </p>
         </section>
         <section>
           <h2>Students and guardian involvement</h2>
           <p>
-            The site is designed for high school students. Do not submit
-            personal documents for someone else without their permission.
-            Students who need a parent or guardian’s permission under applicable
-            law or service rules should obtain it before using AI analysis. A
-            parent, guardian, or trusted school adult can help review what you
-            share. Students can use the public guides without submitting a
-            resume.
+            The site is designed for high school students. A parent, guardian,
+            or trusted school adult can help you decide what belongs in a resume
+            and review the feedback. You can use the public guides without
+            opening a personal document. External employers and services have
+            their own age and permission requirements.
           </p>
         </section>
         <section>
-          <h2>Your choices</h2>
+          <h2>Your choices and retention</h2>
           <p>
-            Use the Privacy settings button to change your choice at any time.
+            Use Privacy settings to change your storage choice at any time.
             Declining optional storage clears this site’s saved bookmarks and
-            checklist data from this browser. Basic browsing and AI-review
-            consent are separate. You can clear stored information through your
-            browser settings, and you may stop using the AI reviewer without
-            losing access to the guides.
+            application checklist data from this browser. The resume checker
+            works with either choice and does not save its inputs or results in
+            optional storage.
           </p>
           <p>
             Optional browser data remains until you withdraw permission, clear
-            it, or the browser removes it. Application rate-limit counters are
-            removed after their window has expired and a later request performs
-            cleanup, normally within about two days while the site is in use.
-            Provider security retention can differ from our in-memory
-            processing. Public opportunity records and source-check history may
-            be retained for quality control.
+            it, or the browser removes it. Public opportunity records and
+            source-check history may be retained for quality control. Temporary
+            request counters from earlier server features may remain until
+            routine expiry cleanup; they do not contain resume text.
+            Infrastructure logs have separate retention settings controlled by
+            the host.
           </p>
         </section>
         <section>
@@ -233,33 +174,35 @@ export default function PrivacyPage() {
         <section>
           <h2>Security and service providers</h2>
           <p>
-            We use upload validation, size limits, server-side secrets, request
-            limits, and protected maintenance endpoints. No internet service can
-            guarantee complete security. Hosting, database, and AI providers
-            process information needed to deliver the service. The operator must
-            review their agreements, access controls, retention settings, and
-            cross-border processing before public launch.
+            We use document size and complexity limits, server-side secrets for
+            protected services, and protected maintenance endpoints. No internet
+            service can guarantee complete security. Hosting and database
+            providers process information needed to deliver the website and
+            public catalogue. Their operations may take place outside Canada.
+            The site operator is responsible for reviewing agreements, access
+            controls, and retention settings.
           </p>
         </section>
         <section>
           <h2>Access, correction, deletion, and complaints</h2>
           <p>
-            Contact the privacy address above with a question or request. Avoid
+            Use the privacy contact above for questions or requests. Avoid
             sending a resume, SIN, banking details, or other unnecessary
-            personal information in your message. Browser-only information can
-            be deleted using Privacy settings or your browser. We cannot
-            retrieve a review that was never stored, and provider-held
-            information may be subject to the provider’s own request process. We
-            will explain the information we actually hold and the options
-            available under applicable law.
+            personal information. Optional browser information can be removed
+            through Privacy settings or your browser. Resume inputs and results
+            are not available to us for retrieval or deletion because the
+            checker does not send them to us. Delete any downloaded feedback and
+            clear clipboard copies on your own device when needed. We will
+            explain information we actually hold and the options available under
+            applicable law.
           </p>
         </section>
         <section>
           <h2>Changes to this policy</h2>
           <p>
-            We will update this page when our data handling changes. A new
-            purpose involving optional storage or resume processing will require
-            an appropriate new choice before that processing begins.
+            We will update this page when data handling changes. A new purpose
+            involving optional storage or external resume processing will
+            require an appropriate new choice before it begins.
           </p>
         </section>
       </main>

@@ -6,9 +6,9 @@ import { getOpportunity } from "@/lib/opportunities/store";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
-  title: "Student AI Resume Reviewer | HIRE Education",
+  title: "Free Student Resume Checker | HIRE Education",
   description:
-    "Get feedback on your high school resume against a job or volunteer opportunity.",
+    "Check your high school resume against a posting on your own device. Free checklist-based feedback with no API or account.",
   robots: { index: false, follow: true },
 };
 export default async function ResumeReviewerPage({
@@ -40,10 +40,11 @@ export default async function ResumeReviewerPage({
           <span>Resume reviewer</span>
         </nav>
         <div className="page-heading">
-          <h1>AI resume reviewer for high school students</h1>
+          <h1>Free resume checker for high school students</h1>
           <p>
-            Upload your resume and the role you’re interested in. Get clear
-            feedback on what’s working and what to improve.
+            Compare your resume with a job or volunteer posting. Get
+            checklist-based feedback on structure, keywords, and bullet points,
+            processed entirely in your browser.
           </p>
         </div>
         <Reviewer

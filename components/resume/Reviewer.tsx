@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useEffect, useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import {
   ArrowRight,
   CheckCircle2,
@@ -9,7 +9,7 @@ import {
   ShieldCheck,
   Upload,
 } from "lucide-react";
-import { reviewSchema, type ResumeReview } from "@/lib/openai/schema";
+import { checkResume, type ChecklistReview } from "@/lib/resume/checker";
 import ReviewDashboard from "./ReviewDashboard";
 type Prefill = {
   title: string;
@@ -17,119 +17,77 @@ type Prefill = {
   kind: string;
   applicationUrl?: string;
 };
+
 export default function Reviewer({ prefill }: { prefill?: Prefill }) {
-  const [available, setAvailable] = useState<boolean | null>(null);
-  const [availabilityCode, setAvailabilityCode] = useState("");
-  const [providerName, setProviderName] = useState(
-    "the configured AI provider",
-  );
-  const [file, setFile] = useState<File | null>(null);
-  const [mode, setMode] = useState<"file" | "text">("file");
+  const [mode, setMode] = useState<"file" | "text">("text");
   const [resumeText, setResumeText] = useState("");
-  const [errorCode, setErrorCode] = useState("");
-  const [grade, setGrade] = useState("");
-  const [kind, setKind] = useState(
-    prefill?.kind &&
-      [
-        "job",
-        "volunteer",
-        "internship",
-        "summer-program",
-        "youth-program",
-        "career-program",
-      ].includes(prefill.kind)
-      ? prefill.kind
-      : "other",
-  );
+  const [fileName, setFileName] = useState("");
   const [title, setTitle] = useState(prefill?.title || "");
   const [description, setDescription] = useState(prefill?.description || "");
-  const [consent, setConsent] = useState(false);
+  const [reading, setReading] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
-  const [result, setResult] = useState<ResumeReview | null>(null);
-  useEffect(() => {
-    const abort = new AbortController();
-    fetch("/api/resume-review", { signal: abort.signal })
-      .then((r) => r.json())
-      .then((d) => {
-        setAvailable(d.available === true);
-        setProviderName(
-          d.providerName === "Google Gemini"
-            ? "Google Gemini"
-            : d.providerName === "OpenAI"
-              ? "OpenAI"
-              : "the configured AI provider",
-        );
-        setAvailabilityCode(typeof d.code === "string" ? d.code : "");
-      })
-      .catch(() => setAvailable(false));
-    return () => abort.abort();
-  }, []);
-  async function submit(e: FormEvent) {
-    e.preventDefault();
+  const [result, setResult] = useState<ChecklistReview | null>(null);
+  const operation = useRef(0);
+  const wordCount = resumeText.match(/\S+/g)?.length || 0;
+  async function openFile(file?: File) {
+    const id = ++operation.current;
     setError("");
-    setErrorCode("");
-    if (
-      !consent ||
-      (mode === "file" && !file) ||
-      (mode === "text" && resumeText.trim().length < 80)
-    )
-      return;
-    if (
-      mode === "file" &&
-      file &&
-      (file.size > 4 * 1024 * 1024 || !/^.+\.(pdf|docx)$/i.test(file.name))
-    ) {
-      setError("Choose a PDF or DOCX file smaller than 4 MB.");
-      return;
-    }
-    setBusy(true);
-    const data = new FormData();
-    if (mode === "file" && file) data.set("resume", file);
-    else data.set("resumeText", resumeText.trim());
-    data.set("grade", grade);
-    data.set("kind", kind);
-    data.set("title", title);
-    data.set("description", description);
-    data.set("consent", "yes");
+    setFileName("");
+    setResumeText("");
+    if (!file) return;
+    setReading(true);
     try {
-      const response = await fetch("/api/resume-review", {
-        method: "POST",
-        body: data,
-        signal: AbortSignal.timeout(110000),
-      });
-      const body = await response.json().catch(() => null);
-      if (!response.ok) {
-        setErrorCode(typeof body?.code === "string" ? body.code : "");
-        throw new Error(
-          response.status === 413
-            ? "This upload exceeds the hosting limit. Use a file under 4 MB or paste your resume text."
-            : body?.error ||
-                "The reviewer is temporarily unavailable. Please try again later.",
-        );
-      }
-      const parsed = reviewSchema.safeParse(body?.review);
-      if (!parsed.success)
-        throw new Error(
-          "The review format could not be read. Please try again.",
-        );
-      setResult(parsed.data);
-      setFile(null);
-      setConsent(false);
+      const { readResumeFile } = await import("@/lib/resume/extract");
+      const text = await readResumeFile(file);
+      if (id !== operation.current) return;
+      setResumeText(text);
+      setFileName(file.name);
+    } catch (error) {
+      if (id !== operation.current) return;
+      setError(
+        error instanceof Error
+          ? error.message
+          : "This file could not be read. Paste your resume text instead.",
+      );
+    } finally {
+      if (id === operation.current) setReading(false);
+    }
+  }
+  async function submit(event: FormEvent) {
+    event.preventDefault();
+    setError("");
+    setBusy(true);
+    await new Promise<void>((resolve) =>
+      requestAnimationFrame(() => resolve()),
+    );
+    try {
+      setResult(checkResume({ resume: resumeText, description }));
       requestAnimationFrame(() =>
         document.getElementById("review-results")?.focus(),
       );
-    } catch (e) {
+    } catch (error) {
       setError(
-        e instanceof Error && e.name === "TimeoutError"
-          ? "The review took too long. Please try again later."
-          : e instanceof Error
-            ? e.message
-            : "The review could not be completed.",
+        error instanceof Error
+          ? error.message
+          : "The text could not be checked. Review the fields and try again.",
       );
     } finally {
       setBusy(false);
     }
+  }
+  function clear() {
+    operation.current++;
+    setResult(null);
+    setResumeText("");
+    setFileName("");
+    setError("");
+    setReading(false);
+    setTitle(prefill?.title || "");
+    setDescription(prefill?.description || "");
+    requestAnimationFrame(() =>
+      document.getElementById("resume-text")?.focus(),
+    );
   }
   if (result)
     return (
@@ -137,15 +95,12 @@ export default function Reviewer({ prefill }: { prefill?: Prefill }) {
         review={result}
         title={title}
         applicationUrl={prefill?.applicationUrl}
-        onReset={() => {
+        onReset={clear}
+        onEdit={() => {
           setResult(null);
-          setFile(null);
-          setResumeText("");
-          setConsent(false);
-          setError("");
-          setErrorCode("");
-          setTitle(prefill?.title || "");
-          setDescription(prefill?.description || "");
+          requestAnimationFrame(() =>
+            document.getElementById("resume-text")?.focus(),
+          );
         }}
       />
     );
@@ -153,34 +108,24 @@ export default function Reviewer({ prefill }: { prefill?: Prefill }) {
     <div className="reviewer-layout">
       <form className="reviewer-form" onSubmit={submit}>
         <div className="form-heading">
-          <FileCheck2 size={23} />
+          <FileCheck2 size={23} aria-hidden="true" />
           <div>
-            <h2>Get feedback on your resume</h2>
+            <h2>Check your resume against a posting</h2>
             <p>
               School projects, clubs, sports, and volunteering all count as
               experience.
             </p>
-            {availabilityCode && (
-              <small>Support code: {availabilityCode}</small>
-            )}
           </div>
         </div>
-        {available === false && (
-          <div className="notice-box" role="status">
-            <strong>AI reviews are not available yet.</strong>
-            <p>
-              {availabilityCode === "GEMINI_STUDENT_ELIGIBILITY_UNCONFIRMED"
-                ? "Google AI reviews are disabled while we confirm that its service terms permit this student audience. "
-                : "The service needs to be connected before resumes can be sent. "}
-              You can still use the{" "}
-              <Link href="/#resume" prefetch={false}>
-                resume and cover letter guides
-              </Link>
-              .
-            </p>
-          </div>
-        )}
-        <fieldset disabled={busy}>
+        <div className="local-checker-note">
+          <ShieldCheck size={20} aria-hidden="true" />
+          <p>
+            <strong>Free and processed on this device.</strong> Your resume and
+            posting stay in this page. No account, API key, or daily review
+            limit.
+          </p>
+        </div>
+        <fieldset disabled={busy || reading}>
           <div
             className="resume-input-tabs"
             role="group"
@@ -188,88 +133,64 @@ export default function Reviewer({ prefill }: { prefill?: Prefill }) {
           >
             <button
               type="button"
-              aria-pressed={mode === "file"}
-              onClick={() => setMode("file")}
-            >
-              Upload file
-            </button>
-            <button
-              type="button"
               aria-pressed={mode === "text"}
               onClick={() => setMode("text")}
             >
               Paste resume text
             </button>
+            <button
+              type="button"
+              aria-pressed={mode === "file"}
+              onClick={() => setMode("file")}
+            >
+              Open a file
+            </button>
           </div>
-          {mode === "file" ? (
+          {mode === "file" && (
             <label className="upload-field" htmlFor="resume-file">
-              <Upload size={26} />
-              <strong>{file ? file.name : "Choose your resume"}</strong>
-              <span>PDF or DOCX · up to 4 MB · a short student resume</span>
+              <Upload size={26} aria-hidden="true" />
+              <strong>{fileName || "Choose a resume from your device"}</strong>
+              <span>PDF, DOCX, or TXT · up to 4 MB · read locally</span>
               <input
                 id="resume-file"
                 type="file"
-                accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                required
-                onChange={(e) => setFile(e.target.files?.[0] || null)}
+                accept=".pdf,.docx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain"
+                onChange={(event) => {
+                  void openFile(event.target.files?.[0]);
+                  event.target.value = "";
+                }}
               />
-            </label>
-          ) : (
-            <label>
-              Resume text
-              <textarea
-                aria-label="Resume text"
-                rows={10}
-                value={resumeText}
-                onChange={(e) => setResumeText(e.target.value)}
-                required
-                minLength={80}
-                maxLength={50000}
-                placeholder="Paste your resume here. Remove your home address, phone number, and other details you do not want analysed."
-              />
-              <span className="small-note">
-                {resumeText.length.toLocaleString()} / 50,000 characters. Text
-                mode reviews content; it cannot judge your original document
-                layout.
-              </span>
             </label>
           )}
-          <div className="form-row">
-            <label>
-              Your grade (optional)
-              <select value={grade} onChange={(e) => setGrade(e.target.value)}>
-                <option value="">Prefer not to say</option>
-                {[9, 10, 11, 12].map((g) => (
-                  <option key={g} value={g}>
-                    Grade {g}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label>
-              Opportunity type
-              <select value={kind} onChange={(e) => setKind(e.target.value)}>
-                {[
-                  ["job", "Job"],
-                  ["volunteer", "Volunteering"],
-                  ["internship", "Internship"],
-                  ["summer-program", "Summer program"],
-                  ["youth-program", "Youth program"],
-                  ["career-program", "Career program"],
-                  ["other", "Other"],
-                ].map(([id, label]) => (
-                  <option key={id} value={id}>
-                    {label}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
+          <label htmlFor="resume-text">
+            {fileName ? "Review and edit the extracted text" : "Resume text"}
+          </label>
+          <textarea
+            id="resume-text"
+            aria-label="Resume text"
+            rows={12}
+            value={resumeText}
+            onChange={(event) => setResumeText(event.target.value)}
+            required
+            maxLength={50000}
+            placeholder={
+              "Paste your resume with headings and line breaks.\n\nEducation\nYour school and expected graduation\n\nProjects or Volunteering\n• What you did and who it helped\n\nSkills\nRelevant skills you can explain"
+            }
+            aria-describedby="resume-text-help"
+          />
+          <p className="small-note" id="resume-text-help">
+            {wordCount} words · {resumeText.length.toLocaleString()} / 50,000
+            characters. Use at least 40 words.{" "}
+            {fileName
+              ? "Check that headings, bullets, and reading order were extracted correctly. "
+              : ""}
+            Visual layout and spelling are not checked.
+          </p>
           <label>
             Target role
             <input
               value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={(event) => setTitle(event.target.value)}
               required
               minLength={2}
               maxLength={150}
@@ -280,127 +201,85 @@ export default function Reviewer({ prefill }: { prefill?: Prefill }) {
             Job posting or opportunity description
             <textarea
               value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              onChange={(event) => setDescription(event.target.value)}
               required
               minLength={60}
               maxLength={16000}
-              rows={8}
-              placeholder="Paste the responsibilities, qualifications, and application requirements."
+              rows={7}
+              placeholder="Paste the responsibilities, skills, and qualifications from the posting."
             />
             <small>
-              {description.length.toLocaleString()} / 16,000 characters
+              {description.length.toLocaleString()} / 16,000 characters. At
+              least 12 words and 60 characters.
             </small>
-          </label>
-          <div className="review-privacy">
-            <ShieldCheck size={20} />
-            <p>
-              Your resume is used only to generate your review. Avoid including
-              information you do not want analyzed. Remove your street address,
-              date of birth, SIN, banking details, and other unnecessary
-              personal information.
-            </p>
-          </div>
-          <label className="consent-check">
-            <input
-              type="checkbox"
-              checked={consent}
-              required
-              onChange={(e) => setConsent(e.target.checked)}
-            />
-            <span>
-              I agree to send this resume and description to {providerName} for
-              this review. I’ve read the{" "}
-              <Link
-                href="/privacy#ai-processing"
-                target="_blank"
-                rel="noopener noreferrer"
-                prefetch={false}
-              >
-                AI processing information
-              </Link>
-              . If I need a parent or guardian’s permission under the service
-              rules that apply to me, I have it.
-            </span>
           </label>
           <button
             className="btn btn-primary review-submit"
-            disabled={
-              busy ||
-              available !== true ||
-              (mode === "file" ? !file : resumeText.trim().length < 80) ||
-              !consent
-            }
+            disabled={busy || reading || !resumeText.trim()}
             type="submit"
           >
             {busy ? (
               <>
-                <LoaderCircle className="spin" size={18} />
-                Reviewing your resume...
+                <LoaderCircle className="spin" size={18} aria-hidden="true" />
+                Checking your resume...
               </>
             ) : (
               <>
-                Review my resume
-                <ArrowRight size={17} />
+                Check my resume
+                <ArrowRight size={17} aria-hidden="true" />
               </>
             )}
           </button>
+          <button type="button" className="checker-clear" onClick={clear}>
+            Clear all fields
+          </button>
         </fieldset>
-        {busy && (
-          <div className="review-progress" role="status">
-            <div className="review-progress-track">
-              <span />
-            </div>
-            <strong>Reviewing your experience and the role requirements</strong>
-            <p>
-              This usually takes about a minute. Your dashboard will appear here
-              when the review is ready.
-            </p>
-          </div>
+        {reading && (
+          <p role="status">
+            <LoaderCircle className="spin" size={16} aria-hidden="true" />{" "}
+            Reading the file on your device...
+          </p>
         )}
         {error && (
           <div className="form-error" role="alert">
             <p>{error}</p>
-            {errorCode && <small>Support code: {errorCode}</small>}
           </div>
         )}
       </form>
       <aside className="review-explainer">
-        <h2>What you’ll get</h2>
+        <h2>What the checker covers</h2>
         {[
-          "A score across seven areas",
-          "Strengths and specific improvements",
-          "Feedback matched to the role",
-          "Bullet rewrites using your real experience",
-          "Three changes to make before applying",
-        ].map((t) => (
-          <p key={t}>
-            <CheckCircle2 size={17} />
-            {t}
+          "Sections and readable text",
+          "Posting keywords and related phrases",
+          "Action verbs and bullet detail",
+          "Common wording and template leftovers",
+          "A checklist of changes before you apply",
+        ].map((text) => (
+          <p key={text}>
+            <CheckCircle2 size={17} aria-hidden="true" />
+            {text}
           </p>
         ))}
         <hr />
-        <h3>What the score means</h3>
+        <h3>How to read the score</h3>
         <p>
-          It’s a learning tool. It does not reproduce an employer’s screening
-          process or predict an offer.
+          This is checklist-based feedback from fixed text rules. It is not an
+          AI review, a real employer’s screening score, or a prediction of being
+          hired. You can inspect every check in the dashboard.
         </p>
-        <h3>Your documents</h3>
+        <h3>Your documents stay here</h3>
         <p>
-          HIRE Education processes your resume in memory and sends it directly
-          for analysis, without creating a separate provider file. We do not
-          save your resume or results. The selected provider’s API data-use and
-          retention rules still apply.
+          The checker does not send your resume, file name, posting, or results
+          to HIRE Education or an AI provider. It does not save them in browser
+          storage. Reload the page or clear the fields to remove them. A
+          feedback download is saved only when you choose it.
         </p>
-        {providerName === "Google Gemini" && (
-          <p className="notice-box">
-            Google’s unpaid API services can have different data-use terms,
-            including use of submitted content to improve products. Student
-            access remains disabled until permitted use and data handling are
-            confirmed.
-          </p>
-        )}
-        <Link href="/privacy" prefetch={false}>
-          Read the full privacy policy
+        <p>
+          Leave out your SIN, date of birth, banking details, and exact home
+          address. They are not needed for these checks.
+        </p>
+        <Link href="/privacy#resume-processing" prefetch={false}>
+          Read how resume checking handles your data
         </Link>
       </aside>
     </div>

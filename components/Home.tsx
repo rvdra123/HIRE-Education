@@ -48,8 +48,9 @@ const guides: Entry[] = [
     applicationTab: "checklist",
   },
   {
-    title: "AI resume reviewer",
-    description: "Upload a resume and target posting for feedback.",
+    title: "Free resume checker",
+    description:
+      "Browser-only checks for structure, posting keywords, and bullet points.",
     url: "/resume-reviewer",
     type: "Tool",
   },

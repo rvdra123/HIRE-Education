@@ -1,45 +1,51 @@
 "use client";
 import { useState } from "react";
-import { ArrowRight, Check, Copy, Download, RotateCcw } from "lucide-react";
-import type { ResumeReview } from "@/lib/openai/schema";
-import { scoreLabel } from "@/lib/openai/schema";
+import {
+  ArrowRight,
+  Check,
+  Copy,
+  Download,
+  Pencil,
+  RotateCcw,
+} from "lucide-react";
+import type { ChecklistReview } from "@/lib/resume/checker";
 
 const categories = {
   formatting: [
-    "Formatting & readability",
-    "Use clear sections, consistent spacing, and a layout that is easy to scan.",
+    "Sections & structure",
+    "Checks recognizable headings, line breaks, and student-resume word count. It does not inspect the original visual layout.",
   ],
   content: [
-    "Content",
-    "Use specific, truthful details that show what you contributed.",
+    "Bullet detail",
+    "Checks action verbs, task or context words, completed contributions, and bullet length. It cannot verify your claims.",
   ],
   experience: [
-    "Experience",
-    "School projects, clubs, sport, volunteering, and family responsibilities can all provide evidence.",
+    "Experience examples",
+    "Looks for an experience section and contribution statements. School, clubs, sport, volunteering, and caring responsibilities count.",
   ],
   skills: [
-    "Skills",
-    "Connect the skills you list to examples you can explain in an interview.",
+    "Skills coverage",
+    "Looks for a Skills heading and terms from a limited student-role vocabulary, including terms in bullets. It cannot judge proficiency.",
   ],
   ats: [
-    "ATS readability",
-    "Use readable text and conventional section names. This is a readability estimate, not an employer’s ATS test.",
+    "Readable text",
+    "Checks extracted text for readable characters, short lines and bullets, and standard headings. It does not run an employer’s ATS.",
   ],
   professionalism: [
-    "Professionalism",
-    "Check spelling, consistency, and whether your wording is appropriate for the role.",
+    "Writing habits",
+    "Checks template placeholders, stock phrases, repeated bullets, pronouns, and capitalization. It does not check spelling or grammar.",
   ],
   jobRelevance: [
-    "Relevance to the role",
-    "Make the experience and skills most useful for this posting easy to find.",
+    "Posting keywords",
+    "The proportion of selected posting terms found in your text. Supported related phrases count. Repetition does not earn extra points.",
   ],
 } as const;
 type Category = keyof typeof categories;
 const sections = [
   "Overview",
-  "Role match",
-  "Bullet rewrites",
-  "Writing & layout",
+  "Posting keywords",
+  "Bullet edits",
+  "Writing & text",
 ] as const;
 
 function Points({ title, items }: { title: string; items: string[] }) {
@@ -64,11 +70,13 @@ export default function ReviewDashboard({
   title,
   onReset,
   applicationUrl,
+  onEdit,
 }: {
-  review: ResumeReview;
+  review: ChecklistReview;
   title: string;
   onReset: () => void;
   applicationUrl?: string;
+  onEdit: () => void;
 }) {
   const [section, setSection] = useState<(typeof sections)[number]>("Overview");
   const [selected, setSelected] = useState<Category>("formatting");
@@ -85,7 +93,8 @@ export default function ReviewDashboard({
   const lowestCount = ordered.filter(([, score]) => score === lowest).length;
   function download() {
     const text = [
-      "HIRE Education resume review",
+      "HIRE Education checklist-based resume feedback",
+      "Generated on your device using fixed text rules. No AI or provider API is used.",
       `Target: ${title}`,
       `Overall: ${review.overallScore}/100`,
       review.summary,
@@ -98,7 +107,7 @@ export default function ReviewDashboard({
       ...review.strengths,
       "\nImprovements",
       ...review.improvements,
-      `\nRole match: ${review.jobMatch.score}/100`,
+      `\nPosting keyword coverage: ${review.jobMatch.score}/100`,
       review.jobMatch.summary,
       ...review.jobMatch.topChanges,
       "\nBullet rewrites",
@@ -107,12 +116,17 @@ export default function ReviewDashboard({
         `Suggested: ${item.suggested}`,
         `Why: ${item.why}`,
       ]),
-      "\nWriting & layout",
+      "\nWriting & text",
       ...review.grammarIssues,
       ...review.missingSections,
       review.atsFeedback.summary,
       review.atsFeedback.limitations,
-      "\nScores are educational estimates, not a hiring prediction or an employer’s ATS result.",
+      "\nAll checks",
+      ...review.checks.map(
+        (check) =>
+          `${check.passed ? "Passed" : "Review"} | ${categories[check.category][0]} | ${check.label}: ${check.evidence}`,
+      ),
+      "\nEach category is its percentage of checks passed, rounded to /10. Overall is the seven category scores averaged to /100. Scores measure checklist completion, not resume quality, eligibility, or hiring probability.",
     ].join("\n\n");
     const url = URL.createObjectURL(
       new Blob([text], { type: "text/plain;charset=utf-8" }),
@@ -127,13 +141,21 @@ export default function ReviewDashboard({
     <div className="review-dashboard" id="review-results" tabIndex={-1}>
       <div className="dashboard-heading">
         <div>
-          <h2>Your resume review</h2>
+          <h2>Your resume checklist results</h2>
           <p>{title}</p>
         </div>
         <button className="btn btn-outline" onClick={download}>
           <Download size={16} />
           Download feedback
         </button>
+      </div>
+      <div className="local-checker-note">
+        <Check size={19} aria-hidden="true" />
+        <p>
+          <strong>Checklist-based feedback, processed on your device.</strong>{" "}
+          Fixed text rules check the pasted or extracted text. Your documents
+          have not been sent to HIRE Education or an AI provider.
+        </p>
       </div>
       <div className="dashboard-overview">
         <div className="dashboard-score">
@@ -152,21 +174,28 @@ export default function ReviewDashboard({
           </svg>
           <div>
             <strong>{review.overallScore}</strong>
-            <span>out of 100</span>
+            <span>checklist /100</span>
           </div>
         </div>
         <div className="dashboard-summary">
-          <h3>{scoreLabel(review.overallScore)}</h3>
+          <h3>
+            {review.overallScore >= 80
+              ? "Most checklist items passed"
+              : review.overallScore >= 60
+                ? "Several checks to work through"
+                : "Start with the next three steps"}
+          </h3>
           <p>{review.summary}</p>
           <p className="small-note">
-            Educational feedback based on this resume and posting. It does not
-            predict whether you will be hired.
+            Each category is the percentage of its checks passed, rounded to
+            /10. The overall score averages the seven categories. A high score
+            does not establish job suitability or predict an offer.
           </p>
         </div>
       </div>
       <div className="dashboard-metrics">
         <div>
-          <span>Match with this role</span>
+          <span>Posting keyword coverage</span>
           <strong>
             {review.jobMatch.score}
             <small>/100</small>
@@ -197,7 +226,7 @@ export default function ReviewDashboard({
             onClick={() => setSection(item)}
           >
             {item}
-            {item === "Bullet rewrites" && (
+            {item === "Bullet edits" && (
               <span>{review.bulletRewrites.length}</span>
             )}
           </button>
@@ -234,6 +263,25 @@ export default function ReviewDashboard({
                 <strong>{categories[selected][0]}:</strong>{" "}
                 {categories[selected][1]}
               </p>
+              <details className="checker-method" key={selected}>
+                <summary>View the checks for {categories[selected][0]}</summary>
+                <ul
+                  className="checker-evidence"
+                  aria-label={`Checks for ${categories[selected][0]}`}
+                >
+                  {review.checks
+                    .filter((check) => check.category === selected)
+                    .map((check) => (
+                      <li key={check.label} data-passed={check.passed}>
+                        <span>{check.passed ? "Passed" : "Review"}</span>
+                        <div>
+                          <strong>{check.label}</strong>
+                          <p>{check.evidence}</p>
+                        </div>
+                      </li>
+                    ))}
+                </ul>
+              </details>
             </section>
             <section className="dashboard-actions">
               <div>
@@ -269,42 +317,69 @@ export default function ReviewDashboard({
             </div>
           </>
         )}
-        {section === "Role match" && (
+        {section === "Posting keywords" && (
           <>
             <section className="dashboard-match">
-              <h3>How your experience fits the posting</h3>
+              <h3>Terms found in your resume</h3>
               <strong>{review.jobMatch.score}/100</strong>
               <p>{review.jobMatch.summary}</p>
+              <div className="keyword-groups">
+                <div>
+                  <h4>Found in your text</h4>
+                  <div className="keyword-chips">
+                    {review.keywords
+                      .filter((keyword) => keyword.matched)
+                      .map((keyword) => (
+                        <span className="keyword-found" key={keyword.label}>
+                          {keyword.label}
+                        </span>
+                      ))}
+                    {!review.keywords.some((keyword) => keyword.matched) && (
+                      <p>No selected terms found.</p>
+                    )}
+                  </div>
+                </div>
+                <div>
+                  <h4>Not found by the matcher</h4>
+                  <div className="keyword-chips">
+                    {review.keywords
+                      .filter((keyword) => !keyword.matched)
+                      .map((keyword) => (
+                        <span key={keyword.label}>{keyword.label}</span>
+                      ))}
+                    {review.keywords.every((keyword) => keyword.matched) && (
+                      <p>All selected terms were found.</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+              <p className="small-note">
+                These terms are selected automatically from a limited vocabulary
+                and additional words in the posting. The matcher can miss
+                relevant wording or include an unhelpful term. Add a term only
+                when it truthfully describes your experience.
+              </p>
             </section>
             <div className="review-columns">
               <Points
-                title="Relevant strengths"
-                items={review.jobMatch.relevantStrengths}
-              />
-              <Points
-                title="Skills to emphasize"
-                items={review.jobMatch.emphasizedSkills}
-              />
-              <Points
-                title="Experience to highlight"
+                title="Examples to review for this role"
                 items={review.jobMatch.highlightExperience}
               />
               <Points
-                title="Potential gaps"
-                items={review.jobMatch.potentialGaps}
+                title="Before you apply"
+                items={review.jobMatch.topChanges}
               />
             </div>
-            <Points
-              title="Changes before you apply"
-              items={review.jobMatch.topChanges}
-            />
           </>
         )}
-        {section === "Bullet rewrites" && (
+        {section === "Bullet edits" && (
           <>
             <h3>Make your experience easier to understand</h3>
             <p className="small-note">
-              Use a suggestion only when it accurately describes what you did.
+              These are fixed wording edits, not AI rewrites. They do not add
+              achievements, duties, or numbers. Use an edit only if it
+              accurately describes what you did. For a stronger bullet, add a
+              real task, context, or outcome yourself.
             </p>
             {review.bulletRewrites.length ? (
               review.bulletRewrites.map((item, index) => (
@@ -338,26 +413,24 @@ export default function ReviewDashboard({
               ))
             ) : (
               <p>
-                No supported bullet rewrites were returned. The overview still
-                contains your next steps.
+                No introductory phrases matched the editing rules. You can still
+                improve a bullet by explaining what you did, who it helped, and
+                a truthful outcome. Numbers are optional.
               </p>
             )}
           </>
         )}
-        {section === "Writing & layout" && (
+        {section === "Writing & text" && (
           <>
             <div className="review-columns">
               <Points
                 title="Sections to consider"
                 items={review.missingSections}
               />
-              <Points
-                title="Grammar and wording"
-                items={review.grammarIssues}
-              />
+              <Points title="Wording checks" items={review.grammarIssues} />
             </div>
             <section className="dashboard-points">
-              <h3>Readability and ATS limitations</h3>
+              <h3>Text readability and limits</h3>
               <p>{review.atsFeedback.summary}</p>
               <Points
                 title="Readability concerns"
@@ -369,6 +442,10 @@ export default function ReviewDashboard({
         )}
       </div>
       <div className="review-bottom">
+        <button className="btn btn-primary" onClick={onEdit}>
+          <Pencil size={16} aria-hidden="true" />
+          Edit and check again
+        </button>
         <button className="btn btn-outline" onClick={onReset}>
           <RotateCcw size={16} />
           Review another resume
