@@ -1,26 +1,41 @@
 name: Refresh student opportunity catalogue
 on:
+  push:
+    branches: [main]
+    paths:
+      - "data/sources.json"
+      - "lib/opportunities/**"
+      - "app/api/cron/**"
+      - "app/api/catalogue-status/**"
+      - "scripts/run-sync.mjs"
+      - ".github/workflows/refresh-opportunities.yml"
   schedule:
     - cron: "17 */6 * * *"
   workflow_dispatch:
-permissions: {}
+permissions:
+  contents: read
 concurrency:
   group: catalogue-refresh
   cancel-in-progress: false
 jobs:
   refresh:
     runs-on: ubuntu-latest
-    timeout-minutes: 6
+    timeout-minutes: 15
     steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
       - name: Run protected refresh
         env:
-          SITE_URL: ${{ vars.HIRE_SITE_URL || secrets.HIRE_SITE_URL || 'https://hire-education.vercel.app' }}
+          NEXT_PUBLIC_SITE_URL: ${{ vars.HIRE_SITE_URL || 'https://hire-education.vercel.app' }}
           CRON_SECRET: ${{ secrets.HIRE_CRON_SECRET }}
+          EXPECTED_DEPLOYMENT_SHA: ${{ github.event_name == 'push' && github.sha || '' }}
         run: |
           if [ -z "$CRON_SECRET" ]; then
             echo "::error::Set HIRE_CRON_SECRET in repository secrets to match the Vercel project's CRON_SECRET. No refresh was attempted."
             exit 1
           fi
-          curl --fail --silent --show-error --max-time 300 \
-            -H "Authorization: Bearer $CRON_SECRET" \
-            "$SITE_URL/api/cron/update-opportunities"
+          node scripts/run-sync.mjs
