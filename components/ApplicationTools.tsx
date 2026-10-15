@@ -444,9 +444,6 @@ export default function ApplicationTools() {
       <div className="container">
         <div className={styles.headingRow}>
           <div>
-            <p className="eyebrow">
-              <span className={styles.eyebrowDot} /> YOUR APPLICATION TOOLKIT
-            </p>
             <h2 id="application-title" className="section-title">
               Resume and cover letter guides
             </h2>

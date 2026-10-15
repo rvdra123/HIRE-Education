@@ -8,7 +8,6 @@ import {
   ChevronRight,
   FileText,
   GraduationCap,
-  MapPin,
   Search,
 } from "lucide-react";
 import SiteHeader from "./SiteHeader";
@@ -17,6 +16,7 @@ import ApplicationTools from "./ApplicationTools";
 import CareerResources, { resources, skills } from "./CareerResources";
 import Catalogue from "./opportunities/Catalogue";
 import { certifications } from "@/lib/discovery-data";
+import { opportunityDirectory } from "@/lib/opportunities/directory";
 type Entry = {
   title: string;
   description: string;
@@ -97,10 +97,6 @@ export default function Home() {
         <section className="hero" id="home">
           <div className="container hero-layout">
             <div className="hero-content">
-              <span className="location-pill">
-                <MapPin size={13} />
-                BRAMPTON, ONTARIO, CANADA
-              </span>
               <h1>
                 Career support for{" "}
                 <span className="blue-text">Brampton students</span>
@@ -130,7 +126,6 @@ export default function Home() {
               </p>
             </div>
             <aside className="career-start-panel">
-              <span className="eyebrow">Get started</span>
               <h2>Choose what you need help with</h2>
               {[
                 {
@@ -169,7 +164,6 @@ export default function Home() {
         <section className="about-section" id="about">
           <div className="container about-concise">
             <div>
-              <span className="eyebrow">About us</span>
               <h2 className="section-title">About HIRE Education</h2>
             </div>
             <p>
@@ -184,7 +178,6 @@ export default function Home() {
           <div className="container">
             <div className="section-heading-row">
               <div>
-                <span className="eyebrow">Local opportunities</span>
                 <h2 className="section-title">
                   Jobs, volunteering, and student programs
                 </h2>
@@ -231,9 +224,15 @@ function GlobalSearch({ onClose }: { onClose: () => void }) {
       ...resources.map((r) => ({ ...r, type: "Resource" })),
       ...certifications.map((c) => ({
         title: c.title,
-        description: c.description,
+        description: `${c.organization}: ${c.description}`,
         url: c.url,
         type: "Course",
+      })),
+      ...opportunityDirectory.map((entry) => ({
+        title: entry.name,
+        description: `${entry.area}: ${entry.description}`,
+        url: entry.url,
+        type: "Employer or program source",
       })),
       ...live,
     ];

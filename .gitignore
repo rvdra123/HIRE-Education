@@ -3,6 +3,7 @@ node_modules/
 *.tsbuildinfo
 playwright-report/
 test-results/
+downloads/
 .env
 .env.*
 !.env.example

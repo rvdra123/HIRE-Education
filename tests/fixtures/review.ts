@@ -1,0 +1,41 @@
+export const base = {
+  overallScore: 100,
+  summary: "TEST FIXTURE feedback only",
+  scores: {
+    formatting: 8,
+    content: 8,
+    experience: 8,
+    skills: 8,
+    ats: 8,
+    professionalism: 8,
+    jobRelevance: 8,
+  },
+  strongestSections: [],
+  strengths: ["Clear school experience"],
+  weaknesses: [],
+  improvements: [],
+  missingSections: [],
+  grammarIssues: [],
+  bulletRewrites: [
+    {
+      original: "Helped at school events.",
+      suggested: "Helped 100 people at school events.",
+      why: "Invented quantity must be rejected.",
+    },
+  ],
+  atsFeedback: {
+    summary: "Text can be read.",
+    concerns: [],
+    limitations: "Not a real ATS simulation.",
+  },
+  jobMatch: {
+    score: 80,
+    summary: "Test only.",
+    relevantStrengths: [],
+    emphasizedSkills: [],
+    highlightExperience: [],
+    potentialGaps: [],
+    topChanges: [],
+  },
+  topActions: ["Proofread.", "Tailor the skills.", "Check the posting."],
+};

@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ArrowRight, Award, ChevronDown, Search } from "lucide-react";
 import { certifications, type Certification } from "@/lib/discovery-data";
 import styles from "./discovery.module.css";
@@ -17,7 +17,9 @@ export function CertificationCard({
         >
           {c.logo}
         </div>
-        <span className={styles.freeBadge}>Free learning</span>
+        <span className={styles.freeBadge}>
+          Free {c.credentialKind.toLowerCase()}
+        </span>
       </div>
       <p className={styles.organization}>{c.organization}</p>
       <h3>{c.title}</h3>
@@ -30,16 +32,20 @@ export function CertificationCard({
         <Award size={17} />
         <div>
           <span>{c.credential}</span>
-          <small>{c.cost}</small>
+          <small>Self-paced learning</small>
         </div>
       </div>
+      <details className="course-details">
+        <summary>Credential and account details</summary>
+        <p>{c.cost}</p>
+      </details>
       <a
         className={styles.courseLink}
         href={c.url}
         target="_blank"
         rel="noopener noreferrer"
       >
-        View course on the provider’s website
+        Find course at provider
         <ArrowRight size={16} />
       </a>
     </article>
@@ -50,7 +56,12 @@ export default function Discovery() {
   const [category, setCategory] = useState("All");
   const [provider, setProvider] = useState("All providers");
   const [level, setLevel] = useState("All levels");
-  const [all, setAll] = useState(false);
+  const [credential, setCredential] = useState("All credentials");
+  const [visible, setVisible] = useState(6);
+  useEffect(
+    () => setVisible(6),
+    [query, category, provider, level, credential],
+  );
   const filtered = useMemo(
     () =>
       certifications.filter(
@@ -59,25 +70,29 @@ export default function Discovery() {
             c.categories.includes(category as (typeof c.categories)[number])) &&
           (provider === "All providers" || c.organization === provider) &&
           (level === "All levels" || c.difficulty === level) &&
+          (credential === "All credentials" ||
+            c.credentialKind === credential) &&
           `${c.title} ${c.organization} ${c.description}`
             .toLowerCase()
             .includes(query.toLowerCase()),
       ),
-    [query, category, provider, level],
+    [query, category, provider, level, credential],
   );
   const active =
     !!query ||
     category !== "All" ||
     provider !== "All providers" ||
-    level !== "All levels";
+    level !== "All levels" ||
+    credential !== "All credentials";
   return (
     <section className={styles.learningSection} id="certifications">
       <div className="container">
-        <span className="eyebrow">Certificates</span>
         <h2 className="section-title">Free courses and career certificates</h2>
         <p className="section-description">
-          Learn from recognized providers. Check what each course awards: a
-          certificate, a digital badge, or a learning achievement.
+          Explore {certifications.length} courses across{" "}
+          {new Set(certifications.map((c) => c.organization)).size} providers.
+          Find a useful skill and see whether you earn a certificate, badge, or
+          participation statement.
         </p>
         <div className={styles.learningTools}>
           <div
@@ -93,6 +108,8 @@ export default function Discovery() {
               "AI",
               "Data",
               "Career Skills",
+              "Health & Safety",
+              "Accessibility",
             ].map((c) => (
               <button
                 key={c}
@@ -120,9 +137,22 @@ export default function Discovery() {
               onChange={(e) => setProvider(e.target.value)}
             >
               <option>All providers</option>
-              {certifications.map((c) => (
-                <option key={c.id}>{c.organization}</option>
-              ))}
+              {[...new Set(certifications.map((c) => c.organization))].map(
+                (name) => (
+                  <option key={name}>{name}</option>
+                ),
+              )}
+            </select>
+            <select
+              aria-label="Credential type"
+              value={credential}
+              onChange={(e) => setCredential(e.target.value)}
+            >
+              <option>All credentials</option>
+              <option>Certificate</option>
+              <option>Digital badge</option>
+              <option>Participation statement</option>
+              <option>Completion record</option>
             </select>
             <select
               aria-label="Learning difficulty"
@@ -136,7 +166,10 @@ export default function Discovery() {
           </div>
         </div>
         <div className={styles.resultsBar}>
-          <p>{filtered.length} courses and providers</p>
+          <p role="status">
+            {filtered.length} courses · showing{" "}
+            {Math.min(visible, filtered.length)}
+          </p>
           {active && (
             <button
               onClick={() => {
@@ -144,6 +177,7 @@ export default function Discovery() {
                 setCategory("All");
                 setProvider("All providers");
                 setLevel("All levels");
+                setCredential("All credentials");
               }}
             >
               Clear filters
@@ -152,7 +186,7 @@ export default function Discovery() {
         </div>
         {filtered.length ? (
           <div className={styles.certificationGrid}>
-            {(all || active ? filtered : filtered.slice(0, 3)).map((c) => (
+            {filtered.slice(0, visible).map((c) => (
               <CertificationCard key={c.id} certification={c} />
             ))}
           </div>
@@ -162,10 +196,13 @@ export default function Discovery() {
             <p>Try another topic or clear the filters.</p>
           </div>
         )}
-        {!active && (
+        {visible < filtered.length && (
           <div className={styles.viewMore}>
-            <button className="btn btn-outline" onClick={() => setAll(!all)}>
-              {all ? "Show fewer courses" : "View all courses and providers"}
+            <button
+              className="btn btn-outline"
+              onClick={() => setVisible(visible + 12)}
+            >
+              Show {Math.min(12, filtered.length - visible)} more courses
               <ChevronDown size={16} />
             </button>
           </div>

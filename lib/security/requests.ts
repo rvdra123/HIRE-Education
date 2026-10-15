@@ -87,7 +87,7 @@ export async function reserveLimits(rules: LimitRule[]) {
     }
     if (blockedIndex !== null) {
       await transaction.rollback();
-      return { allowed: false, retryAfter, blockedIndex };
+      return { allowed: false, retryAfter, blockedIndex, reservations: [] };
     }
     await transaction.batch([
       ...hashed.map((key, i) => ({
@@ -100,7 +100,18 @@ export async function reserveLimits(rules: LimitRule[]) {
       },
     ]);
     await transaction.commit();
-    return { allowed: true, retryAfter: 0, blockedIndex: null };
+    return {
+      allowed: true,
+      retryAfter: 0,
+      blockedIndex: null,
+      reservations: hashed.map((key, i) => ({
+        key,
+        resetAt:
+          existing[i].rows[0] && Number(existing[i].rows[0].reset_at) > now
+            ? Number(existing[i].rows[0].reset_at)
+            : now + rules[i].windowMs,
+      })),
+    };
   } finally {
     transaction.close();
   }
@@ -116,6 +127,15 @@ export function clientLimitKey(request: Request) {
     : undefined;
   const identity = candidate && isIP(candidate) ? candidate : "shared";
   return `review-client:${identity}`;
+}
+export async function releaseReservation(reservation: {
+  key: string;
+  resetAt: number;
+}) {
+  await database().execute({
+    sql: "UPDATE rate_limits SET count=MAX(0,count-1) WHERE key=? AND reset_at=?",
+    args: [reservation.key, reservation.resetAt],
+  });
 }
 export function reviewLimitMessage(
   blockedIndex: number | null,

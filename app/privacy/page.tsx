@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import SiteHeader from "@/components/SiteHeader";
+import { reviewConfiguration } from "@/lib/ai/config";
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Privacy Policy | HIRE Education",
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
 };
 export default function PrivacyPage() {
   const email = process.env.PRIVACY_CONTACT_EMAIL;
+  const ai = reviewConfiguration();
   return (
     <>
       <SiteHeader />
@@ -23,7 +25,7 @@ export default function PrivacyPage() {
         <div className="page-heading">
           <h1>Privacy policy</h1>
           <p>
-            Last updated October 14, 2026. This policy describes the features
+            Last updated October 15, 2026. This policy describes the features
             currently implemented by{" "}
             {process.env.SITE_OPERATOR_NAME || "HIRE Education"}.
           </p>
@@ -72,8 +74,8 @@ export default function PrivacyPage() {
             <li>
               <strong>Resume reviews:</strong> the file, selected grade if
               provided, opportunity type, target title, and pasted description
-              are sent to our server and then to OpenAI only after your separate
-              agreement for that review.
+              are sent to our server and then to {ai.providerName} only after
+              your separate agreement for that review.
             </li>
             <li>
               <strong>Abuse prevention:</strong> we keep temporary usage
@@ -96,20 +98,58 @@ export default function PrivacyPage() {
           <p>
             We process uploads in memory, without writing resume contents to
             disk or our database. DOCX files are converted to plain text. PDFs
-            are passed to OpenAI for analysis. The target description and resume
-            are treated as untrusted data, and the reviewer is instructed not to
-            follow instructions contained in them.
+            are passed to the configured AI provider for analysis. The target
+            description and resume are treated as untrusted data, and the
+            reviewer is instructed not to follow instructions contained in them.
           </p>
-          <p>
-            We set the OpenAI Responses API’s storage option to false, request
-            deletion of uploaded files after the review, and set a one-hour file
-            expiry as a backup. Failed deletion requests are retried through the
-            scheduled cleanup process. Temporary provider file identifiers may
-            be held for cleanup, without resume contents. This is not a promise
-            of zero provider retention: OpenAI may retain security and
-            abuse-monitoring information under its API data policies. Processing
-            may take place outside Canada.
-          </p>
+          {ai.provider === "openai" ? (
+            <p>
+              We send the document or its extracted text directly in an OpenAI
+              Responses API request with the storage option set to false. We do
+              not create a separate uploaded file in the provider’s Files
+              service. This is not a promise of zero provider retention: OpenAI
+              may retain security and abuse-monitoring information under its API
+              data policies. Processing may take place outside Canada.
+            </p>
+          ) : (
+            <div className="notice-box">
+              <p>
+                Google Gemini has been selected, but student processing is
+                currently disabled until its service terms and permitted
+                audience are confirmed. Guardian consent does not override a
+                provider’s age or service restrictions.
+              </p>
+              <p>
+                If an eligible Google service is activated, resume text or a PDF
+                would be sent directly to Google’s API without creating a
+                separate provider file. Unpaid Google API services may use
+                submitted content and generated responses to improve products
+                and may involve human review. Confidential, sensitive, and
+                identifying information should not be submitted. Paid-service
+                data handling can differ. No promise of zero provider retention
+                is made.
+              </p>
+              <p>
+                See{" "}
+                <a
+                  href="https://ai.google.dev/gemini-api/terms"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Google’s current Gemini API terms
+                </a>{" "}
+                and{" "}
+                <a
+                  href="https://ai.google.dev/gemini-api/docs/usage-policies"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  usage policies
+                </a>
+                . Processing may take place outside Canada.
+              </p>
+            </div>
+          )}
           <p>
             Review results stay in this page’s memory and are not saved to your
             browser’s optional storage or our database. Closing or reloading the
@@ -119,15 +159,25 @@ export default function PrivacyPage() {
           <p>
             Read{" "}
             <a
-              href="https://openai.com/policies/privacy-policy/"
+              href={
+                ai.provider === "openai"
+                  ? "https://openai.com/policies/privacy-policy/"
+                  : "https://policies.google.com/privacy"
+              }
               target="_blank"
               rel="noopener noreferrer"
             >
-              OpenAI’s privacy policy
+              {ai.provider === "openai"
+                ? "OpenAI’s privacy policy"
+                : "Google’s privacy policy"}
             </a>{" "}
             and{" "}
             <a
-              href="https://platform.openai.com/docs/guides/your-data"
+              href={
+                ai.provider === "openai"
+                  ? "https://platform.openai.com/docs/guides/your-data"
+                  : "https://ai.google.dev/gemini-api/terms"
+              }
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -165,9 +215,9 @@ export default function PrivacyPage() {
             it, or the browser removes it. Application rate-limit counters are
             removed after their window has expired and a later request performs
             cleanup, normally within about two days while the site is in use.
-            Uploaded provider files have a one-hour expiry configured; provider
-            security retention can differ. Public opportunity records and
-            source-check history may be retained for quality control.
+            Provider security retention can differ from our in-memory
+            processing. Public opportunity records and source-check history may
+            be retained for quality control.
           </p>
         </section>
         <section>

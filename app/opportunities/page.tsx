@@ -21,7 +21,6 @@ export default function OpportunitiesPage() {
           <span>Student opportunities</span>
         </nav>
         <div className="page-heading">
-          <span className="eyebrow">Brampton & nearby</span>
           <h1>Student opportunities in Brampton</h1>
           <p>
             Find work, volunteering, internships, and programs that fit your
@@ -36,7 +35,6 @@ export default function OpportunitiesPage() {
         <Catalogue />
         <section id="events" className="events-section">
           <div className="page-heading">
-            <span className="eyebrow">Local events</span>
             <h2>Brampton youth events calendar</h2>
             <p>
               Browse verified workshops, hiring events, library programs, and

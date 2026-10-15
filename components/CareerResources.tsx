@@ -6,7 +6,6 @@ import {
   ArrowDown,
   ArrowRight,
   ArrowUpRight,
-  BookOpen,
   BriefcaseBusiness,
   Check,
   ChevronDown,
@@ -22,7 +21,6 @@ import {
   Monitor,
   ShieldCheck,
   Shuffle,
-  Sparkles,
   UsersRound,
   Zap,
   type LucideIcon,
@@ -445,12 +443,8 @@ export default function CareerResources() {
         <div className="container">
           <div className={styles.sectionHeading}>
             <div>
-              <span className="eyebrow">
-                <Sparkles size={14} aria-hidden="true" /> CAREER SKILLS
-              </span>
               <h2 id="skills-title" className="section-title">
-                Skills employers{" "}
-                <span className={styles.softText}>look for.</span>
+                Skills employers look for
               </h2>
               <p className="section-description">
                 You’re building them in class, in your community, and in
@@ -527,9 +521,6 @@ export default function CareerResources() {
         >
           <div className={`container ${styles.experienceLayout}`}>
             <div className={styles.experienceIntro}>
-              <span className="eyebrow">
-                <Flag size={14} aria-hidden="true" /> EVERYONE STARTS SOMEWHERE
-              </span>
               <h2 id="experience-title" className="section-title">
                 No experience?
                 <br />
@@ -598,9 +589,6 @@ export default function CareerResources() {
         <div className="container">
           <div className={styles.sectionHeading}>
             <div>
-              <span className="eyebrow">
-                <BookOpen size={14} aria-hidden="true" /> RESOURCE LIBRARY
-              </span>
               <h2 id="resources-title" className="section-title">
                 Career resource library
               </h2>
@@ -681,7 +669,6 @@ export default function CareerResources() {
       >
         <div className={`container ${styles.faqLayout}`}>
           <div className={styles.faqIntro}>
-            <span className="eyebrow">LET’S CLEAR A FEW THINGS UP</span>
             <h2 id="faq-title" className="section-title">
               Common questions
             </h2>

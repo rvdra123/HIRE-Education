@@ -1,6 +1,15 @@
 "use client";
-import { useState } from "react";
-import { ArrowUpRight, ChevronRight, MessageSquare, Play } from "lucide-react";
+import { useEffect, useState } from "react";
+import { interviewQuestions as questions } from "@/lib/interview-questions";
+import {
+  ArrowUpRight,
+  ChevronLeft,
+  ChevronRight,
+  Clock3,
+  MessageSquare,
+  Play,
+  Shuffle,
+} from "lucide-react";
 const channels = [
   {
     name: "Vinh Giang",
@@ -31,88 +40,37 @@ const channels = [
     url: "https://www.youtube.com/@JeffSu",
   },
 ];
-const questions = {
-  Retail: [
-    {
-      question:
-        "A customer asks you something you do not know. What would you do?",
-      approach:
-        "Explain how you would listen, be honest about what you know, and ask a trained teammate for help.",
-      example:
-        "At a school fundraiser, a visitor asked about an activity I was not running. I checked with the student in charge and brought back the correct information instead of guessing.",
-    },
-    {
-      question: "Tell me about a time you worked well with other people.",
-      approach:
-        "Choose a real team project. Describe your contribution and how you helped the group finish.",
-      example:
-        "For a class presentation, I organized our shared slides and checked that everyone had time to practise. We finished the presentation by the deadline.",
-    },
-  ],
-  "Food service": [
-    {
-      question: "How would you handle several tasks arriving at once?",
-      approach:
-        "Show that you can prioritize, communicate, and ask for help while following training and safety procedures.",
-      example:
-        "During a school event, I had to welcome visitors and restock supplies. I let a teammate know when supplies were low, finished helping the person in front of me, and then restocked.",
-    },
-    {
-      question: "What would you do if you made a mistake?",
-      approach:
-        "Take responsibility, tell the right person promptly, and explain how you would prevent it next time.",
-      example:
-        "I once put the wrong date in a club announcement. I told the club leader, corrected the post, and started checking dates against our calendar before sharing updates.",
-    },
-  ],
-  Recreation: [
-    {
-      question: "How would you help someone who feels left out of an activity?",
-      approach:
-        "Describe how you would listen, offer an appropriate way to join, and follow the program’s supervision and safety rules.",
-      example:
-        "In a group project, a quieter classmate was not getting a chance to contribute. I asked which task they wanted to try and made space for them to explain their idea.",
-    },
-    {
-      question: "How do you show that people can rely on you?",
-      approach:
-        "Use a regular commitment and describe how you prepare and communicate when plans change.",
-      example:
-        "I help set up equipment for team practices. I arrive early enough to do it, and if I cannot attend, I let the coach know in advance.",
-    },
-  ],
-  Volunteering: [
-    {
-      question: "Why do you want to volunteer with this organization?",
-      approach:
-        "Mention something specific from the organization’s official website and connect it to a real interest.",
-      example:
-        "I enjoy helping other students learn, so I would like a role that supports learning activities. I would first check the program’s goals and training requirements.",
-    },
-    {
-      question: "Tell me about a time you helped someone.",
-      approach:
-        "A school or community example works. Explain what the person needed, what you did, and what happened.",
-      example:
-        "A classmate missed a lesson before a quiz. I shared my notes and worked through a few practice questions with them. I also encouraged them to ask our teacher about anything still unclear.",
-    },
-  ],
-};
 export default function CareerPractice() {
   const [role, setRole] = useState<keyof typeof questions>("Retail");
   const [index, setIndex] = useState(0);
   const [show, setShow] = useState(false);
-  const [answer, setAnswer] = useState("");
+  const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [seconds, setSeconds] = useState<number | null>(null);
+  const answerKey = `${role}:${index}`;
+  const answer = answers[answerKey] || "";
+  const setAnswer = (value: string) =>
+    setAnswers((previous) => ({ ...previous, [answerKey]: value }));
+  const answered = questions[role].filter(
+    (_, i) => (answers[`${role}:${i}`] || "").trim().length > 0,
+  ).length;
+  useEffect(() => {
+    if (seconds === null || seconds <= 0) return;
+    const timer = window.setTimeout(() => setSeconds(seconds - 1), 1000);
+    return () => window.clearTimeout(timer);
+  }, [seconds]);
+  useEffect(() => {
+    setSeconds(null);
+    setShow(false);
+  }, [role, index]);
   const current = questions[role][index];
   return (
     <section className="practice-section" id="interview-practice">
       <div className="container">
         <div className="section-heading-simple">
-          <span className="eyebrow">Career skills & resources</span>
           <h2 className="section-title">Prepare for your first interview</h2>
           <p className="section-description">
-            Practise with questions for common student roles. Your answer can
-            come from school, sports, clubs, or volunteering.
+            Practise 48 questions across four common student roles. Your answer
+            can come from school, sports, clubs, or volunteering.
           </p>
         </div>
         <div className="practice-layout">
@@ -125,7 +83,6 @@ export default function CareerPractice() {
                   setRole(e.target.value as keyof typeof questions);
                   setIndex(0);
                   setShow(false);
-                  setAnswer("");
                 }}
               >
                 {Object.keys(questions).map((r) => (
@@ -133,10 +90,22 @@ export default function CareerPractice() {
                 ))}
               </select>
             </label>
+            <div className="practice-progress">
+              <span>
+                {answered} of {questions[role].length} answers started
+              </span>
+              <progress
+                max={questions[role].length}
+                value={answered}
+                aria-label="Interview answers started"
+              />
+            </div>
             <span className="small-note">
               Question {index + 1} of {questions[role].length}
             </span>
-            <h3>{current.question}</h3>
+            <h3 className="question-transition" key={answerKey}>
+              {current.question}
+            </h3>
             <label>
               Your practice answer
               <textarea
@@ -154,6 +123,14 @@ export default function CareerPractice() {
             <div className="practice-buttons">
               <button
                 className="btn btn-outline"
+                disabled={index === 0}
+                onClick={() => setIndex(index - 1)}
+              >
+                <ChevronLeft size={16} />
+                Previous
+              </button>
+              <button
+                className="btn btn-outline"
                 aria-expanded={show}
                 onClick={() => setShow(!show)}
               >
@@ -165,13 +142,44 @@ export default function CareerPractice() {
                 onClick={() => {
                   setIndex((index + 1) % questions[role].length);
                   setShow(false);
-                  setAnswer("");
                 }}
               >
                 Next question
                 <ChevronRight size={16} />
               </button>
             </div>
+            <div className="practice-extra-controls">
+              <button
+                onClick={() =>
+                  setIndex(
+                    (index +
+                      1 +
+                      Math.floor(
+                        Math.random() * (questions[role].length - 1),
+                      )) %
+                      questions[role].length,
+                  )
+                }
+              >
+                <Shuffle size={15} />
+                Random question
+              </button>
+              <button onClick={() => setSeconds(seconds !== null ? null : 60)}>
+                <Clock3 size={15} />
+                {seconds === null ? "Practise for 60 seconds" : "Stop timer"}
+              </button>
+              {seconds !== null && (
+                <span role="timer" aria-label="Practice time remaining">
+                  {seconds}s remaining
+                </span>
+              )}
+            </div>
+            {seconds === 0 && (
+              <p className="small-note" role="status">
+                Practice time is up. Finish your thought, then check whether you
+                answered the question.
+              </p>
+            )}
             {show && (
               <div className="interview-guidance">
                 <h4>How to approach it</h4>
@@ -207,6 +215,20 @@ export default function CareerPractice() {
               You do not need a paid job to have a useful example. Keep it
               honest and answer the question being asked.
             </p>
+            <details className="practice-self-check">
+              <summary>Check your answer</summary>
+              {[
+                "I answered the question directly.",
+                "I used a real example.",
+                "I explained my own actions.",
+                "I included a result or something I learned.",
+              ].map((item) => (
+                <label key={`${answerKey}:${item}`}>
+                  <input type="checkbox" />
+                  {item}
+                </label>
+              ))}
+            </details>
           </aside>
         </div>
         <div className="video-section">

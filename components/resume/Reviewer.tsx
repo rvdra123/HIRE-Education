@@ -6,34 +6,27 @@ import {
   CheckCircle2,
   FileCheck2,
   LoaderCircle,
-  RotateCcw,
   ShieldCheck,
   Upload,
-  X,
 } from "lucide-react";
-import {
-  reviewSchema,
-  scoreLabel,
-  type ResumeReview,
-} from "@/lib/openai/schema";
+import { reviewSchema, type ResumeReview } from "@/lib/openai/schema";
+import ReviewDashboard from "./ReviewDashboard";
 type Prefill = {
   title: string;
   description: string;
   kind: string;
   applicationUrl?: string;
 };
-const labels = {
-  formatting: "Formatting & readability",
-  content: "Content",
-  experience: "Experience",
-  skills: "Skills",
-  ats: "ATS readability",
-  professionalism: "Professionalism",
-  jobRelevance: "Job relevance",
-};
 export default function Reviewer({ prefill }: { prefill?: Prefill }) {
   const [available, setAvailable] = useState<boolean | null>(null);
+  const [availabilityCode, setAvailabilityCode] = useState("");
+  const [providerName, setProviderName] = useState(
+    "the configured AI provider",
+  );
   const [file, setFile] = useState<File | null>(null);
+  const [mode, setMode] = useState<"file" | "text">("file");
+  const [resumeText, setResumeText] = useState("");
+  const [errorCode, setErrorCode] = useState("");
   const [grade, setGrade] = useState("");
   const [kind, setKind] = useState(
     prefill?.kind &&
@@ -58,21 +51,42 @@ export default function Reviewer({ prefill }: { prefill?: Prefill }) {
     const abort = new AbortController();
     fetch("/api/resume-review", { signal: abort.signal })
       .then((r) => r.json())
-      .then((d) => setAvailable(d.available === true))
+      .then((d) => {
+        setAvailable(d.available === true);
+        setProviderName(
+          d.providerName === "Google Gemini"
+            ? "Google Gemini"
+            : d.providerName === "OpenAI"
+              ? "OpenAI"
+              : "the configured AI provider",
+        );
+        setAvailabilityCode(typeof d.code === "string" ? d.code : "");
+      })
       .catch(() => setAvailable(false));
     return () => abort.abort();
   }, []);
   async function submit(e: FormEvent) {
     e.preventDefault();
     setError("");
-    if (!file || !consent) return;
-    if (file.size > 6 * 1024 * 1024 || !/^.+\.(pdf|docx)$/i.test(file.name)) {
-      setError("Choose a PDF or DOCX file smaller than 6 MB.");
+    setErrorCode("");
+    if (
+      !consent ||
+      (mode === "file" && !file) ||
+      (mode === "text" && resumeText.trim().length < 80)
+    )
+      return;
+    if (
+      mode === "file" &&
+      file &&
+      (file.size > 4 * 1024 * 1024 || !/^.+\.(pdf|docx)$/i.test(file.name))
+    ) {
+      setError("Choose a PDF or DOCX file smaller than 4 MB.");
       return;
     }
     setBusy(true);
     const data = new FormData();
-    data.set("resume", file);
+    if (mode === "file" && file) data.set("resume", file);
+    else data.set("resumeText", resumeText.trim());
     data.set("grade", grade);
     data.set("kind", kind);
     data.set("title", title);
@@ -84,10 +98,17 @@ export default function Reviewer({ prefill }: { prefill?: Prefill }) {
         body: data,
         signal: AbortSignal.timeout(110000),
       });
-      const body = await response.json();
-      if (!response.ok)
-        throw new Error(body.error || "The review could not be completed.");
-      const parsed = reviewSchema.safeParse(body.review);
+      const body = await response.json().catch(() => null);
+      if (!response.ok) {
+        setErrorCode(typeof body?.code === "string" ? body.code : "");
+        throw new Error(
+          response.status === 413
+            ? "This upload exceeds the hosting limit. Use a file under 4 MB or paste your resume text."
+            : body?.error ||
+                "The reviewer is temporarily unavailable. Please try again later.",
+        );
+      }
+      const parsed = reviewSchema.safeParse(body?.review);
       if (!parsed.success)
         throw new Error(
           "The review format could not be read. Please try again.",
@@ -112,155 +133,21 @@ export default function Reviewer({ prefill }: { prefill?: Prefill }) {
   }
   if (result)
     return (
-      <div className="review-results" id="review-results" tabIndex={-1}>
-        <div className="review-result-top">
-          <div>
-            <span className="eyebrow">Your resume review</span>
-            <h2>{scoreLabel(result.overallScore)} student resume</h2>
-            <p>{result.summary}</p>
-          </div>
-          <div className="overall-score">
-            <strong>{result.overallScore}</strong>
-            <span>/ 100</span>
-          </div>
-        </div>
-        <p className="notice-box">
-          These scores are educational guidance, not an employer’s hiring score,
-          an ATS test result, or your chance of getting hired.
-        </p>
-        <div className="score-grid">
-          {Object.entries(result.scores).map(([key, value]) => (
-            <div key={key}>
-              <div>
-                <span>{labels[key as keyof typeof labels]}</span>
-                <strong>{value}/10</strong>
-              </div>
-              <progress
-                max={10}
-                value={value}
-                aria-label={labels[key as keyof typeof labels]}
-              />
-            </div>
-          ))}
-        </div>
-        <div className="review-columns">
-          <Feedback
-            title="What’s working"
-            items={[...result.strengths, ...result.strongestSections]}
-          />
-          <Feedback
-            title="What you can improve"
-            items={[...result.improvements, ...result.weaknesses]}
-          />
-        </div>
-        {result.bulletRewrites.length > 0 && (
-          <section className="review-block">
-            <h3>Make your bullet points stronger</h3>
-            {result.bulletRewrites.map((b, i) => (
-              <div className="bullet-rewrite" key={i}>
-                <div>
-                  <small>Original</small>
-                  <p>{b.original}</p>
-                </div>
-                <ArrowRight size={19} />
-                <div>
-                  <small>Suggested</small>
-                  <p>{b.suggested}</p>
-                </div>
-                <p className="rewrite-reason">
-                  <strong>Why it helps:</strong> {b.why}
-                </p>
-              </div>
-            ))}
-          </section>
-        )}
-        <section className="review-block">
-          <div className="match-heading">
-            <h3>Match with this opportunity</h3>
-            <span>{result.jobMatch.score}/100 educational match</span>
-          </div>
-          <p>{result.jobMatch.summary}</p>
-          <div className="review-columns">
-            <Feedback
-              title="Relevant strengths"
-              items={result.jobMatch.relevantStrengths}
-            />
-            <Feedback
-              title="Skills this role emphasizes"
-              items={result.jobMatch.emphasizedSkills}
-            />
-            <Feedback
-              title="Experience to highlight"
-              items={result.jobMatch.highlightExperience}
-            />
-            <Feedback
-              title="Potential gaps"
-              items={result.jobMatch.potentialGaps}
-            />
-          </div>
-          <Feedback
-            title="Top changes before applying"
-            items={result.jobMatch.topChanges}
-          />
-        </section>
-        <details className="review-block">
-          <summary>Sections, wording, and ATS readability</summary>
-          <div className="review-columns">
-            <Feedback title="Missing sections" items={result.missingSections} />
-            <Feedback
-              title="Grammar and wording"
-              items={result.grammarIssues}
-            />
-          </div>
-          <h4>ATS readability</h4>
-          <p>{result.atsFeedback.summary}</p>
-          <Feedback
-            title="Readability concerns"
-            items={result.atsFeedback.concerns}
-          />
-          <p>{result.atsFeedback.limitations}</p>
-        </details>
-        <section className="next-actions">
-          <h3>Your next three steps</h3>
-          <ol>
-            {result.topActions.map((a) => (
-              <li key={a}>{a}</li>
-            ))}
-          </ol>
-        </section>
-        <div className="review-bottom">
-          <button className="btn btn-outline" onClick={() => setResult(null)}>
-            <RotateCcw size={16} />
-            Review another resume
-          </button>
-          <button
-            className="btn btn-outline"
-            onClick={() => {
-              setResult(null);
-              setDescription("");
-              setTitle("");
-              setError("");
-            }}
-          >
-            <X size={16} />
-            Clear review
-          </button>
-          {prefill?.applicationUrl && (
-            <a
-              className="btn btn-primary"
-              href={prefill.applicationUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Apply on the official website <ArrowRight size={16} />
-            </a>
-          )}
-        </div>
-        <p className="small-note">
-          This review stays in this page’s memory. HIRE Education does not save
-          your resume or review to its database.
-        </p>
-      </div>
+      <ReviewDashboard
+        review={result}
+        title={title}
+        applicationUrl={prefill?.applicationUrl}
+        onReset={() => {
+          setResult(null);
+          setFile(null);
+          setResumeText("");
+          setConsent(false);
+          setError("");
+          setErrorCode("");
+          setTitle(prefill?.title || "");
+          setDescription(prefill?.description || "");
+        }}
+      />
     );
   return (
     <div className="reviewer-layout">
@@ -273,14 +160,19 @@ export default function Reviewer({ prefill }: { prefill?: Prefill }) {
               School projects, clubs, sports, and volunteering all count as
               experience.
             </p>
+            {availabilityCode && (
+              <small>Support code: {availabilityCode}</small>
+            )}
           </div>
         </div>
         {available === false && (
           <div className="notice-box" role="status">
             <strong>AI reviews are not available yet.</strong>
             <p>
-              The service needs to be connected before resumes can be sent. You
-              can still use the{" "}
+              {availabilityCode === "GEMINI_STUDENT_ELIGIBILITY_UNCONFIRMED"
+                ? "Google AI reviews are disabled while we confirm that its service terms permit this student audience. "
+                : "The service needs to be connected before resumes can be sent. "}
+              You can still use the{" "}
               <Link href="/#resume" prefetch={false}>
                 resume and cover letter guides
               </Link>
@@ -289,18 +181,59 @@ export default function Reviewer({ prefill }: { prefill?: Prefill }) {
           </div>
         )}
         <fieldset disabled={busy}>
-          <label className="upload-field" htmlFor="resume-file">
-            <Upload size={26} />
-            <strong>{file ? file.name : "Choose your resume"}</strong>
-            <span>PDF or DOCX · up to 6 MB · a short student resume</span>
-            <input
-              id="resume-file"
-              type="file"
-              accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-              required
-              onChange={(e) => setFile(e.target.files?.[0] || null)}
-            />
-          </label>
+          <div
+            className="resume-input-tabs"
+            role="group"
+            aria-label="Resume input method"
+          >
+            <button
+              type="button"
+              aria-pressed={mode === "file"}
+              onClick={() => setMode("file")}
+            >
+              Upload file
+            </button>
+            <button
+              type="button"
+              aria-pressed={mode === "text"}
+              onClick={() => setMode("text")}
+            >
+              Paste resume text
+            </button>
+          </div>
+          {mode === "file" ? (
+            <label className="upload-field" htmlFor="resume-file">
+              <Upload size={26} />
+              <strong>{file ? file.name : "Choose your resume"}</strong>
+              <span>PDF or DOCX · up to 4 MB · a short student resume</span>
+              <input
+                id="resume-file"
+                type="file"
+                accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                required
+                onChange={(e) => setFile(e.target.files?.[0] || null)}
+              />
+            </label>
+          ) : (
+            <label>
+              Resume text
+              <textarea
+                aria-label="Resume text"
+                rows={10}
+                value={resumeText}
+                onChange={(e) => setResumeText(e.target.value)}
+                required
+                minLength={80}
+                maxLength={50000}
+                placeholder="Paste your resume here. Remove your home address, phone number, and other details you do not want analysed."
+              />
+              <span className="small-note">
+                {resumeText.length.toLocaleString()} / 50,000 characters. Text
+                mode reviews content; it cannot judge your original document
+                layout.
+              </span>
+            </label>
+          )}
           <div className="form-row">
             <label>
               Your grade (optional)
@@ -375,8 +308,8 @@ export default function Reviewer({ prefill }: { prefill?: Prefill }) {
               onChange={(e) => setConsent(e.target.checked)}
             />
             <span>
-              I agree to send this resume and description to OpenAI for this
-              review. I’ve read the{" "}
+              I agree to send this resume and description to {providerName} for
+              this review. I’ve read the{" "}
               <Link
                 href="/privacy#ai-processing"
                 target="_blank"
@@ -391,7 +324,12 @@ export default function Reviewer({ prefill }: { prefill?: Prefill }) {
           </label>
           <button
             className="btn btn-primary review-submit"
-            disabled={busy || available !== true || !file || !consent}
+            disabled={
+              busy ||
+              available !== true ||
+              (mode === "file" ? !file : resumeText.trim().length < 80) ||
+              !consent
+            }
             type="submit"
           >
             {busy ? (
@@ -408,13 +346,21 @@ export default function Reviewer({ prefill }: { prefill?: Prefill }) {
           </button>
         </fieldset>
         {busy && (
-          <p role="status">
-            This may take about a minute. Keep this page open.
-          </p>
+          <div className="review-progress" role="status">
+            <div className="review-progress-track">
+              <span />
+            </div>
+            <strong>Reviewing your experience and the role requirements</strong>
+            <p>
+              This usually takes about a minute. Your dashboard will appear here
+              when the review is ready.
+            </p>
+          </div>
         )}
         {error && (
           <div className="form-error" role="alert">
-            {error}
+            <p>{error}</p>
+            {errorCode && <small>Support code: {errorCode}</small>}
           </div>
         )}
       </form>
@@ -440,31 +386,23 @@ export default function Reviewer({ prefill }: { prefill?: Prefill }) {
         </p>
         <h3>Your documents</h3>
         <p>
-          HIRE Education processes your upload temporarily and does not save its
-          content. We request deletion of the provider file after the review,
-          with a one-hour automatic expiry as a backup. Provider security-log
-          retention may still apply.
+          HIRE Education processes your resume in memory and sends it directly
+          for analysis, without creating a separate provider file. We do not
+          save your resume or results. The selected provider’s API data-use and
+          retention rules still apply.
         </p>
+        {providerName === "Google Gemini" && (
+          <p className="notice-box">
+            Google’s unpaid API services can have different data-use terms,
+            including use of submitted content to improve products. Student
+            access remains disabled until permitted use and data handling are
+            confirmed.
+          </p>
+        )}
         <Link href="/privacy" prefetch={false}>
           Read the full privacy policy
         </Link>
       </aside>
     </div>
-  );
-}
-function Feedback({ title, items }: { title: string; items: string[] }) {
-  return (
-    <section className="feedback-list">
-      <h3>{title}</h3>
-      {items.length ? (
-        <ul>
-          {[...new Set(items)].map((item, i) => (
-            <li key={i}>{item}</li>
-          ))}
-        </ul>
-      ) : (
-        <p>No specific issues were identified in this area.</p>
-      )}
-    </section>
   );
 }

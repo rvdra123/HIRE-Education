@@ -1,10 +1,11 @@
 import { unzipSync, strFromU8 } from "fflate";
 import { XMLParser } from "fast-xml-parser";
-export const MAX_RESUME_BYTES = 6 * 1024 * 1024;
+// Stay below Vercel's 4.5 MB request limit, including the form fields.
+export const MAX_RESUME_BYTES = 4 * 1024 * 1024;
 export class UploadError extends Error {}
 export async function validateResume(file: File) {
   if (file.size === 0 || file.size > MAX_RESUME_BYTES)
-    throw new UploadError("Choose a PDF or DOCX file smaller than 6 MB.");
+    throw new UploadError("Choose a PDF or DOCX file smaller than 4 MB.");
   const extension = file.name.toLowerCase().split(".").pop();
   if (extension !== "pdf" && extension !== "docx")
     throw new UploadError("Only PDF and DOCX resumes are supported.");
@@ -106,7 +107,7 @@ export async function boundedForm(request: Request) {
   const max = MAX_RESUME_BYTES + 100000;
   if (Number(request.headers.get("content-length") || 0) > max)
     throw new UploadError(
-      "The upload is too large. Maximum resume size is 6 MB.",
+      "The upload is too large. Maximum resume size is 4 MB.",
     );
   if (!request.body) throw new UploadError("Choose a resume to upload.");
   const reader = request.body.getReader();
@@ -119,7 +120,7 @@ export async function boundedForm(request: Request) {
       size += value.byteLength;
       if (size > max)
         throw new UploadError(
-          "The upload is too large. Maximum resume size is 6 MB.",
+          "The upload is too large. Maximum resume size is 4 MB.",
         );
       chunks.push(value);
     }

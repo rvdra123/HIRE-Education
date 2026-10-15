@@ -1,14 +1,16 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { boundedForm, UploadError, validateResume } from "@/lib/openai/files";
-import { reviewAvailable } from "@/lib/openai/config";
-import { reviewResume } from "@/lib/openai/review";
+import { reviewConfiguration } from "@/lib/openai/config";
+import { reviewResume } from "@/lib/ai/review";
+import { reviewFailure } from "@/lib/openai/errors";
 import {
   clientLimitKey,
   limit,
   privateHeaders,
   reserveLimits,
   reviewLimitMessage,
+  releaseReservation,
   sameOrigin,
 } from "@/lib/security/requests";
 export const runtime = "nodejs";
@@ -31,7 +33,7 @@ const contextSchema = z.object({
 });
 export async function GET() {
   return NextResponse.json(
-    { available: reviewAvailable(), maxFileSizeMb: 6 },
+    { ...reviewConfiguration(), maxFileSizeMb: 4 },
     { headers: privateHeaders },
   );
 }
@@ -44,6 +46,8 @@ export async function POST(request: Request) {
       },
       { status: 403, headers: privateHeaders },
     );
+  let reservation: { key: string; resetAt: number } | undefined;
+  let stage: "usage" | "document" | "provider" = "usage";
   try {
     const gate = await limit(`upload:${clientLimitKey(request)}`, 12, 3600000);
     if (!gate.allowed)
@@ -57,6 +61,7 @@ export async function POST(request: Request) {
           },
         },
       );
+    stage = "document";
     const form = await boundedForm(request);
     const context = contextSchema.safeParse({
       grade: form.get("grade") || "",
@@ -73,18 +78,40 @@ export async function POST(request: Request) {
         },
         { status: 400, headers: privateHeaders },
       );
+    const plain = form.get("resumeText");
     const upload = form.get("resume");
-    if (!(upload instanceof File))
-      throw new UploadError("Choose a PDF or DOCX resume.");
-    const file = await validateResume(upload);
-    if (!reviewAvailable())
+    const file =
+      typeof plain === "string" && plain.trim()
+        ? (() => {
+            if (plain.trim().length < 80 || plain.length > 50000)
+              throw new UploadError(
+                "Paste between 80 and 50,000 characters of resume text.",
+              );
+            return {
+              buffer: Buffer.from(plain.trim()),
+              name: "student-resume.txt",
+              mime: "text/plain",
+              format: "text" as const,
+            };
+          })()
+        : upload instanceof File
+          ? await validateResume(upload)
+          : (() => {
+              throw new UploadError(
+                "Upload a PDF or DOCX resume, or paste your resume text.",
+              );
+            })();
+    const configuration = reviewConfiguration();
+    if (!configuration.available)
       return NextResponse.json(
         {
           error:
             "AI review is not available yet. You can use the resume guide while the service is being configured.",
+          code: configuration.code,
         },
         { status: 503, headers: privateHeaders },
       );
+    stage = "usage";
     const reviewLimit = await reserveLimits([
       { key: clientLimitKey(request), max: 3, windowMs: 3600000 },
       { key: "review-global-budget", max: 60, windowMs: 86400000 },
@@ -106,21 +133,43 @@ export async function POST(request: Request) {
           },
         },
       );
-    return NextResponse.json(
-      { review: await reviewResume(file, context.data) },
-      { headers: privateHeaders },
-    );
+    reservation = reviewLimit.reservations[0];
+    stage = "provider";
+    const review = await reviewResume(file, context.data);
+    reservation = undefined;
+    return NextResponse.json({ review }, { headers: privateHeaders });
   } catch (error) {
     if (error instanceof UploadError)
       return NextResponse.json(
         { error: error.message },
         { status: 400, headers: privateHeaders },
       );
+    // Service failures do not spend the student's hourly allowance. The daily
+    // attempt budget remains consumed to keep provider spending bounded.
+    if (reservation) await releaseReservation(reservation).catch(() => {});
+    const failure =
+      stage === "provider"
+        ? reviewFailure(error)
+        : {
+            code:
+              stage === "usage"
+                ? "REVIEW_STORAGE_UNAVAILABLE"
+                : "RESUME_READ_FAILED",
+            message:
+              stage === "usage"
+                ? "The reviewer’s usage service is unavailable. The site owner needs to check the database connection."
+                : "This document could not be read. Export it again or paste your resume text instead.",
+            providerStatus: undefined,
+          };
+    console.error(
+      JSON.stringify({
+        event: "resume_review_failed",
+        code: failure.code,
+        providerStatus: failure.providerStatus,
+      }),
+    );
     return NextResponse.json(
-      {
-        error:
-          "We could not complete this review. Your resume has not been saved by HIRE Education. Please try again later.",
-      },
+      { error: failure.message, code: failure.code },
       { status: 503, headers: privateHeaders },
     );
   }

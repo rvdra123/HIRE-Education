@@ -6,6 +6,7 @@ import { closeDatabase } from "../lib/opportunities/db";
 import {
   clientLimitKey,
   reserveLimits,
+  releaseReservation,
   reviewLimitMessage,
 } from "../lib/security/requests";
 
@@ -115,4 +116,20 @@ test("limit errors distinguish the connection allowance and daily allowance with
   assert.match(reviewLimitMessage(0, 65), /2 minutes/);
   assert.match(reviewLimitMessage(1, 3601), /daily review limit/);
   assert.match(reviewLimitMessage(1, 3601), /2 hours/);
+});
+
+test("a failed service call can return its hourly reservation without resetting the site budget", async () => {
+  const rules = [
+    { key: "test-refund-client", max: 1, windowMs: 3600000 },
+    { key: "test-refund-site", max: 2, windowMs: 86400000 },
+  ];
+  const first = await reserveLimits(rules);
+  assert.equal(first.allowed, true);
+  await releaseReservation(first.reservations[0]);
+  const second = await reserveLimits(rules);
+  assert.equal(second.allowed, true);
+  await releaseReservation(second.reservations[0]);
+  const third = await reserveLimits(rules);
+  assert.equal(third.allowed, false);
+  assert.equal(third.blockedIndex, 1);
 });

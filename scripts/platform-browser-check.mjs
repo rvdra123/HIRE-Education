@@ -2,6 +2,7 @@ import { chromium } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import assert from "node:assert/strict";
 import { writeFileSync } from "node:fs";
+const origin = process.env.HIRE_TEST_URL || "http://127.0.0.1:3000";
 const browser = await chromium.launch({
   executablePath: "/usr/bin/chromium",
   args: ["--no-sandbox"],
@@ -13,7 +14,7 @@ const context = await browser.newContext({
 const page = await context.newPage();
 const errors = [];
 page.on("pageerror", (e) => errors.push(e.message));
-await page.goto("http://127.0.0.1:3000", { waitUntil: "networkidle" });
+await page.goto(origin, { waitUntil: "networkidle" });
 await page.getByRole("button", { name: "Decline optional storage" }).click();
 assert.equal(
   await page.evaluate(() => localStorage.getItem("hire-privacy-choice-v1")),
@@ -88,7 +89,41 @@ async function scan(label) {
   assert.equal(result.violations.length, 0, `Accessibility: ${label}`);
 }
 await scan("home");
-await page.goto("http://127.0.0.1:3000/opportunities", {
+assert.equal(await page.locator(".location-pill, .eyebrow").count(), 0);
+const learning = page.locator("#certifications");
+assert.equal(await learning.locator("article").count(), 6);
+await learning
+  .getByRole("textbox", { name: "Search free learning" })
+  .fill("Python");
+assert.ok((await learning.locator("article").count()) > 0);
+await learning
+  .getByRole("combobox", { name: "Learning provider" })
+  .selectOption("Kaggle Learn");
+assert.ok(
+  (await learning.locator("article").allTextContents()).every((t) =>
+    t.includes("Kaggle Learn"),
+  ),
+);
+await learning.getByRole("button", { name: "Clear filters" }).click();
+await learning.getByRole("button", { name: /Show 12 more courses/ }).click();
+assert.equal(await learning.locator("article").count(), 18);
+const practice = page.locator("#interview-practice");
+assert.ok((await practice.innerText()).includes("Question 1 of 12"));
+await practice
+  .getByRole("textbox", { name: "Your practice answer" })
+  .fill("TEST FIXTURE: I helped organize a school project.");
+await practice.getByRole("button", { name: "Next question" }).click();
+await practice.getByRole("button", { name: "Previous", exact: true }).click();
+assert.match(
+  await practice
+    .getByRole("textbox", { name: "Your practice answer" })
+    .inputValue(),
+  /TEST FIXTURE/,
+);
+await practice.getByRole("button", { name: "Practise for 60 seconds" }).click();
+assert.ok(await practice.getByRole("timer").isVisible());
+await practice.getByRole("button", { name: "Stop timer" }).click();
+await page.goto(`${origin}/opportunities`, {
   waitUntil: "networkidle",
 });
 await page.getByRole("button", { name: "Filters", exact: true }).click();
@@ -105,7 +140,23 @@ await page.getByRole("button", { name: "Clear filters" }).first().click();
 await page.getByRole("button", { name: "Next month" }).click();
 await page.locator(".calendar-days button").first().click();
 await scan("catalogue");
-await page.goto("http://127.0.0.1:3000/resume-reviewer", {
+const directory = page.locator("#employer-directory");
+await directory
+  .getByRole("textbox", { name: "Search employers and programs" })
+  .fill("Cineplex");
+assert.equal(await directory.locator(".directory-card").count(), 1);
+await directory
+  .getByRole("textbox", { name: "Search employers and programs" })
+  .fill("");
+await directory
+  .getByRole("combobox", { name: "Directory category" })
+  .selectOption("Volunteering");
+assert.ok(
+  (await directory.locator(".directory-card").allTextContents()).every((t) =>
+    t.includes("Volunteering"),
+  ),
+);
+await page.goto(`${origin}/resume-reviewer`, {
   waitUntil: "networkidle",
 });
 assert.equal(
@@ -181,13 +232,81 @@ await page
   );
 await page.locator(".consent-check input").check();
 await page.getByRole("button", { name: "Review my resume" }).click();
-await page.getByRole("heading", { name: "Strong student resume" }).waitFor();
+await page
+  .getByRole("heading", { name: "Your resume review", exact: true })
+  .waitFor();
 await scan("reviewer-results");
+await page.getByRole("button", { name: "Role match", exact: true }).click();
+await page
+  .getByRole("heading", { name: "How your experience fits the posting" })
+  .waitFor();
+await page.getByRole("button", { name: /Bullet rewrites/ }).click();
+await page.getByRole("button", { name: "Copy suggestion" }).waitFor();
+await page.getByRole("button", { name: "Writing & layout" }).click();
+await scan("reviewer-writing");
+await page.getByRole("button", { name: "Overview", exact: true }).click();
+await page.locator(".dashboard-actions input").first().check();
+await page.screenshot({
+  path: "/tmp/hire-review-dashboard.png",
+  fullPage: true,
+});
+const [feedback] = await Promise.all([
+  page.waitForEvent("download"),
+  page.getByRole("button", { name: "Download feedback" }).click(),
+]);
+assert.match(feedback.suggestedFilename(), /resume-feedback/);
+for (const width of [320, 390, 768]) {
+  await page.setViewportSize({ width, height: 900 });
+  assert.ok(
+    (await page.evaluate(() => document.documentElement.scrollWidth)) <= width,
+    `Dashboard overflow at ${width}`,
+  );
+  if (width === 390) {
+    await scan("dashboard-mobile");
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.screenshot({
+      path: "/tmp/hire-dashboard-mobile.png",
+      fullPage: true,
+    });
+  }
+}
+await page.setViewportSize({ width: 1440, height: 1000 });
 await page.getByRole("button", { name: "Clear review", exact: true }).click();
 assert.equal(
   await page.getByLabel("Target role", { exact: true }).inputValue(),
   "",
 );
+await page.unroute("**/api/resume-review");
+await page.route("**/api/resume-review", async (route) =>
+  route.fulfill({
+    status: route.request().method() === "GET" ? 200 : 503,
+    json:
+      route.request().method() === "GET"
+        ? { available: true }
+        : {
+            error: "TEST FIXTURE: API billing needs attention.",
+            code: "AI_BILLING_REQUIRED",
+          },
+  }),
+);
+await page.getByRole("button", { name: "Paste resume text" }).click();
+await page
+  .getByRole("textbox", { name: "Resume text", exact: true })
+  .fill(
+    "TEST FIXTURE student resume. Helped organize a class project and prepare school event materials. This is fictional test content.",
+  );
+await page.getByLabel("Target role", { exact: true }).fill("Test role");
+await page
+  .getByLabel("Job posting or opportunity description")
+  .fill(
+    "TEST FIXTURE posting: a fictional student role asking for teamwork, communication, and reliability.",
+  );
+await page.locator(".consent-check input").check();
+await page.getByRole("button", { name: "Review my resume" }).click();
+await page
+  .getByRole("alert")
+  .filter({ hasText: "AI_BILLING_REQUIRED" })
+  .waitFor();
 await page.getByRole("button", { name: "Privacy settings" }).click();
 await page.getByRole("button", { name: "Decline optional storage" }).click();
 assert.equal(
@@ -196,11 +315,11 @@ assert.equal(
   ),
   null,
 );
-await page.goto("http://127.0.0.1:3000/privacy", { waitUntil: "networkidle" });
+await page.goto(`${origin}/privacy`, { waitUntil: "networkidle" });
 await scan("privacy");
 for (const width of [320, 375, 390, 768, 820, 1024, 1440]) {
   await page.setViewportSize({ width, height: 900 });
-  await page.goto("http://127.0.0.1:3000", { waitUntil: "networkidle" });
+  await page.goto(origin, { waitUntil: "networkidle" });
   const scroll = await page.evaluate(
     () => document.documentElement.scrollWidth,
   );

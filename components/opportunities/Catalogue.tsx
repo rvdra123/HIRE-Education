@@ -7,7 +7,6 @@ import {
   CalendarDays,
   ChevronLeft,
   ChevronRight,
-  ExternalLink,
   MapPin,
   RefreshCw,
   Search,
@@ -15,7 +14,7 @@ import {
   X,
 } from "lucide-react";
 import type { Opportunity } from "@/lib/opportunities/types";
-import { officialDirectories } from "@/lib/opportunities/sources/registry";
+import OpportunityDirectory from "./OpportunityDirectory";
 import {
   readOptional,
   writeOptional,
@@ -495,39 +494,7 @@ export default function Catalogue({
         Opportunity availability, deadlines, eligibility, and requirements may
         change. Always confirm details with the organization before applying.
       </p>
-      <details className="official-directories" open={!data.items.length}>
-        <summary>
-          {events
-            ? "Official event and program sources"
-            : "Browse official sources directly"}
-        </summary>
-        <div>
-          {officialDirectories
-            .filter(
-              (d) =>
-                !events ||
-                ["library", "brampton", "sheridan", "ja", "peel"].includes(
-                  d.id,
-                ),
-            )
-            .map((d) => (
-              <a
-                href={d.url}
-                key={d.id}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span>
-                  <strong>{d.name}</strong>
-                  <small>
-                    {d.group} · Directory, not a confirmed open listing
-                  </small>
-                </span>
-                <ExternalLink size={15} />
-              </a>
-            ))}
-        </div>
-      </details>
+      <OpportunityDirectory compact={compact} events={events} />
       <p className="sr-only" role="status">
         {countdown}
       </p>

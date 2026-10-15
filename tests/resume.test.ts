@@ -4,47 +4,8 @@ import { zipSync, strToU8 } from "fflate";
 import { validateResume, boundedForm } from "../lib/openai/files";
 import { normalizeReview, reviewSchema } from "../lib/openai/schema";
 import { authorized } from "../lib/security/requests";
-const base = {
-  overallScore: 100,
-  summary: "TEST FIXTURE feedback only",
-  scores: {
-    formatting: 8,
-    content: 8,
-    experience: 8,
-    skills: 8,
-    ats: 8,
-    professionalism: 8,
-    jobRelevance: 8,
-  },
-  strongestSections: [],
-  strengths: ["Clear school experience"],
-  weaknesses: [],
-  improvements: [],
-  missingSections: [],
-  grammarIssues: [],
-  bulletRewrites: [
-    {
-      original: "Helped at school events.",
-      suggested: "Helped 100 people at school events.",
-      why: "Invented quantity must be rejected.",
-    },
-  ],
-  atsFeedback: {
-    summary: "Text can be read.",
-    concerns: [],
-    limitations: "Not a real ATS simulation.",
-  },
-  jobMatch: {
-    score: 80,
-    summary: "Test only.",
-    relevantStrengths: [],
-    emphasizedSkills: [],
-    highlightExperience: [],
-    potentialGaps: [],
-    topChanges: [],
-  },
-  topActions: ["Proofread.", "Tailor the skills.", "Check the posting."],
-};
+import { base } from "./fixtures/review";
+
 test("structured review rejects invalid data and drops invented numeric achievements", () => {
   assert.equal(reviewSchema.safeParse({ bad: "output" }).success, false);
   const parsed = normalizeReview(base);
@@ -71,7 +32,7 @@ test("resume validation checks extension, MIME, file signature, encryption, size
   );
   await assert.rejects(() =>
     validateResume(
-      new File([new Uint8Array(6 * 1024 * 1024 + 1)], "resume.pdf", {
+      new File([new Uint8Array(4 * 1024 * 1024 + 1)], "resume.pdf", {
         type: "application/pdf",
       }),
     ),
@@ -129,55 +90,155 @@ test("maintenance endpoints require a sufficiently long secret and exact bearer 
     true,
   );
 });
-test("provider failures still delete temporary files, and successful reviews use store:false", async () => {
+test("the official SDK sends inline PDF and plain-text reviews without creating provider files", async () => {
+  const { default: OpenAI } = await import("openai");
   const { reviewResume } = await import("../lib/openai/review");
-  const calls: string[] = [];
-  let mode = "failure";
-  const fake = {
-    files: {
-      create: async (params: { expires_after: { seconds: number } }) => {
-        assert.equal(params.expires_after.seconds, 3600);
-        calls.push("upload");
-        return { id: "file-test-fixture" };
-      },
+  const requests: Record<string, unknown>[] = [];
+  const client = new OpenAI({
+    apiKey: "test-fixture-key-not-a-credential",
+    maxRetries: 0,
+    fetch: async (_url, init) => {
+      requests.push(JSON.parse(String(init?.body)));
+      return new Response(
+        JSON.stringify({
+          id: "resp-test",
+          object: "response",
+          status: "completed",
+          output: [
+            {
+              id: "msg-test",
+              type: "message",
+              role: "assistant",
+              status: "completed",
+              content: [
+                {
+                  type: "output_text",
+                  text: JSON.stringify(base),
+                  annotations: [],
+                },
+              ],
+            },
+          ],
+        }),
+        { status: 200, headers: { "content-type": "application/json" } },
+      );
     },
-    responses: {
-      create: async (params: { store: boolean; instructions: string }) => {
-        assert.equal(params.store, false);
-        assert.match(params.instructions, /UNTRUSTED DATA/);
-        if (mode === "failure") throw new Error("Test provider failure");
-        return { output_text: JSON.stringify(base) };
-      },
-    },
-  };
-  const provider = {
-    client: fake as unknown as ReturnType<
-      typeof import("../lib/openai/client").openaiClient
-    >,
-    queue: async () => {
-      calls.push("queue");
-    },
-    remove: async () => {
-      calls.push("delete");
-      return true;
-    },
-  };
-  const file = {
-    buffer: Buffer.from("%PDF-1.4\n%%EOF"),
-    name: "student-resume.pdf",
-    mime: "application/pdf",
-    format: "pdf" as const,
-  };
+  });
   const context = {
     grade: "11",
     kind: "job",
     title: "Test student assistant",
     description: "A fictional test description for a student role.",
   };
-  await assert.rejects(() => reviewResume(file, context, provider));
-  assert.deepEqual(calls, ["upload", "queue", "delete"]);
-  mode = "success";
-  const review = await reviewResume(file, context, provider);
-  assert.equal(review.overallScore, 80);
-  assert.equal(calls.at(-1), "delete");
+  const file = {
+    buffer: Buffer.from("%PDF-1.4\nTEST FIXTURE\n%%EOF"),
+    name: "student-resume.pdf",
+    mime: "application/pdf",
+    format: "pdf" as const,
+  };
+  const result = await reviewResume(file, context, { client });
+  assert.equal(result.overallScore, 80);
+  assert.equal(requests.length, 1);
+  assert.equal(requests[0].store, false);
+  const serialized = JSON.stringify(requests[0]);
+  assert.match(serialized, /data:application\/pdf;base64,/);
+  assert.doesNotMatch(serialized, /file_id/);
+  assert.match(serialized, /UNTRUSTED DATA/);
+  await reviewResume(
+    {
+      ...file,
+      buffer: Buffer.from(
+        "TEST FIXTURE: Helped at school events. Organized supplies and assisted with a class project.",
+      ),
+      mime: "text/plain",
+      format: "text",
+    },
+    context,
+    { client },
+  );
+  const second = JSON.stringify(requests[1]);
+  assert.match(second, /UNTRUSTED RESUME TEXT/);
+  assert.doesNotMatch(second, /input_file/);
+});
+test("billing, credentials, incomplete responses, and malformed output produce safe support codes", async () => {
+  const { reviewFailure, ReviewResponseError } =
+    await import("../lib/openai/errors");
+  const { reviewResume } = await import("../lib/openai/review");
+  const { default: OpenAI } = await import("openai");
+  const sensitive = "DO NOT REPEAT TEST PRIVATE DOCUMENT TEXT";
+  for (const [status, code, expected] of [
+    [429, "insufficient_quota", "AI_BILLING_REQUIRED"],
+    [401, "invalid_api_key", "AI_AUTHENTICATION_FAILED"],
+    [404, "model_not_found", "AI_MODEL_UNAVAILABLE"],
+    [429, "rate_limit_exceeded", "AI_PROVIDER_BUSY"],
+  ] as const) {
+    const client = new OpenAI({
+      apiKey: "test-fixture-key",
+      maxRetries: 0,
+      fetch: async () =>
+        new Response(
+          JSON.stringify({ error: { message: sensitive, type: "test", code } }),
+          { status, headers: { "content-type": "application/json" } },
+        ),
+    });
+    try {
+      await reviewResume(
+        {
+          buffer: Buffer.from("TEST FIXTURE"),
+          name: "student-resume.txt",
+          mime: "text/plain",
+          format: "text",
+        },
+        {
+          grade: "11",
+          kind: "job",
+          title: "Test",
+          description: "Test description",
+        },
+        { client },
+      );
+      assert.fail("Expected a provider error");
+    } catch (error) {
+      const failure = reviewFailure(error);
+      assert.equal(failure.code, expected);
+      assert.ok(!JSON.stringify(failure).includes(sensitive));
+    }
+  }
+  assert.equal(
+    reviewFailure(new ReviewResponseError("incomplete")).code,
+    "AI_RESPONSE_INCOMPLETE",
+  );
+  assert.equal(
+    reviewFailure(new SyntaxError(sensitive)).code,
+    "AI_RESPONSE_INVALID",
+  );
+  assert.equal(reviewFailure(new Error(sensitive)).code, "AI_REVIEW_FAILED");
+});
+
+test("a Google key in the OpenAI setting disables review before a document can be sent to the wrong provider", async (t) => {
+  const values = {
+    AI_REVIEW_PROVIDER: "openai",
+    OPENAI_API_KEY: "AIza-test-fixture-not-a-real-key",
+    PRIVACY_CONTACT_EMAIL: "privacy@example.org",
+    RATE_LIMIT_SECRET: "test-fixture-secret-at-least-thirty-two-characters",
+  };
+  const previous = Object.fromEntries(
+    Object.keys(values).map((key) => [key, process.env[key]]),
+  );
+  Object.assign(process.env, values);
+  t.after(() => {
+    for (const [key, value] of Object.entries(previous)) {
+      if (value === undefined) delete process.env[key];
+      else process.env[key] = value;
+    }
+  });
+  const { reviewConfiguration } = await import("../lib/openai/config");
+  const { openaiClient } = await import("../lib/openai/client");
+  assert.deepEqual(reviewConfiguration(), {
+    provider: "openai",
+    providerName: "OpenAI",
+    available: false,
+    code: "AI_PROVIDER_KEY_MISMATCH",
+  });
+  assert.throws(() => openaiClient(), /credential mismatch/);
 });

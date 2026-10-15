@@ -40,7 +40,6 @@ export default async function ResumeReviewerPage({
           <span>Resume reviewer</span>
         </nav>
         <div className="page-heading">
-          <span className="eyebrow">Resume & cover letter</span>
           <h1>AI resume reviewer for high school students</h1>
           <p>
             Upload your resume and the role you’re interested in. Get clear

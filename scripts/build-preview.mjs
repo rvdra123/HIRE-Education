@@ -3,9 +3,9 @@ import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import path from "node:path";
 const root = process.cwd();
 mkdirSync("downloads", { recursive: true });
-const entry = `import React,{useEffect,useState} from 'react';import{createRoot}from'react-dom/client';import Home from './components/Home';import SiteHeader from './components/SiteHeader';import Catalogue from './components/opportunities/Catalogue';import EventsCalendar from './components/opportunities/EventsCalendar';import Reviewer from './components/resume/Reviewer';import PrivacyPage from './app/privacy/page';import PrivacyControls from './components/privacy/PrivacyControls';import './app/globals.css';
+const entry = `import React,{useEffect,useState} from 'react';import{createRoot}from'react-dom/client';import Home from './components/Home';import SiteHeader from './components/SiteHeader';import Catalogue from './components/opportunities/Catalogue';import EventsCalendar from './components/opportunities/EventsCalendar';import Reviewer from './components/resume/Reviewer';import PrivacyPage from './app/privacy/page';import PrivacyControls from './components/privacy/PrivacyControls';import MotionController from './components/MotionController';import './app/globals.css';
 const actualFetch=window.fetch.bind(window);window.fetch=async(input,init)=>{const value=typeof input==='string'?input:input.url||String(input);if(value.startsWith('/api/')){if(value.startsWith('/api/resume-review'))return new Response(JSON.stringify({available:false}),{headers:{'Content-Type':'application/json'}});return new Response(JSON.stringify({items:[],total:0,page:1,pageSize:24,lastSuccessfulSync:null}),{headers:{'Content-Type':'application/json'}})}return actualFetch(input,init)};
-function App(){const[route,setRoute]=useState('/');useEffect(()=>{function click(e){const link=e.target.closest?.('a[href]');const href=link?.getAttribute('href');if(!href?.startsWith('/'))return;e.preventDefault();const url=new URL(href,'https://preview.invalid');setRoute(url.pathname);requestAnimationFrame(()=>requestAnimationFrame(()=>{if(url.hash)document.getElementById(url.hash.slice(1))?.scrollIntoView();else window.scrollTo(0,0)}))}document.addEventListener('click',click);return()=>document.removeEventListener('click',click)},[]);return <><div className="offline-preview-note">Offline preview: live listings and AI reviews need the hosted website. All guides, practice tools, and privacy controls are available here.</div>{route==='/privacy'?<PrivacyPage/>:route==='/resume-reviewer'?<><SiteHeader/><main className="container feature-page"><div className="page-heading"><h1>AI resume reviewer for high school students</h1></div><Reviewer/></main></>:route==='/opportunities'?<><SiteHeader/><main className="container feature-page"><div className="page-heading"><h1>Student opportunities in Brampton</h1></div><Catalogue/><section id="events" className="events-section"><h2>Brampton youth events calendar</h2><EventsCalendar/></section></main></>:<Home/>}<PrivacyControls/></>};createRoot(document.getElementById('root')).render(<App/>);`;
+function App(){const[route,setRoute]=useState('/');useEffect(()=>{function click(e){const link=e.target.closest?.('a[href]');const href=link?.getAttribute('href');if(!href?.startsWith('/'))return;e.preventDefault();const url=new URL(href,'https://preview.invalid');setRoute(url.pathname);requestAnimationFrame(()=>requestAnimationFrame(()=>{if(url.hash)document.getElementById(url.hash.slice(1))?.scrollIntoView();else window.scrollTo(0,0)}))}document.addEventListener('click',click);return()=>document.removeEventListener('click',click)},[]);return <><div className="offline-preview-note">Offline preview: live listings and AI reviews need the hosted website. All guides, practice tools, and privacy controls are available here.</div>{route==='/privacy'?<PrivacyPage/>:route==='/resume-reviewer'?<><SiteHeader/><main className="container feature-page"><div className="page-heading"><h1>AI resume reviewer for high school students</h1></div><Reviewer/></main></>:route==='/opportunities'?<><SiteHeader/><main className="container feature-page"><div className="page-heading"><h1>Student opportunities in Brampton</h1></div><Catalogue/><section id="events" className="events-section"><h2>Brampton youth events calendar</h2><EventsCalendar/></section></main></>:<Home/>}<MotionController/><PrivacyControls/></>};createRoot(document.getElementById('root')).render(<App/>);`;
 const result = await build({
   stdin: {
     contents: entry,
@@ -29,15 +29,21 @@ const result = await build({
     {
       name: "preview-links",
       setup(api) {
+        api.onResolve({ filter: /^@\/lib\/ai\/config$/ }, () => ({
+          path: "ai-config",
+          namespace: "preview",
+        }));
         api.onResolve({ filter: /^next\/(link|image)$/ }, (args) => ({
           path: args.path.endsWith("image") ? "image" : "link",
           namespace: "preview",
         }));
         api.onLoad({ filter: /.*/, namespace: "preview" }, (args) => ({
           contents:
-            args.path === "image"
-              ? "import React from 'react';export default function Image({priority:_,...props}){return React.createElement('img',props)}"
-              : "import React from 'react';export default function Link({prefetch:_,...props}){return React.createElement('a',props)}",
+            args.path === "ai-config"
+              ? "export function reviewConfiguration(){return {available:false,provider:'openai',providerName:'OpenAI',code:'AI_NOT_CONFIGURED'}}"
+              : args.path === "image"
+                ? "import React from 'react';export default function Image({priority:_,...props}){return React.createElement('img',props)}"
+                : "import React from 'react';export default function Link({prefetch:_,...props}){return React.createElement('a',props)}",
           loader: "jsx",
           resolveDir: root,
         }));

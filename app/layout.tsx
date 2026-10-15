@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "@fontsource-variable/manrope";
 import "./globals.css";
 import PrivacyControls from "@/components/privacy/PrivacyControls";
+import MotionController from "@/components/MotionController";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -50,6 +51,7 @@ export default function RootLayout({
     <html lang="en-CA">
       <body>
         {children}
+        <MotionController />
         <PrivacyControls />
       </body>
     </html>
