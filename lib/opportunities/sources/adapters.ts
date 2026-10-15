@@ -8,6 +8,7 @@ import {
   type NormalizedListing,
 } from "../types";
 import { publicUrl } from "../quality";
+import { bramptonListings } from "./brampton";
 const agent = "HIREEducationBot";
 function permitted(url: string, source: SourceConfig) {
   const u = new URL(url);
@@ -223,7 +224,9 @@ export function parseSource(body: string, source: SourceConfig): SourceResult {
         : [];
     if (!Array.isArray(parsed) && !Array.isArray(parsed.items))
       throw new Error("Feed format changed");
-  } else if (source.adapter === "ics") raw = icsItems(body, source);
+  } else if (source.adapter.startsWith("brampton-"))
+    raw = bramptonListings(body, source);
+  else if (source.adapter === "ics") raw = icsItems(body, source);
   else raw = jsonLdItems(body).map((v) => jobFromLd(v, source));
   if (raw.length > 5000) throw new Error("Source item limit exceeded");
   const items: NormalizedListing[] = [];

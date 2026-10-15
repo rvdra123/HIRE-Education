@@ -2,15 +2,15 @@
   {
     "id": "brampton-careers",
     "name": "City of Brampton careers",
-    "url": "https://www.brampton.ca/EN/City-Hall/Employment/Pages/Welcome.aspx",
+    "url": "https://careers.brampton.ca/",
     "organization": "City of Brampton",
     "trust": "government",
     "adapter": "jsonld",
     "intervalHours": 6,
     "automationApproved": false,
-    "approvalNote": "Network access and automation terms could not be verified. Obtain an approved feed or permission before enabling; a directory is not a vacancy.",
+    "approvalNote": "Official careers destination linked by the City. careers.brampton.ca is blocked by this workspace proxy (CONNECT 403); listing structure and automation terms remain unverified. Disabled; no vacancies inferred from the careers directory.",
     "completeFeed": false,
-    "allowedHosts": ["www.brampton.ca"]
+    "allowedHosts": ["careers.brampton.ca", "www.brampton.ca"]
   },
   {
     "id": "job-bank",
@@ -21,47 +21,67 @@
     "adapter": "jsonld",
     "intervalHours": 6,
     "automationApproved": false,
-    "approvalNote": "No approved Job Bank API/feed or redistribution arrangement is configured. Do not scrape restricted search results.",
+    "approvalNote": "www.jobbank.gc.ca returned HTTP 503 upstream connection timeout for robots.txt and student search during verification. No approved feed or redistribution arrangement is configured; disabled.",
     "completeFeed": false,
     "allowedHosts": ["www.jobbank.gc.ca"]
   },
   {
     "id": "brampton-volunteer",
     "name": "City of Brampton volunteering",
-    "url": "https://www.brampton.ca/EN/City-Hall/Employment/Volunteer-Opportunities/Pages/Welcome.aspx",
+    "url": "https://www.brampton.ca/EN/City-Hall/Employment/Seasonal/Pages/VolunteerOpportunities.aspx",
     "organization": "City of Brampton",
     "trust": "government",
-    "adapter": "jsonld",
+    "adapter": "brampton-volunteer",
     "intervalHours": 6,
-    "automationApproved": false,
-    "approvalNote": "Directory only. Confirm permitted automated access and listing-level structured data before enabling.",
+    "automationApproved": true,
+    "approvalNote": "Public City page, terms of use and robots.txt reviewed 2026-10-15. The listing path is allowed; bounded six-hour polling with attribution. Import the single explicitly open intake, never the role directory. The deadline lacks a year/time and remains unparsed. Application host app.betterimpact.com is linked by the source; workspace access is reported separately.",
     "completeFeed": false,
-    "allowedHosts": ["www.brampton.ca"]
+    "allowedHosts": ["www.brampton.ca", "app.betterimpact.com"],
+    "enabledByDefault": true
   },
   {
     "id": "brampton-library",
-    "name": "Brampton Library events",
-    "url": "https://www.bramptonlibrary.ca/",
+    "name": "Brampton Library teen events",
+    "url": "https://www.bramptonlibrary.ca/teens",
     "organization": "Brampton Library",
     "trust": "official",
-    "adapter": "jsonld",
+    "adapter": "brampton-library-events",
     "intervalHours": 6,
-    "automationApproved": false,
-    "approvalNote": "Request an official iCalendar or JSON events feed and confirm reuse terms. No dates or events have been invented.",
+    "automationApproved": true,
+    "approvalNote": "Public teen page and robots.txt reviewed 2026-10-15; the listing path is allowed. Bounded six-hour polling of published event cards with attribution. Dates, local times, locations and event links come from those cards; America/Toronto conversion rejects ambiguous times. This featured selection is not a complete calendar. bramlib.libnet.info is the official linked registration host and is blocked by the workspace proxy; no registration availability or cost is inferred.",
     "completeFeed": false,
-    "allowedHosts": ["www.bramptonlibrary.ca"]
+    "allowedHosts": ["www.bramptonlibrary.ca", "bramlib.libnet.info"],
+    "enabledByDefault": true
   },
   {
     "id": "peel-youth",
     "name": "Region of Peel youth programs",
-    "url": "https://www.peelregion.ca/",
+    "url": "https://peelregion.ca/about/careers-peel",
     "organization": "Region of Peel",
     "trust": "government",
     "adapter": "jsonld",
     "intervalHours": 6,
     "automationApproved": false,
-    "approvalNote": "Confirm an official machine-readable program source and permission before enabling.",
+    "approvalNote": "Official Peel pages are reachable and robots.txt reviewed. The linked jobs host careers-peelregion.icims.com is blocked by the workspace proxy (CONNECT 403). No verified youth-specific feed; disabled, with no openings inferred from the directory.",
     "completeFeed": false,
-    "allowedHosts": ["www.peelregion.ca"]
+    "allowedHosts": [
+      "peelregion.ca",
+      "www.peelregion.ca",
+      "careers-peelregion.icims.com"
+    ]
+  },
+  {
+    "id": "brampton-library-volunteer",
+    "name": "Brampton Library youth volunteering",
+    "url": "https://www.bramptonlibrary.ca/your-library/your-support/volunteer",
+    "organization": "Brampton Library",
+    "trust": "official",
+    "adapter": "brampton-library-volunteer",
+    "intervalHours": 6,
+    "automationApproved": true,
+    "enabledByDefault": true,
+    "approvalNote": "Public youth volunteer section and robots.txt reviewed 2026-10-15; path is allowed. Bounded six-hour polling with attribution. Import only Program Assistant with the explicit Apply online link; exclude the adult role. Age, deadline, hours and start date are unspecified. The linked form.jotform.com host is blocked by the workspace proxy; the source also offers printed applications at branches.",
+    "completeFeed": false,
+    "allowedHosts": ["www.bramptonlibrary.ca", "form.jotform.com"]
   }
 ]

@@ -4,22 +4,18 @@ import { catalogueReadiness } from "../lib/opportunities/readiness";
 import { sources } from "../lib/opportunities/sources/registry";
 import type { SourceHealth } from "../lib/opportunities/types";
 
-test("the real disabled sources explain an empty catalogue without blaming a working database", () => {
+test("verified real sources default on without blaming a working database", () => {
   const report = catalogueReadiness({
     databaseQuerySucceeded: true,
     environment: { VERCEL: "1", DATABASE_URL: "libsql://example.invalid" },
   });
   assert.equal(report.state, "needs_setup");
   assert.equal(report.database.querySucceeded, true);
-  assert.equal(report.sources.candidates, 5);
-  assert.equal(report.sources.approved, 0);
-  assert.equal(report.sources.enabled, 0);
+  assert.equal(report.sources.candidates, 6);
+  assert.equal(report.sources.approved, 3);
+  assert.equal(report.sources.enabled, 3);
   assert.equal(report.refresh.lastSuccessfulSync, null);
-  assert.ok(
-    report.nextSteps.some((step) =>
-      step.includes("All candidate sources are currently disabled"),
-    ),
-  );
+  assert.ok(report.nextSteps.some((step) => step.includes("CRON_SECRET")));
 });
 
 test("readiness distinguishes serverless local storage, failed queries, source selection, and the first import", () => {

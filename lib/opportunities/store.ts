@@ -76,6 +76,8 @@ export async function saveOpportunity(
     missingCount: 0,
     verificationFailures: 0,
     qualityNotes: notes,
+    lastLinkCheckedAt: old?.lastLinkCheckedAt,
+    linkFailures: old?.linkFailures,
   };
   await persist(record);
   await database().execute({

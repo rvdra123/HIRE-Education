@@ -6,7 +6,7 @@ A career platform for Grades 9–12 students in Brampton, Ontario, Canada. Built
 
 - Four navigation groups in the requested order, a logo extracted from the supplied reference, clearer copy, brighter secondary text, responsive layouts and reduced-motion support.
 - Database-backed `/opportunities` catalogue with server-side search, filters, sorting, pagination, bookmarks and detail pages. Public listings must have verified open status, pass student-relevance checks and have a verification within 72 hours.
-- Independent source adapters for approved JSON feeds, JSON-LD JobPosting/Event data, and UTC iCalendar feeds. Source permissions and robots.txt are checked before collection. No CAPTCHA or access-control bypass.
+- Source adapters for official Brampton volunteer intakes and library teen event cards, approved JSON feeds, JSON-LD JobPosting/Event data, and UTC iCalendar feeds. Robots.txt is checked before collection. No CAPTCHA or access-control bypass.
 - Six-hour refresh intervals for jobs, volunteering, programs and events. Three distinct timestamps, deduplication, repeat-missing detection, expiry, stale-data handling, bounded link health checks and source health reporting.
 - A free browser-only `/resume-reviewer`: PDF/DOCX/TXT reading or pasted text, an editable extraction preview, seven transparent checklist categories, posting-term coverage, fixed wording edits, next steps, and a local feedback download. No account, API key, billing, or review quota. It is explicitly labelled checklist-based feedback, not AI.
 - Opportunity → reviewer prefill → educational feedback → official application workflow.
@@ -16,9 +16,9 @@ A career platform for Grades 9–12 students in Brampton, Ontario, Canada. Built
 
 ## Important activation status
 
-**The browser resume checker works without external activation.** It does not call OpenAI, Google, or another AI service. The former resume POST endpoint returns 410 before parsing a body or accessing a provider/database, even if old provider keys remain configured. Automatically populated live listings still require approved source feeds and scheduling on the deployed host. The site does not invent current vacancies, event dates, or verification timestamps.
+**The browser resume checker works without external activation.** It does not call OpenAI, Google, or another AI service. The former resume POST endpoint returns 410 before parsing a body or accessing a provider/database, even if old provider keys remain configured. Live listings require the shared database, refresh secret, and scheduler on the deployed host. Three verified public sources default on: the City volunteer intake, Brampton Library youth volunteering, and library teen events. The site does not invent current vacancies, event dates, or verification timestamps.
 
-`data/sources.json` records the candidate sources and why each is disabled. An organizational directory is not a confirmed open vacancy. Before enabling a source, obtain a permitted machine-readable feed or confirm automation terms, verify its actual structure, update its URL/adapter/defaults/allowedHosts, and set `automationApproved: true`. Then add its ID to `OPPORTUNITY_SOURCE_IDS`. Source listing facts must come from that source. No production test listings are seeded.
+`data/sources.json` records source adapters, access checks, and reasons for disabled sources. An organizational directory is not a confirmed open vacancy. The City intake is one listing; its role directory does not become separate openings. Library events are a featured selection, not an exhaustive calendar. Job Bank, City careers, and Peel remain disabled pending verified feeds and access. Before enabling another source, confirm its automation terms and robots policy, verify its actual structure, and update its adapter and allowed hosts. Source facts must come from that source. No production test listings are seeded. See [source verification and access results](deploy/catalogue-verification.md).
 
 ## Run
 
@@ -50,7 +50,7 @@ All server secrets are documented in `.env.example`. Do not put them in chat, so
 - `CRON_SECRET` and `ADMIN_SECRET`: different random secrets, each at least 32 characters. Unconfigured/short secrets deny access.
 - `TRUSTED_IP_HEADER`: used only by legacy server request helpers. Never trust arbitrary client-supplied IP headers. Browser resume checking has no connection-based allowance.
 - `NEXT_PUBLIC_SITE_URL`: final HTTPS origin. Set before the production build for correct social metadata.
-- `OPPORTUNITY_SOURCE_IDS`: approved source IDs to collect. Empty means no automated collection.
+- `OPPORTUNITY_SOURCE_IDS`: optional override of approved source IDs. Unset uses the three verified defaults. An explicit empty value disables collection. To select all connected sources explicitly: `brampton-volunteer,brampton-library,brampton-library-volunteer`.
 
 A server deployment is required for live database queries and periodic opportunity updates. Browser-only resume checking does not need a server or secret. A downloaded HTML preview cannot run background source synchronization.
 
@@ -60,17 +60,19 @@ A server deployment is required for live database queries and periodic opportuni
 
 Choose ONE scheduler:
 
-1. GitHub Actions: `.github/workflows/refresh-opportunities.yml` runs every six hours once pushed to a repository with Actions enabled. Set repository secrets `HIRE_SITE_URL` and `HIRE_CRON_SECRET` to the deployed site and matching `CRON_SECRET`. Actions schedules are best-effort, and public repositories can have inactivity restrictions.
+1. GitHub Actions: `.github/workflows/refresh-opportunities.yml` runs every six hours with Actions enabled, and after feed changes reach `main`. It explicitly checks out `main`; the same workflow must be present on the repository's default branch (`hire-education-launch`) for scheduled triggers. On push, it waits for Vercel to serve that commit before importing. Set `HIRE_CRON_SECRET` to match Vercel's `CRON_SECRET`; the public `HIRE_SITE_URL` repository variable optionally overrides `https://hire-education.vercel.app`. The old site-URL secret is no longer used. The runner fails when an enabled source fails, even if the endpoint returns HTTP 200. Actions schedules are best-effort, and public repositories can have inactivity restrictions.
 2. Persistent host: use `deploy/crontab.example`, with the host's real Node path and working directory. `scripts/run-sync.mjs` needs the site URL and secret in its environment.
 3. Hosting scheduler: make an authenticated GET to `/api/cron/update-opportunities` every six hours, with `Authorization: Bearer <CRON_SECRET>`.
 
-All five configured sources use a six-hour interval; source approval and selection are still required before collection. A database lease prevents overlapping refreshes. One failed source does not erase the catalogue. The routine refreshes expiry states and retries failed provider-file deletion. Browser polling only reads the database; it never runs collection.
+All six configured sources use a six-hour interval; the three verified sources default on. A database lease prevents overlapping refreshes. One failed source does not erase the catalogue. The routine refreshes expiry states and retries failed provider-file deletion. Browser polling only reads the database; it never runs collection.
 
 ## Feed contract and data quality
 
 An approved JSON feed returns an array or `{ "items": [...] }` matching `listingSchema` in `lib/opportunities/types.ts`. Required facts include title, organization, description, type, category, location, source URL and application URL. `applicationStatus` must be `open` to be published. Unknown age/grade/compensation is labelled, not guessed. Supply date-times with explicit UTC offsets. ICS supports explicit UTC times; timezone-dependent feeds require an adapted parser and remain unpublished if the start time cannot be established.
 
 `firstSeenAt` is set once per listing. `lastSeenAt` advances when the source actually contains it. `lastVerifiedAt` advances only after a successful, valid source check. Failures preserve all three. A deadline/explicit closed status expires a listing. Two successful complete-feed snapshots missing a record mark it unavailable. An empty/malformed/unrecognized page is treated as a failure rather than erasing records. Three verification failures or verification older than 72 hours hides a record for review. Historical records remain internal.
+
+The library adapter converts complete published local dates/times using `America/Toronto`, including daylight saving, and rejects ambiguous/nonexistent times. Missing years, dates, prices, grades, or requirements stay unknown. The City's yearless "November 9" remains source text with a null structured deadline. Public event cards confirm the published schedule; students must check registration availability on the official event page. These partial public pages use `completeFeed: false`; a record leaving a featured selection ages out rather than being declared closed immediately.
 
 Link checks are bounded and only visit hosts approved for that source, after robots checks. 404/410 and explicit closure messages hide records; repeated other failures require review. A successful link response alone does not renew a listing's verification date. Deduplication combines normalized title/organization/location/date fingerprints and matching application links; canonical official sources take priority.
 
@@ -90,7 +92,7 @@ The old `POST /api/resume-review` returns HTTP 410 and does not parse the body, 
 
 The free-learning directory contains 103 curated courses across eleven providers, with search, topic, provider, level, and credential-type filters and progressive loading. It distinguishes certificates, badges, participation statements, and training completion records. Some deep links use provider catalogues so changing course editions do not create invented URLs. These course details still need a live provider check; no claim of exhaustive coverage or current verification is made.
 
-The opportunities section includes 71 employer, volunteering, program, and event source entries with separate filters and counts. These are official website destinations, not individual open jobs, verified events, or active intakes. They never enter the live-listing database or inherit fabricated timestamps. The live catalogue remains empty until actual verified sources are connected.
+The opportunities section includes 71 employer, volunteering, program, and event source entries with separate filters and counts. These are official website destinations, not individual open jobs, verified events, or active intakes. They never enter the live-listing database or inherit fabricated timestamps. The separate live catalogue imports actual source records through the connected adapters.
 
 Interview practice has 48 questions, 12 each for retail, food service, recreation, and volunteering. Answer drafts stay only in page memory. Previous/next, random questions, a voluntary 60-second timer, progress indicators, fictional examples, and self-checks support practice without pretending to provide AI assessment.
 
@@ -112,11 +114,14 @@ history. Read `nextSteps` for the remaining production setup.
 npm run lint
 npm run typecheck
 npm test
+npm run test:feeds:live
 npm run build
 npm run test:browser
 ```
 
 Browser checks use `HIRE_TEST_URL` (default port 3000) and `/usr/bin/chromium` (adjust for your machine). They cover real local analysis, actual PDF/DOCX/TXT extraction, editing/rechecking, clear/reload behavior, invalid files/text, download, no resume API requests or input transmission, no input persistence, privacy controls, catalogue filters, responsive layouts, and axe accessibility scans. Unit tests include scoring consistency, keyword repetition, school-based examples, contact information invariance, factual wording edits, and validation. Legacy provider and catalogue tests use isolated synthetic fixtures, never student documents or public listings.
+
+`test:feeds:live` fetches official pages through the normal proxy and robots checks, imports them into a temporary database, and verifies deduplication, the exact six-hour refresh boundary, and all three timestamps on success, skips, and failures. The cadence checks replay the just-fetched responses in isolated storage; they do not claim to observe six hours of production scheduler history. The temporary database is removed after the check.
 
 ## GitHub Pages
 

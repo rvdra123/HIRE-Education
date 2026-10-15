@@ -1,6 +1,6 @@
 import "server-only";
 import type { SourceConfig, SourceHealth } from "./types";
-import { sources } from "./sources/registry";
+import { enabledSources, sources } from "./sources/registry";
 
 export function catalogueReadiness({
   databaseQuerySucceeded,
@@ -16,13 +16,7 @@ export function catalogueReadiness({
   const approved = configuredSources.filter(
     (source) => source.automationApproved,
   );
-  const selectedIds = new Set(
-    (environment.OPPORTUNITY_SOURCE_IDS || "")
-      .split(",")
-      .map((id) => id.trim())
-      .filter(Boolean),
-  );
-  const enabled = approved.filter((source) => selectedIds.has(source.id));
+  const enabled = enabledSources(environment, configuredSources);
   const enabledIds = new Set(enabled.map((source) => source.id));
   const remoteStorage = /^(?:libsql|https?|wss?):\/\//i.test(
     environment.DATABASE_URL || "",
@@ -89,6 +83,7 @@ export function catalogueReadiness({
       candidates: configuredSources.length,
       approved: approved.length,
       enabled: enabled.length,
+      enabledIds: enabled.map((source) => source.id),
     },
     refresh: {
       authenticationConfigured: refreshSecretConfigured,
@@ -97,6 +92,16 @@ export function catalogueReadiness({
       configuredCadenceHours: [
         ...new Set(enabled.map((source) => source.intervalHours)),
       ].sort((a, b) => a - b),
+      sources: enabled.map((source) => {
+        const entry = health.find((item) => item.source === source.id);
+        return {
+          id: source.id,
+          state: entry?.state || "awaiting_first_import",
+          lastRun: entry?.lastRun || null,
+          lastSuccessfulRun: entry?.lastSuccessfulRun || null,
+          itemsFound: entry?.itemsFound || 0,
+        };
+      }),
     },
     nextSteps,
   };

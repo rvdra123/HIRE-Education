@@ -59,9 +59,18 @@ export const officialDirectories = [
 export function sources(): SourceConfig[] {
   return configuredSources as SourceConfig[];
 }
-export function enabledSources() {
-  const ids = (process.env.OPPORTUNITY_SOURCE_IDS || "")
+export function enabledSources(
+  environment: Record<string, string | undefined> = process.env,
+  configured = sources(),
+) {
+  const ids = (
+    environment.OPPORTUNITY_SOURCE_IDS ??
+    configured
+      .filter((source) => source.enabledByDefault)
+      .map((source) => source.id)
+      .join(",")
+  )
     .split(",")
     .map((x) => x.trim());
-  return sources().filter((x) => ids.includes(x.id) && x.automationApproved);
+  return configured.filter((x) => ids.includes(x.id) && x.automationApproved);
 }

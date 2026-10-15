@@ -89,9 +89,16 @@ export type SourceConfig = {
   url: string;
   organization: string;
   trust: SourceTrust;
-  adapter: "json" | "jsonld" | "ics";
+  adapter:
+    | "json"
+    | "jsonld"
+    | "ics"
+    | "brampton-library-events"
+    | "brampton-library-volunteer"
+    | "brampton-volunteer";
   intervalHours: 6 | 12 | 24;
   automationApproved: boolean;
+  enabledByDefault?: boolean;
   approvalNote: string;
   completeFeed: boolean;
   allowedHosts: string[];

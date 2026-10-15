@@ -27,9 +27,8 @@ export default function OpportunitiesPage() {
             interests and school schedule.
           </p>
           <p className="refresh-note">
-            Jobs are scheduled for checks every six hours. Volunteer roles,
-            programs, and events are scheduled daily. The dates on each listing
-            show the last successful checks.
+            Opportunities and events are scheduled for checks every six hours.
+            The dates on each listing show the last successful checks.
           </p>
         </div>
         <Catalogue />
