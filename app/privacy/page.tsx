@@ -77,7 +77,7 @@ export default function PrivacyPage() {
             </li>
             <li>
               <strong>Abuse prevention:</strong> we keep temporary usage
-              counters and, when a trusted hosting IP header is configured, a
+              counters and, when a trusted hosting IP header is available, a
               keyed hash of that identifier. We do not store raw IP addresses in
               the application’s rate-limit table. Infrastructure logs are
               separate.

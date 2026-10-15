@@ -7,6 +7,8 @@ import {
   clientLimitKey,
   limit,
   privateHeaders,
+  reserveLimits,
+  reviewLimitMessage,
   sameOrigin,
 } from "@/lib/security/requests";
 export const runtime = "nodejs";
@@ -83,20 +85,24 @@ export async function POST(request: Request) {
         },
         { status: 503, headers: privateHeaders },
       );
-    const userLimit = await limit(clientLimitKey(request), 3, 3600000);
-    const globalLimit = await limit("review-global-budget", 60, 86400000);
-    if (!userLimit.allowed || !globalLimit.allowed)
+    const reviewLimit = await reserveLimits([
+      { key: clientLimitKey(request), max: 3, windowMs: 3600000 },
+      { key: "review-global-budget", max: 60, windowMs: 86400000 },
+    ]);
+    if (!reviewLimit.allowed)
       return NextResponse.json(
-        { error: "The review limit has been reached. Please try again later." },
+        {
+          error: reviewLimitMessage(
+            reviewLimit.blockedIndex,
+            reviewLimit.retryAfter,
+          ),
+          retryAfter: reviewLimit.retryAfter,
+        },
         {
           status: 429,
           headers: {
             ...privateHeaders,
-            "Retry-After": String(
-              !userLimit.allowed
-                ? userLimit.retryAfter
-                : globalLimit.retryAfter,
-            ),
+            "Retry-After": String(reviewLimit.retryAfter),
           },
         },
       );
