@@ -7,7 +7,7 @@ A career platform for Grades 9–12 students in Brampton, Ontario, Canada. Built
 - Four navigation groups in the requested order, a logo extracted from the supplied reference, clearer copy, brighter secondary text, responsive layouts and reduced-motion support.
 - Database-backed `/opportunities` catalogue with server-side search, filters, sorting, pagination, bookmarks and detail pages. Public listings must have verified open status, pass student-relevance checks and have a verification within 72 hours.
 - Independent source adapters for approved JSON feeds, JSON-LD JobPosting/Event data, and UTC iCalendar feeds. Source permissions and robots.txt are checked before collection. No CAPTCHA or access-control bypass.
-- Six-hour job refreshes and daily volunteer/program/event checks. Three distinct timestamps, deduplication, repeat-missing detection, expiry, stale-data handling, bounded link health checks and source health reporting.
+- Six-hour refresh intervals for jobs, volunteering, programs and events. Three distinct timestamps, deduplication, repeat-missing detection, expiry, stale-data handling, bounded link health checks and source health reporting.
 - A free browser-only `/resume-reviewer`: PDF/DOCX/TXT reading or pasted text, an editable extraction preview, seven transparent checklist categories, posting-term coverage, fixed wording edits, next steps, and a local feedback download. No account, API key, billing, or review quota. It is explicitly labelled checklist-based feedback, not AI.
 - Opportunity → reviewer prefill → educational feedback → official application workflow.
 - Brampton events calendar with Toronto-time date filtering, event times, cost and official source/application links.
@@ -64,7 +64,7 @@ Choose ONE scheduler:
 2. Persistent host: use `deploy/crontab.example`, with the host's real Node path and working directory. `scripts/run-sync.mjs` needs the site URL and secret in its environment.
 3. Hosting scheduler: make an authenticated GET to `/api/cron/update-opportunities` every six hours, with `Authorization: Bearer <CRON_SECRET>`.
 
-Each adapter enforces its own 6-, 12- or 24-hour interval. A database lease prevents overlapping refreshes. One failed source does not erase the catalogue. The routine refreshes expiry states and retries failed provider-file deletion. Browser polling only reads the database; it never runs collection.
+All five configured sources use a six-hour interval; source approval and selection are still required before collection. A database lease prevents overlapping refreshes. One failed source does not erase the catalogue. The routine refreshes expiry states and retries failed provider-file deletion. Browser polling only reads the database; it never runs collection.
 
 ## Feed contract and data quality
 
