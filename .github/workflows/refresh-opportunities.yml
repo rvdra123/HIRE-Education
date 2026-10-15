@@ -14,10 +14,13 @@ jobs:
     steps:
       - name: Run protected refresh
         env:
-          SITE_URL: ${{ secrets.HIRE_SITE_URL }}
+          SITE_URL: ${{ vars.HIRE_SITE_URL || secrets.HIRE_SITE_URL || 'https://hire-education.vercel.app' }}
           CRON_SECRET: ${{ secrets.HIRE_CRON_SECRET }}
         run: |
-          test -n "$SITE_URL" && test -n "$CRON_SECRET"
+          if [ -z "$CRON_SECRET" ]; then
+            echo "::error::Set HIRE_CRON_SECRET in repository secrets to match the Vercel project's CRON_SECRET. No refresh was attempted."
+            exit 1
+          fi
           curl --fail --silent --show-error --max-time 300 \
             -H "Authorization: Bearer $CRON_SECRET" \
             "$SITE_URL/api/cron/update-opportunities"

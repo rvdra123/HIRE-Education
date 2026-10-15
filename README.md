@@ -96,6 +96,14 @@ Interview practice has 48 questions, 12 each for retail, food service, recreatio
 
 ## Internal status
 
+`GET /api/catalogue-status` is a safe public setup report. It checks whether
+source-health data can be queried, distinguishes local/shared database
+configuration, counts approved/enabled sources, and reports whether refresh
+authentication is configured and a successful import is recorded. It exposes
+no credentials, database addresses, filesystem paths, or raw exceptions. It
+cannot verify remote database durability or GitHub Actions configuration/run
+history. Read `nextSteps` for the remaining production setup.
+
 `GET /api/internal/status` with `Authorization: Bearer <ADMIN_SECRET>` returns source health, grouped listing/status counts, today's additions/updates and configuration notes. It is not a public dashboard. Resumes and API keys are never included.
 
 ## Checks
