@@ -2,10 +2,10 @@ import { build } from "esbuild";
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import path from "node:path";
 const root = process.cwd();
-mkdirSync("downloads", { recursive: true });
-const entry = `import React,{useEffect,useState} from 'react';import{createRoot}from'react-dom/client';import Home from './components/Home';import SiteHeader from './components/SiteHeader';import Catalogue from './components/opportunities/Catalogue';import EventsCalendar from './components/opportunities/EventsCalendar';import Reviewer from './components/resume/Reviewer';import PrivacyPage from './app/privacy/page';import PrivacyControls from './components/privacy/PrivacyControls';import MotionController from './components/MotionController';import './app/globals.css';
-const actualFetch=window.fetch.bind(window);window.fetch=async(input,init)=>{const value=typeof input==='string'?input:input.url||String(input);if(value.startsWith('/api/')){return new Response(JSON.stringify({items:[],total:0,page:1,pageSize:24,lastSuccessfulSync:null}),{headers:{'Content-Type':'application/json'}})}return actualFetch(input,init)};
-function App(){const[route,setRoute]=useState('/');useEffect(()=>{function click(e){const link=e.target.closest?.('a[href]');const href=link?.getAttribute('href');if(!href?.startsWith('/'))return;e.preventDefault();const url=new URL(href,'https://preview.invalid');setRoute(url.pathname);requestAnimationFrame(()=>requestAnimationFrame(()=>{if(url.hash)document.getElementById(url.hash.slice(1))?.scrollIntoView();else window.scrollTo(0,0)}))}document.addEventListener('click',click);return()=>document.removeEventListener('click',click)},[]);return <><div className="offline-preview-note">Offline preview: live listings need the hosted website. The free resume checker, guides, practice tools, and privacy controls work on this device.</div>{route==='/privacy'?<PrivacyPage/>:route==='/resume-reviewer'?<><SiteHeader/><main className="container feature-page"><div className="page-heading"><h1>Free resume checker for high school students</h1></div><Reviewer/></main></>:route==='/opportunities'?<><SiteHeader/><main className="container feature-page"><div className="page-heading"><h1>Student opportunities in Brampton</h1></div><Catalogue/><section id="events" className="events-section"><h2>Brampton youth events calendar</h2><EventsCalendar/></section></main></>:<Home/>}<MotionController/><PrivacyControls/></>};createRoot(document.getElementById('root')).render(<App/>);`;
+const pages = process.argv.includes("--pages");
+const outputDirectory = pages ? "docs" : "downloads";
+mkdirSync(outputDirectory, { recursive: true });
+const entry = `import React from 'react';import{createRoot}from'react-dom/client';import StaticSite from './components/static/StaticSite';import './app/globals.css';createRoot(document.getElementById('root')).render(<StaticSite preview={${!pages}}/>);`;
 const result = await build({
   stdin: {
     contents: entry,
@@ -15,15 +15,19 @@ const result = await build({
   },
   bundle: true,
   write: false,
-  outfile: path.join(root, "downloads/preview.js"),
+  outfile: path.join(root, outputDirectory, "static-site.js"),
   minify: true,
   jsx: "automatic",
   platform: "browser",
   target: "es2020",
   define: {
     "process.env.NODE_ENV": '"production"',
-    "process.env.PRIVACY_CONTACT_EMAIL": '""',
-    "process.env.SITE_OPERATOR_NAME": '"HIRE Education"',
+    "process.env.PRIVACY_CONTACT_EMAIL": JSON.stringify(
+      process.env.PRIVACY_CONTACT_EMAIL || "",
+    ),
+    "process.env.SITE_OPERATOR_NAME": JSON.stringify(
+      process.env.SITE_OPERATOR_NAME || "HIRE Education",
+    ),
   },
   plugins: [
     {
@@ -51,7 +55,7 @@ const result = await build({
           contents:
             args.path === "image"
               ? "import React from 'react';export default function Image({priority:_,...props}){return React.createElement('img',props)}"
-              : "import React from 'react';export default function Link({prefetch:_,...props}){return React.createElement('a',props)}",
+              : "import React from 'react';import{staticHref}from'@/lib/static-site/routing';export default function Link({prefetch:_,href,...props}){return React.createElement('a',{...props,href:typeof href==='string'?staticHref(href):href})}",
           loader: "jsx",
           resolveDir: root,
         }));
@@ -69,7 +73,11 @@ const font = readFileSync(
   "node_modules/@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2",
 ).toString("base64");
 const html = `<!doctype html><html lang="en-CA"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>HIRE Education | Brampton student career resources</title><link rel="icon" href="${logo}"><style>@font-face{font-family:'Manrope Variable';font-style:normal;font-weight:200 800;font-display:swap;src:url(data:font/woff2;base64,${font}) format('woff2')}${css}.offline-preview-note{padding:10px 20px;background:#203b5b;color:#eef5ff;text-align:center;font:12px/1.7 Arial,sans-serif}</style></head><body><div id="root"></div><noscript>Enable JavaScript to use the interactive guides.</noscript><script>${js}</script></body></html>`;
-writeFileSync("downloads/HIRE-Education.html", html);
+writeFileSync(
+  path.join(outputDirectory, pages ? "index.html" : "HIRE-Education.html"),
+  html,
+);
+if (pages) writeFileSync(path.join(outputDirectory, ".nojekyll"), "");
 console.log(
-  `Offline preview built (${Math.round(Buffer.byteLength(html) / 1024)} KB). Live server features are explicitly unavailable in this version.`,
+  `${pages ? "GitHub Pages site" : "Offline edition"} built (${Math.round(Buffer.byteLength(html) / 1024)} KB). Resume checking and resources work locally; live opening and event status comes from the linked official sources.`,
 );

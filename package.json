@@ -13,6 +13,8 @@
     "test:browser": "node scripts/platform-browser-check.mjs",
     "test:accessibility": "node scripts/platform-browser-check.mjs",
     "build:preview": "node scripts/build-preview.mjs",
+    "build:pages": "node scripts/build-preview.mjs --pages",
+    "test:pages": "node scripts/pages-browser-check.mjs",
     "lint": "eslint app components lib tests scripts --no-warn-ignored",
     "test": "node --conditions=react-server --import tsx --test tests/*.test.ts"
   },

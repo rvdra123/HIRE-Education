@@ -110,9 +110,25 @@ npm run test:browser
 
 Browser checks use `HIRE_TEST_URL` (default port 3000) and `/usr/bin/chromium` (adjust for your machine). They cover real local analysis, actual PDF/DOCX/TXT extraction, editing/rechecking, clear/reload behavior, invalid files/text, download, no resume API requests or input transmission, no input persistence, privacy controls, catalogue filters, responsive layouts, and axe accessibility scans. Unit tests include scoring consistency, keyword repetition, school-based examples, contact information invariance, factual wording edits, and validation. Legacy provider and catalogue tests use isolated synthetic fixtures, never student documents or public listings.
 
+## GitHub Pages
+
+`npm run build:pages` builds a complete static edition into `docs/index.html`.
+The ready-built folder is committed for simple branch-based publishing. In
+repository **Settings → Pages**, choose **Deploy from a branch**,
+**hire-education-launch**, **/docs**, and Save. The expected default URL is
+`https://rvdra123.github.io/HIRE-Education/` once GitHub finishes deploying.
+The checker is at `#/resume-reviewer` under that address.
+
+This edition includes the browser-only tools, course catalogue, and official
+employer/program/event directories. Live database listings and scheduled event
+feeds require the server edition. Routes use URL hashes so refreshes and shared
+links work under the repository path. `npm run test:pages` verifies the built
+site using a strict static server. Rebuild and commit `docs` with later source
+changes. See [Pages setup](deploy/github-pages.md).
+
 ## Downloadable preview
 
-`npm run build:preview` generates `downloads/HIRE-Education.html`, with the logo, font, styles and scripts embedded. Its lightweight local navigation includes the catalogue, calendar, privacy page and reviewer UI, with server features explicitly unavailable. It is for reviewing the design and local tools, not deploying the live services. Deploy the full Next.js project for production.
+`npm run build:preview` generates `downloads/HIRE-Education.html` from the same static shell as Pages, with an offline-edition notice. It includes the logo, font, styles, scripts, PDF worker, official-source directories, privacy page, and fully working local checker. Deploy the full Next.js project for server-backed listings and scheduled synchronization.
 
 Cloud workspace-specific configuration and the reserved OpenAI variable mapping are documented in `deploy/cloud-environment.md`.
 

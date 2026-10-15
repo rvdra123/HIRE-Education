@@ -15,6 +15,7 @@ import Discovery from "./Discovery";
 import ApplicationTools from "./ApplicationTools";
 import CareerResources, { resources, skills } from "./CareerResources";
 import Catalogue from "./opportunities/Catalogue";
+import OpportunityDirectory from "./opportunities/OpportunityDirectory";
 import { certifications } from "@/lib/discovery-data";
 import { opportunityDirectory } from "@/lib/opportunities/directory";
 type Entry = {
@@ -68,7 +69,7 @@ const guides: Entry[] = [
     type: "Practice",
   },
 ];
-export default function Home() {
+export default function Home({ staticMode = false }: { staticMode?: boolean }) {
   const [searchOpen, setSearchOpen] = useState(false);
   const close = useCallback(() => {
     setSearchOpen(false);
@@ -183,9 +184,9 @@ export default function Home() {
                   Jobs, volunteering, and student programs
                 </h2>
                 <p className="section-description">
-                  Explore Brampton and nearby communities. Each published
-                  listing shows its application status and when it was last
-                  checked.
+                  {staticMode
+                    ? "Explore official employer, volunteering, and student program websites. Check current openings, dates, and eligibility on each source."
+                    : "Explore Brampton and nearby communities. Each published listing shows its application status and when it was last checked."}
                 </p>
               </div>
               <Link
@@ -193,29 +194,50 @@ export default function Home() {
                 href="/opportunities#events"
                 prefetch={false}
               >
-                Youth events calendar
+                {staticMode
+                  ? "Youth workshops and events"
+                  : "Youth events calendar"}
                 <ArrowUpRight />
               </Link>
             </div>
-            <Catalogue compact />
+            {staticMode ? (
+              <OpportunityDirectory compact />
+            ) : (
+              <Catalogue compact />
+            )}
           </div>
         </section>
         <Discovery />
         <ApplicationTools />
         <CareerResources />
       </main>
-      {searchOpen && <GlobalSearch onClose={close} />}
+      {searchOpen && <GlobalSearch onClose={close} staticMode={staticMode} />}
     </>
   );
 }
-function GlobalSearch({ onClose }: { onClose: () => void }) {
+function GlobalSearch({
+  onClose,
+  staticMode = false,
+}: {
+  onClose: () => void;
+  staticMode?: boolean;
+}) {
   const [query, setQuery] = useState("");
   const [live, setLive] = useState<Entry[]>([]);
   const ref = useRef<HTMLDivElement>(null);
   const input = useRef<HTMLInputElement>(null);
   const results = useMemo(() => {
     const entries: Entry[] = [
-      ...guides,
+      ...guides.map((guide) =>
+        staticMode && guide.type === "Events"
+          ? {
+              ...guide,
+              title: "Brampton workshops and event sources",
+              description:
+                "Official library, youth program, and event websites. Check dates and registration with the organizer.",
+            }
+          : guide,
+      ),
       ...skills.map((s) => ({
         title: s.title,
         description: `${s.description} ${s.means}`,
@@ -246,10 +268,14 @@ function GlobalSearch({ onClose }: { onClose: () => void }) {
             ),
           )
           .slice(0, 30)
-      : guides;
-  }, [query, live]);
+      : entries.filter((entry) =>
+          ["Guide", "Tool", "Practice", "Events", "Checklist"].includes(
+            entry.type,
+          ),
+        );
+  }, [query, live, staticMode]);
   useEffect(() => {
-    if (query.trim().length < 2) {
+    if (staticMode || query.trim().length < 2) {
       setLive([]);
       return;
     }
@@ -286,7 +312,7 @@ function GlobalSearch({ onClose }: { onClose: () => void }) {
       clearTimeout(t);
       abort.abort();
     };
-  }, [query]);
+  }, [query, staticMode]);
   useEffect(() => {
     const overflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
