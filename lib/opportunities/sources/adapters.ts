@@ -41,7 +41,7 @@ async function get(url: string, source: SourceConfig, signal: AbortSignal) {
   }
   throw new Error("Too many source redirects");
 }
-export async function fetchApprovedSource(
+export async function fetchApprovedPage(
   source: SourceConfig,
   signal: AbortSignal,
 ) {
@@ -70,7 +70,16 @@ export async function fetchApprovedSource(
     throw new Error("Source crawl delay requires a slower adapter");
   const response = await get(source.url, source, signal);
   if (!response.ok) throw new Error(`Source returned HTTP ${response.status}`);
-  const body = await boundedText(response);
+  return boundedText(response);
+}
+export async function fetchApprovedSource(
+  source: SourceConfig,
+  signal: AbortSignal,
+  fetchPage = fetchApprovedPage,
+) {
+  if (!source.automationApproved)
+    throw new Error("Source permission has not been approved");
+  const body = await fetchPage(source, signal);
   if (source.adapter !== "mcdonalds-jobs") return body;
   // A bounded first-page selection, never a complete employer inventory.
   // Each detail page goes through the same host, redirect and robots checks.
@@ -78,10 +87,7 @@ export async function fetchApprovedSource(
   for (const url of mcdonaldsJobLinks(body)) {
     details.push({
       url,
-      body: await fetchApprovedSource(
-        { ...source, url, adapter: "jsonld" },
-        signal,
-      ),
+      body: await fetchPage({ ...source, url, adapter: "jsonld" }, signal),
     });
   }
   return JSON.stringify({ search: body, details });

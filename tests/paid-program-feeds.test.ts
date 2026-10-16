@@ -1,10 +1,13 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
-import { parseSource } from "../lib/opportunities/sources/adapters";
+import {
+  fetchApprovedSource,
+  parseSource,
+} from "../lib/opportunities/sources/adapters";
 import { mcdonaldsJobLinks } from "../lib/opportunities/sources/mcdonalds";
 import { sources, enabledSources } from "../lib/opportunities/sources/registry";
-import { statusFor } from "../lib/opportunities/quality";
+import { qualityNotes, statusFor } from "../lib/opportunities/quality";
 
 const config = (id: string) => sources().find((s) => s.id === id)!;
 const fixture = (file: string) =>
@@ -25,6 +28,18 @@ test("employer data distinguishes existing vacancies, unspecified intakes and fu
   assert.equal(existing.compensation, null);
   assert.equal(existing.applicationDeadline, null);
   assert.equal(existing.sourceUrl, existing.applicationUrl);
+  assert.deepEqual(
+    qualityNotes(existing),
+    [],
+    "Legitimate payment-processing duties are not an application fee",
+  );
+  assert.ok(
+    qualityNotes({
+      ...existing,
+      description:
+        "You must pay a $50 application fee to apply for this position.",
+    }).includes("Requires manual fraud review"),
+  );
   assert.equal(unspecified.applicationStatus, "unknown");
   assert.equal(future.applicationStatus, "unknown");
   assert.equal(future.minimumAge, 16);
@@ -41,6 +56,36 @@ test("employer data distinguishes existing vacancies, unspecified intakes and fu
   assert.equal(
     parseSource(JSON.stringify(data), source).items[0].applicationStatus,
     "unknown",
+  );
+});
+
+test("paid collection expands only the search feed into individually checked detail pages", async () => {
+  const source = { ...config("mcdonalds-brampton"), automationApproved: true };
+  const data = JSON.parse(await fixture("mcdonalds.json"));
+  const calls: string[] = [];
+  const fetchPage = async (page: typeof source) => {
+    calls.push(page.url);
+    if (page.url === source.url) return data.search as string;
+    const detail = data.details.find(
+      (item: { url: string }) => item.url === page.url,
+    );
+    assert.ok(detail, "Only source-published detail links may be fetched");
+    return detail.body as string;
+  };
+  const body = await fetchApprovedSource(
+    source,
+    AbortSignal.timeout(1000),
+    fetchPage,
+  );
+  assert.deepEqual(calls, [source.url, ...mcdonaldsJobLinks(data.search)]);
+  assert.equal(parseSource(body, source).items.length, 3);
+  await assert.rejects(
+    fetchApprovedSource(
+      { ...source, automationApproved: false },
+      AbortSignal.timeout(1000),
+      fetchPage,
+    ),
+    /permission/,
   );
 });
 

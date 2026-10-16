@@ -75,7 +75,7 @@ export function qualityNotes(item: NormalizedListing) {
   if (!suitableForStudents(item))
     notes.push("Not suitable for the student catalogue");
   if (
-    /pay.*(apply|application)|guaranteed.*income|send.*(bitcoin|crypto)/i.test(
+    /\bpay\b[^.!?\n]{0,100}\b(?:to apply|(?:an? |the )?application fee)\b|guaranteed.*income|send.*(bitcoin|crypto)/i.test(
       item.description,
     )
   )

@@ -95,3 +95,32 @@ Next steps: review the McDonald's linked terms before approving that source,
 resolve library access through an official feed or permitted public access, and
 verify production source selection and import history after deployment. Do not
 promote future-vacancy pools, expired camps or challenge pages into open listings.
+
+## Integration review after the branch was pushed
+
+The pushed `continue-feed` branch was fetched and reviewed from the original
+workspace. Two integration issues were corrected before promotion to `main`:
+
+- Listing-link checks now fetch a single approved page. They do not invoke the
+  McDonald's multi-page search collector on an individual job detail page.
+  The same host, robots, redirect, response-size and timeout controls still apply.
+- The application-fee heuristic no longer treats legitimate duties such as
+  "processing payments" followed later by application instructions as a request
+  to pay to apply. Explicit pay-to-apply/application-fee language is still flagged.
+
+Regression checks exercise the captured employer descriptions, search-to-detail
+collection, and both successful and failed detail-link checks. Link checks retain
+`firstSeenAt`, `lastSeenAt`, and `lastVerifiedAt`; they do not renew verification.
+The reviewed suite contains 42 tests.
+
+Access differs between workspaces: this workspace still receives proxy CONNECT
+403 for `skillsontario.com`, `careers.mcdonalds.ca`, `www.mcdonalds.com`, and
+`www.careers.timhortons.ca`. The library teen and volunteer pages returned HTTP
+200 during this review, so their earlier challenges are not asserted to be a
+current production failure. The Skills Ontario live test recorded above was run
+in the continuation workspace; it cannot be rerun here until access changes.
+
+The transferable network proposal includes the newly observed exact hosts
+`skillsontario.com`, `www.mcdonalds.com`, and `www.careers.timhortons.ca` alongside
+the previously requested hosts. It is a proposal, not an applied network change.
+McDonald's collection remains disabled pending the outstanding terms review.
