@@ -111,10 +111,76 @@ test("published Toronto wall times handle DST and reject dates that require gues
   assert.equal(torontoDateTime("October 19", "4:00PM"), null);
 });
 
+test("Youth Cabinet imports only open general membership with the published age and application link", async () => {
+  const config = source("brampton-youth-cabinet");
+  const body = await fixture("youth-cabinet");
+  const result = parseSource(body, config);
+  assert.equal(result.items.length, 1);
+  const item = result.items[0];
+  assert.equal(item.title, "Youth Cabinet General Membership");
+  assert.equal(item.opportunityType, "leadership");
+  assert.equal(item.applicationStatus, "open");
+  assert.equal(
+    item.applicationUrl,
+    "https://forms.cloud.microsoft/r/6gGSDdMWSV",
+  );
+  assert.equal(item.minimumAge, 14);
+  assert.equal(item.applicationDeadline, null);
+  assert.equal(item.startDate, null);
+  assert.equal(item.paid, "unspecified");
+  assert.deepEqual(item.eligibleGrades, []);
+  assert.equal(
+    parseSource(body.replace("remain open", "are closed"), config).items[0]
+      .applicationStatus,
+    "closed",
+  );
+  assert.throws(
+    () =>
+      parseSource(
+        body
+          .replace("remain open", "have no confirmed status")
+          .replace("https://forms.cloud.microsoft/r/6gGSDdMWSV", ""),
+        config,
+      ),
+    /application changed/,
+  );
+});
+
+test("Summer Company closure takes priority over old application steps and incomplete future dates", async () => {
+  const config = source("brampton-summer-company");
+  const body = await fixture("summer-company");
+  const result = parseSource(body, config);
+  assert.equal(result.items.length, 1);
+  const item = result.items[0];
+  assert.equal(item.opportunityType, "summer-program");
+  assert.equal(item.applicationStatus, "closed");
+  assert.equal(item.minimumAge, 15);
+  assert.equal(item.applicationUrl, config.url);
+  assert.equal(item.applicationDeadline, null);
+  assert.equal(item.startDate, null);
+  assert.equal(item.endDate, null);
+  assert.equal(item.postedDate, null);
+  assert.match(item.description, /Applications are now closed/);
+  assert.equal(
+    parseSource(
+      body.replace("Applications are now closed", "Applications are now open"),
+      config,
+    ).items[0].applicationStatus,
+    "unknown",
+    "An open notice without a real application link is not enough",
+  );
+});
+
 test("only verified adapters default on, explicit source selection/disable is respected, and all run every six hours", () => {
   assert.deepEqual(
     enabledSources({}).map((s) => s.id),
-    ["brampton-volunteer", "brampton-library", "brampton-library-volunteer"],
+    [
+      "brampton-volunteer",
+      "brampton-library",
+      "brampton-library-volunteer",
+      "brampton-youth-cabinet",
+      "brampton-summer-company",
+    ],
   );
   assert.deepEqual(enabledSources({ OPPORTUNITY_SOURCE_IDS: "" }), []);
   assert.deepEqual(

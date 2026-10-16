@@ -95,7 +95,9 @@ export type SourceConfig = {
     | "ics"
     | "brampton-library-events"
     | "brampton-library-volunteer"
-    | "brampton-volunteer";
+    | "brampton-volunteer"
+    | "brampton-youth-cabinet"
+    | "brampton-summer-company";
   intervalHours: 6 | 12 | 24;
   automationApproved: boolean;
   enabledByDefault?: boolean;

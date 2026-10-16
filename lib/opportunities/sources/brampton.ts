@@ -15,6 +15,106 @@ export function bramptonListings(
   source: SourceConfig,
 ): ListingInput[] {
   const $ = load(body);
+  if (source.adapter === "brampton-youth-cabinet") {
+    const heading = $("h2").filter(
+      (_, el) => clean($(el).text()) === "Youth Cabinet General Membership",
+    );
+    if (heading.length !== 1)
+      throw new Error("Youth Cabinet general membership section changed");
+    const section = heading.nextUntil("h2,h3");
+    const paragraphs = section
+      .filter("p")
+      .toArray()
+      .map((el) => clean($(el).text()));
+    const description = paragraphs.join(" ");
+    const intake = paragraphs.find((p) =>
+      /Applications for the Youth Cabinet general membership/i.test(p),
+    );
+    if (!intake) throw new Error("Youth Cabinet intake status is missing");
+    const closed =
+      /(?:are|remain) (?:now )?closed|not accepting applications/i.test(intake);
+    const link =
+      section
+        .filter("a")
+        .filter((_, el) => clean($(el).text()) === "Apply now!")
+        .attr("href") || "";
+    if (
+      !closed &&
+      !/^https:\/\/forms\.cloud\.microsoft\/r\/[a-zA-Z0-9]+$/.test(link)
+    )
+      throw new Error("Youth Cabinet application changed");
+    const age = /aged (\d{1,2}) to (\d{1,2})/i.exec(intake);
+    return [
+      {
+        title: clean(heading.text()),
+        organization: source.organization,
+        description,
+        opportunityType: "leadership",
+        category: "Youth civic leadership",
+        location: "Brampton",
+        city: "Brampton",
+        minimumAge: age ? Number(age[1]) : null,
+        eligibility: intake,
+        sourceUrl: source.url,
+        applicationUrl: closed ? source.url : link,
+        applicationStatus: closed
+          ? "closed"
+          : /remain open/i.test(intake)
+            ? "open"
+            : "unknown",
+      },
+    ];
+  }
+  if (source.adapter === "brampton-summer-company") {
+    const content = $("[id$='_ControlWrapper_RichHtmlField']").filter((_, el) =>
+      /Provides training, mentoring and grants/.test($(el).text()),
+    );
+    const heading = $("h1").filter(
+      (_, el) =>
+        clean($(el).text()) ===
+        "Summer Company Program for Young Entrepreneurs",
+    );
+    if (content.length !== 1 || heading.length !== 1)
+      throw new Error("Summer Company program page changed");
+    const summary = clean(content.find("h3").first().text());
+    const notice = clean(
+      content.find("aside.ms-rteElement-CalloutFull").first().text(),
+    );
+    if (!notice) throw new Error("Summer Company intake notice is missing");
+    const age = /between the ages of (\d{1,2}) and (\d{1,2})/.exec(summary);
+    // The old application steps and dates remain on the page after closure.
+    // Only the current intake notice can establish status. A new open intake
+    // also needs a source-published Apply link; never invent an application URL.
+    const closed = /applications are (?:now )?closed/i.test(notice);
+    const application = content
+      .find("a")
+      .filter((_, el) =>
+        /^apply(?: now| online| here)?!?$/i.test(clean($(el).text())),
+      )
+      .attr("href");
+    return [
+      {
+        title: clean(heading.text()),
+        organization: source.organization,
+        description: `${summary} ${notice}`,
+        opportunityType: "summer-program",
+        category: "Student entrepreneurship",
+        location: "Brampton",
+        city: "Brampton",
+        minimumAge: age ? Number(age[1]) : null,
+        eligibility: summary,
+        sourceUrl: source.url,
+        applicationUrl: application
+          ? new URL(application, source.url).href
+          : source.url,
+        applicationStatus: closed
+          ? "closed"
+          : /applications are (?:now )?open/i.test(notice) && application
+            ? "open"
+            : "unknown",
+      },
+    ];
+  }
   if (source.adapter === "brampton-library-events") {
     const cards = $(".event-wrapper");
     if (!cards.length) throw new Error("Library event page format changed");

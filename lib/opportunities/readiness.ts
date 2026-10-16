@@ -84,6 +84,10 @@ export function catalogueReadiness({
       approved: approved.length,
       enabled: enabled.length,
       enabledIds: enabled.map((source) => source.id),
+      selection:
+        environment.OPPORTUNITY_SOURCE_IDS === undefined
+          ? "defaults"
+          : "environment_override",
     },
     refresh: {
       authenticationConfigured: refreshSecretConfigured,

@@ -40,6 +40,22 @@ async function main() {
       "Live imports must include both volunteer intakes and actual events",
     );
     assert.ok(
+      before.some(
+        (r) =>
+          r.sourceId === "brampton-youth-cabinet" &&
+          r.applicationStatus === "open" &&
+          r.opportunityType === "leadership",
+      ),
+    );
+    assert.ok(
+      before.some(
+        (r) =>
+          r.sourceId === "brampton-summer-company" &&
+          r.applicationStatus === "closed" &&
+          r.status === "expired",
+      ),
+    );
+    assert.ok(
       before.every(
         (r) =>
           r.firstSeenAt === now.toISOString() &&

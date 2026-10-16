@@ -21,7 +21,7 @@
     "adapter": "jsonld",
     "intervalHours": 6,
     "automationApproved": false,
-    "approvalNote": "www.jobbank.gc.ca returned HTTP 503 upstream connection timeout for robots.txt and student search during verification. No approved feed or redistribution arrangement is configured; disabled.",
+    "approvalNote": "Rechecked during feed expansion: robots.txt is reachable and asks for a five-second crawl delay. The configured search returned HTTP 200 containing an HTTP Error 500 Internal Server Error document, and the job-seeker terms request returned HTTP 503 upstream connection timeout. No usable, approved job feed has been verified; disabled.",
     "completeFeed": false,
     "allowedHosts": ["www.jobbank.gc.ca"]
   },
@@ -83,5 +83,33 @@
     "approvalNote": "Public youth volunteer section and robots.txt reviewed 2026-10-15; path is allowed. Bounded six-hour polling with attribution. Import only Program Assistant with the explicit Apply online link; exclude the adult role. Age, deadline, hours and start date are unspecified. The linked form.jotform.com host is blocked by the workspace proxy; the source also offers printed applications at branches.",
     "completeFeed": false,
     "allowedHosts": ["www.bramptonlibrary.ca", "form.jotform.com"]
+  },
+  {
+    "id": "brampton-youth-cabinet",
+    "name": "Brampton Youth Cabinet general membership",
+    "url": "https://www.brampton.ca/EN/residents/Youth/Pages/Brampton-Youth-Cabinet.aspx",
+    "organization": "City of Brampton",
+    "trust": "government",
+    "adapter": "brampton-youth-cabinet",
+    "intervalHours": 6,
+    "automationApproved": true,
+    "enabledByDefault": true,
+    "approvalNote": "Official City public page and robots.txt checked. The general-membership section explicitly says applications remain open for Brampton youth aged 14 to 29. Import one general-membership intake, not filled executive positions. No deadline, start date, or pay is inferred. The application link is published by the City; forms.cloud.microsoft is proxy-blocked in this workspace.",
+    "completeFeed": false,
+    "allowedHosts": ["www.brampton.ca", "forms.cloud.microsoft"]
+  },
+  {
+    "id": "brampton-summer-company",
+    "name": "Brampton Summer Company",
+    "url": "https://www.brampton.ca/EN/Business/BEC/youth",
+    "organization": "City of Brampton",
+    "trust": "government",
+    "adapter": "brampton-summer-company",
+    "intervalHours": 6,
+    "automationApproved": true,
+    "enabledByDefault": true,
+    "approvalNote": "Official public program page and robots.txt checked. The current intake banner explicitly says 2026 applications are closed; this source is monitored but no open listing is published. Future January/2027 references and old application steps are not converted to application dates. A future open intake also needs a published approved application link.",
+    "completeFeed": false,
+    "allowedHosts": ["www.brampton.ca"]
   }
 ]
