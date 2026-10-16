@@ -92,6 +92,8 @@ export type SourceConfig = {
   adapter:
     | "json"
     | "jsonld"
+    | "mcdonalds-jobs"
+    | "skills-ontario-camps"
     | "ics"
     | "brampton-library-events"
     | "brampton-library-volunteer"

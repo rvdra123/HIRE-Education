@@ -96,11 +96,7 @@ export function statusFor(
     Date.parse(item.applicationDeadline) <= now.getTime()
   )
     return "expired";
-  if (
-    item.opportunityType === "event" &&
-    item.endDate &&
-    Date.parse(item.endDate) <= now.getTime()
-  )
+  if (item.endDate && Date.parse(item.endDate) <= now.getTime())
     return "expired";
   if (
     item.opportunityType === "event" &&

@@ -11,9 +11,9 @@ test("verified real sources default on without blaming a working database", () =
   });
   assert.equal(report.state, "needs_setup");
   assert.equal(report.database.querySucceeded, true);
-  assert.equal(report.sources.candidates, 8);
-  assert.equal(report.sources.approved, 5);
-  assert.equal(report.sources.enabled, 5);
+  assert.equal(report.sources.candidates, 10);
+  assert.equal(report.sources.approved, 6);
+  assert.equal(report.sources.enabled, 6);
   assert.equal(report.refresh.lastSuccessfulSync, null);
   assert.ok(report.nextSteps.some((step) => step.includes("CRON_SECRET")));
 });

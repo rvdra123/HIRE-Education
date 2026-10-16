@@ -9,6 +9,8 @@ import {
 } from "../types";
 import { publicUrl } from "../quality";
 import { bramptonListings } from "./brampton";
+import { mcdonaldsJobLinks, mcdonaldsListings } from "./mcdonalds";
+import { skillsOntarioCamps } from "./skills-ontario";
 const agent = "HIREEducationBot";
 function permitted(url: string, source: SourceConfig) {
   const u = new URL(url);
@@ -68,7 +70,21 @@ export async function fetchApprovedSource(
     throw new Error("Source crawl delay requires a slower adapter");
   const response = await get(source.url, source, signal);
   if (!response.ok) throw new Error(`Source returned HTTP ${response.status}`);
-  return boundedText(response);
+  const body = await boundedText(response);
+  if (source.adapter !== "mcdonalds-jobs") return body;
+  // A bounded first-page selection, never a complete employer inventory.
+  // Each detail page goes through the same host, redirect and robots checks.
+  const details: { url: string; body: string }[] = [];
+  for (const url of mcdonaldsJobLinks(body)) {
+    details.push({
+      url,
+      body: await fetchApprovedSource(
+        { ...source, url, adapter: "jsonld" },
+        signal,
+      ),
+    });
+  }
+  return JSON.stringify({ search: body, details });
 }
 const text = (value: unknown) =>
   typeof value === "string"
@@ -224,7 +240,10 @@ export function parseSource(body: string, source: SourceConfig): SourceResult {
         : [];
     if (!Array.isArray(parsed) && !Array.isArray(parsed.items))
       throw new Error("Feed format changed");
-  } else if (source.adapter.startsWith("brampton-"))
+  } else if (source.adapter === "mcdonalds-jobs") raw = mcdonaldsListings(body);
+  else if (source.adapter === "skills-ontario-camps")
+    raw = skillsOntarioCamps(body, source);
+  else if (source.adapter.startsWith("brampton-"))
     raw = bramptonListings(body, source);
   else if (source.adapter === "ics") raw = icsItems(body, source);
   else raw = jsonLdItems(body).map((v) => jobFromLd(v, source));

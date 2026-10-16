@@ -8,7 +8,7 @@
     "adapter": "jsonld",
     "intervalHours": 6,
     "automationApproved": false,
-    "approvalNote": "Official careers destination linked by the City. careers.brampton.ca is blocked by this workspace proxy (CONNECT 403); listing structure and automation terms remain unverified. Disabled; no vacancies inferred from the careers directory.",
+    "approvalNote": "Rechecked 2026-10-16: public careers, category/search pages and robots.txt return HTTP 200. Jobs are rendered by a JavaScript SAP component; the fetched HTML contains no listing records. Disabled pending a verified public listing feed; no vacancies inferred from category marketing text. Robots disallows /services/ and application-related endpoints, which were not collected.",
     "completeFeed": false,
     "allowedHosts": ["careers.brampton.ca", "www.brampton.ca"]
   },
@@ -62,7 +62,7 @@
     "adapter": "jsonld",
     "intervalHours": 6,
     "automationApproved": false,
-    "approvalNote": "Official Peel pages are reachable and robots.txt reviewed. The linked jobs host careers-peelregion.icims.com is blocked by the workspace proxy (CONNECT 403). No verified youth-specific feed; disabled, with no openings inferred from the directory.",
+    "approvalNote": "Rechecked 2026-10-16: the old careers-peelregion.icims.com/jobs/search URL redirects to the Peel corporate site rather than returning job records. No verified youth-specific feed; disabled. HTTP 200 on that destination is not a successful jobs import.",
     "completeFeed": false,
     "allowedHosts": [
       "peelregion.ca",
@@ -111,5 +111,32 @@
     "approvalNote": "Official public program page and robots.txt checked. The current intake banner explicitly says 2026 applications are closed; this source is monitored but no open listing is published. Future January/2027 references and old application steps are not converted to application dates. A future open intake also needs a published approved application link.",
     "completeFeed": false,
     "allowedHosts": ["www.brampton.ca"]
+  },
+  {
+    "id": "mcdonalds-brampton",
+    "name": "McDonald’s Brampton jobs",
+    "url": "https://careers.mcdonalds.ca/jobs?keyword=Brampton",
+    "organization": "McDonald’s Canada",
+    "trust": "official",
+    "adapter": "mcdonalds-jobs",
+    "intervalHours": 6,
+    "automationApproved": false,
+    "approvalNote": "Public search, job detail JSON-LD and permissive robots.txt verified 2026-10-16. Adapter reads at most ten first-page Brampton roles and their detail pages, requires explicit Existing Vacancy status plus an Apply Now link for open status, and excludes future-vacancy pools from publication. The linked terms on www.mcdonalds.com are proxy-blocked; collection remains disabled pending terms review. Keyword results are not a complete feed. No application submission or private API access.",
+    "completeFeed": false,
+    "allowedHosts": ["careers.mcdonalds.ca"]
+  },
+  {
+    "id": "skills-ontario-brampton-camps",
+    "name": "Skills Ontario Brampton summer camps",
+    "url": "https://skillsontario.com/programs/camp/",
+    "organization": "Skills Ontario",
+    "trust": "official",
+    "adapter": "skills-ontario-camps",
+    "intervalHours": 6,
+    "automationApproved": true,
+    "enabledByDefault": true,
+    "approvalNote": "Public program schedule and robots.txt reviewed 2026-10-16; /programs/camp/ is allowed. Bounded six-hour polling with attribution. Import only explicitly dated Brampton rows, published grade eligibility, session hours and fee. The current two 2026 sessions have ended. Registration links do not verify availability: intake stays unknown, and ended sessions expire. No Eventbrite access or availability is claimed.",
+    "completeFeed": false,
+    "allowedHosts": ["skillsontario.com", "www.eventbrite.com"]
   }
 ]

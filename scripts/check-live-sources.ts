@@ -12,7 +12,18 @@ async function main() {
   delete process.env.DATABASE_AUTH_TOKEN;
   const { synchronize } = await import("../lib/opportunities/sync");
   const { database, closeDatabase } = await import("../lib/opportunities/db");
-  const configured = enabledSources({});
+  const requested = process.argv.slice(2);
+  const available = enabledSources({});
+  for (const id of requested)
+    assert.ok(
+      available.some((source) => source.id === id),
+      `Not an enabled source: ${id}`,
+    );
+  const configured = available.filter(
+    (source) => !requested.length || requested.includes(source.id),
+  );
+  const includes = (id: string) =>
+    configured.some((source) => source.id === id);
   const bodies = new Map<string, string>();
   const records = async () =>
     (
@@ -36,31 +47,57 @@ async function main() {
     );
     const before = await records();
     assert.ok(
-      before.length > 2,
-      "Live imports must include both volunteer intakes and actual events",
+      before.length > 0,
+      "Live imports must contain real source records",
+    );
+    if (includes("brampton-youth-cabinet"))
+      assert.ok(
+        before.some(
+          (r) =>
+            r.sourceId === "brampton-youth-cabinet" &&
+            r.applicationStatus === "open" &&
+            r.opportunityType === "leadership",
+        ),
+      );
+    if (includes("brampton-summer-company"))
+      assert.ok(
+        before.some(
+          (r) =>
+            r.sourceId === "brampton-summer-company" &&
+            r.applicationStatus === "closed" &&
+            r.status === "expired",
+        ),
+      );
+    const camps = before.filter(
+      (r) => r.sourceId === "skills-ontario-brampton-camps",
+    );
+    if (includes("skills-ontario-brampton-camps"))
+      assert.ok(
+        camps.length > 0,
+        "Live program schedule must contain Brampton sessions",
+      );
+    assert.ok(
+      camps.every(
+        (r) =>
+          r.applicationStatus === "unknown" &&
+          !r.verified &&
+          r.lastVerifiedAt === null,
+      ),
+      "Registration links alone must never establish open program intakes",
     );
     assert.ok(
-      before.some(
-        (r) =>
-          r.sourceId === "brampton-youth-cabinet" &&
-          r.applicationStatus === "open" &&
-          r.opportunityType === "leadership",
-      ),
-    );
-    assert.ok(
-      before.some(
-        (r) =>
-          r.sourceId === "brampton-summer-company" &&
-          r.applicationStatus === "closed" &&
-          r.status === "expired",
-      ),
+      camps
+        .filter((r) => Date.parse(r.endDate) <= now.getTime())
+        .every((r) => r.status === "expired"),
+      "Ended camps must expire",
     );
     assert.ok(
       before.every(
         (r) =>
           r.firstSeenAt === now.toISOString() &&
           r.lastSeenAt === now.toISOString() &&
-          r.lastVerifiedAt === now.toISOString(),
+          r.lastVerifiedAt ===
+            (r.applicationStatus === "unknown" ? null : now.toISOString()),
       ),
     );
     let fetched = 0;
@@ -92,7 +129,10 @@ async function main() {
       assert.equal(r.id, before[i].id);
       assert.equal(r.firstSeenAt, before[i].firstSeenAt);
       assert.equal(r.lastSeenAt, next.toISOString());
-      assert.equal(r.lastVerifiedAt, next.toISOString());
+      assert.equal(
+        r.lastVerifiedAt,
+        r.applicationStatus === "unknown" ? null : next.toISOString(),
+      );
     });
     await synchronize({
       configured,

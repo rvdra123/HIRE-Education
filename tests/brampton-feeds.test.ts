@@ -180,6 +180,7 @@ test("only verified adapters default on, explicit source selection/disable is re
       "brampton-library-volunteer",
       "brampton-youth-cabinet",
       "brampton-summer-company",
+      "skills-ontario-brampton-camps",
     ],
   );
   assert.deepEqual(enabledSources({ OPPORTUNITY_SOURCE_IDS: "" }), []);
