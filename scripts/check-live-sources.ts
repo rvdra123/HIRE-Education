@@ -50,6 +50,28 @@ async function main() {
       before.length > 0,
       "Live imports must contain real source records",
     );
+    if (includes("brampton-careers"))
+      assert.ok(
+        before.some(
+          (r) =>
+            r.sourceId === "brampton-careers" &&
+            r.paid === "paid" &&
+            r.applicationStatus === "open" &&
+            ["active", "expiring-soon"].includes(r.status),
+        ),
+        "The live paid feed must produce actual currently open paid listings",
+      );
+    if (includes("hack-club-community"))
+      assert.ok(
+        before.some(
+          (r) =>
+            r.sourceId === "hack-club-community" &&
+            r.applicationStatus === "open" &&
+            r.remote &&
+            r.cost === "Free",
+        ),
+        "The live program must have a confirmed open free online intake",
+      );
     if (includes("brampton-youth-cabinet"))
       assert.ok(
         before.some(

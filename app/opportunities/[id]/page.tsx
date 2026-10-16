@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import SiteHeader from "@/components/SiteHeader";
 import DetailActions from "@/components/opportunities/DetailActions";
 import { getOpportunity } from "@/lib/opportunities/store";
-import { displayDate, displayTime } from "@/lib/format";
+import { displayDate, displayDateOnly, displayTime } from "@/lib/format";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export async function generateMetadata({
@@ -49,7 +49,9 @@ export default async function OpportunityPage({
       "Application deadline",
       item.applicationDeadline
         ? displayDate(item.applicationDeadline, true)
-        : "Not stated",
+        : item.applicationClosingDate
+          ? `${displayDateOnly(item.applicationClosingDate, true)} (time not stated)`
+          : "Not stated",
     ],
     [
       "Start",

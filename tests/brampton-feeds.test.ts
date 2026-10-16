@@ -175,12 +175,14 @@ test("only verified adapters default on, explicit source selection/disable is re
   assert.deepEqual(
     enabledSources({}).map((s) => s.id),
     [
+      "brampton-careers",
       "brampton-volunteer",
       "brampton-library",
       "brampton-library-volunteer",
       "brampton-youth-cabinet",
       "brampton-summer-company",
       "skills-ontario-brampton-camps",
+      "hack-club-community",
     ],
   );
   assert.deepEqual(enabledSources({ OPPORTUNITY_SOURCE_IDS: "" }), []);

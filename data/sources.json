@@ -2,15 +2,16 @@
   {
     "id": "brampton-careers",
     "name": "City of Brampton careers",
-    "url": "https://careers.brampton.ca/",
+    "url": "https://careers.brampton.ca/sitemap.xml",
     "organization": "City of Brampton",
     "trust": "government",
-    "adapter": "jsonld",
+    "adapter": "brampton-careers-sitemap",
     "intervalHours": 6,
-    "automationApproved": false,
-    "approvalNote": "Rechecked 2026-10-16: public careers, category/search pages and robots.txt return HTTP 200. Jobs are rendered by a JavaScript SAP component; the fetched HTML contains no listing records. Disabled pending a verified public listing feed; no vacancies inferred from category marketing text. Robots disallows /services/ and application-related endpoints, which were not collected.",
+    "automationApproved": true,
+    "approvalNote": "Reviewed 2026-10-16: the public XML sitemap publishes individual job URLs even though the search UI has no server-rendered records. City-linked terms and careers robots reviewed; sitemap and public detail paths are allowed. Bounded selection of at most 12 recreation roles, checking canonical identity, published age, qualifications, wage, date-only closing notice, positive position count and Apply now control. Never fetch the disallowed application/services paths. Future-vacancy pools stay unknown; partial selection never closes missing records.",
     "completeFeed": false,
-    "allowedHosts": ["careers.brampton.ca", "www.brampton.ca"]
+    "allowedHosts": ["careers.brampton.ca", "www.brampton.ca"],
+    "enabledByDefault": true
   },
   {
     "id": "job-bank",
@@ -21,7 +22,7 @@
     "adapter": "jsonld",
     "intervalHours": 6,
     "automationApproved": false,
-    "approvalNote": "Rechecked during feed expansion: robots.txt is reachable and asks for a five-second crawl delay. The configured search returned HTTP 200 containing an HTTP Error 500 Internal Server Error document, and the job-seeker terms request returned HTTP 503 upstream connection timeout. No usable, approved job feed has been verified; disabled.",
+    "approvalNote": "Job-seeker terms reviewed 2026-10-16 explicitly prohibit scripts, robots, scrapers, automated query programs and AI access. Automated collection remains disabled unless a separately permitted feed or agreement is established. Earlier search and terms 503 errors do not supersede this restriction.",
     "completeFeed": false,
     "allowedHosts": ["www.jobbank.gc.ca"]
   },
@@ -121,7 +122,7 @@
     "adapter": "mcdonalds-jobs",
     "intervalHours": 6,
     "automationApproved": false,
-    "approvalNote": "Public search, job detail JSON-LD and permissive robots.txt verified 2026-10-16. Adapter reads at most ten first-page Brampton roles and their detail pages, requires explicit Existing Vacancy status plus an Apply Now link for open status, and excludes future-vacancy pools from publication. The linked terms on www.mcdonalds.com are proxy-blocked; collection remains disabled pending terms review. Keyword results are not a complete feed. No application submission or private API access.",
+    "approvalNote": "Reviewed the actual careers-linked September 2023 terms at https://www.mcdonalds.com/ca/en-ca/terms-and-conditions/loyaltyrewards.html on 2026-10-16. They explicitly prohibit launching automated systems such as robots and spiders for the Online Services, including properties referencing these terms. Collection remains disabled; permissive robots.txt does not override the terms. Existing adapter is retained for a future permitted integration.",
     "completeFeed": false,
     "allowedHosts": ["careers.mcdonalds.ca"]
   },
@@ -138,5 +139,19 @@
     "approvalNote": "Public program schedule and robots.txt reviewed 2026-10-16; /programs/camp/ is allowed. Bounded six-hour polling with attribution. Import only explicitly dated Brampton rows, published grade eligibility, session hours and fee. The current two 2026 sessions have ended. Registration links do not verify availability: intake stays unknown, and ended sessions expire. No Eventbrite access or availability is claimed.",
     "completeFeed": false,
     "allowedHosts": ["skillsontario.com", "www.eventbrite.com"]
+  },
+  {
+    "id": "hack-club-community",
+    "name": "Hack Club teen maker community",
+    "url": "https://hackclub.com/",
+    "organization": "Hack Club",
+    "trust": "official",
+    "adapter": "hack-club-community",
+    "intervalHours": 6,
+    "automationApproved": true,
+    "enabledByDefault": true,
+    "approvalNote": "Public page, robots and privacy-and-terms reviewed 2026-10-16. robots permits the page; no automated-access prohibition in reviewed terms. Import only the explicitly available free worldwide online community for ages 13–18 with its active email Join control. No separate event, award, employment or program availability inferred. Six-hour polling with attribution; no signup submission or personal data collection.",
+    "completeFeed": false,
+    "allowedHosts": ["hackclub.com"]
   }
 ]

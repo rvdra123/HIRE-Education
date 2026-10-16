@@ -50,6 +50,8 @@ export const listingSchema = z.object({
     .datetime({ offset: true })
     .nullable()
     .default(null),
+  // A source-published calendar date without an invented time or timezone.
+  applicationClosingDate: z.iso.date().nullable().default(null),
   startDate: z.string().datetime({ offset: true }).nullable().default(null),
   endDate: z.string().datetime({ offset: true }).nullable().default(null),
   postedDate: z.string().datetime({ offset: true }).nullable().default(null),
@@ -93,6 +95,8 @@ export type SourceConfig = {
     | "json"
     | "jsonld"
     | "mcdonalds-jobs"
+    | "brampton-careers-sitemap"
+    | "hack-club-community"
     | "skills-ontario-camps"
     | "ics"
     | "brampton-library-events"

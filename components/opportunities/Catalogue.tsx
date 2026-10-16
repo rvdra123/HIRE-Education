@@ -20,7 +20,7 @@ import {
   writeOptional,
   PRIVACY_EVENT,
 } from "@/lib/privacy/storage";
-import { displayDate, displayTime } from "@/lib/format";
+import { displayDate, displayDateOnly, displayTime } from "@/lib/format";
 type Result = {
   items: Opportunity[];
   total: number;
@@ -572,10 +572,13 @@ export function ListingCard({
       <div className="listing-footer">
         <small>
           Last checked: {displayDate(item.lastVerifiedAt)}
-          {item.applicationDeadline && (
+          {(item.applicationDeadline || item.applicationClosingDate) && (
             <>
               <br />
-              Deadline: {displayDate(item.applicationDeadline)}
+              Deadline:{" "}
+              {item.applicationDeadline
+                ? displayDate(item.applicationDeadline)
+                : displayDateOnly(item.applicationClosingDate!)}
             </>
           )}
         </small>

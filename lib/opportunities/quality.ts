@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { torontoBoundary } from "./time";
 import type { NormalizedListing, OpportunityStatus } from "./types";
 export function publicUrl(value: string) {
   try {
@@ -90,7 +91,20 @@ export function statusFor(
   item: NormalizedListing,
   now = new Date(),
 ): OpportunityStatus {
+  // Date-only closing notices remain valid through the published Toronto day.
+  const closingParts = item.applicationClosingDate?.split("-").map(Number);
+  const closingBoundary = closingParts
+    ? Date.parse(
+        torontoBoundary(
+          closingParts[0],
+          closingParts[1] - 1,
+          closingParts[2] + 1,
+        ),
+      )
+    : null;
   if (item.applicationStatus === "closed") return "expired";
+  if (closingBoundary !== null && now.getTime() >= closingBoundary)
+    return "expired";
   if (
     item.applicationDeadline &&
     Date.parse(item.applicationDeadline) <= now.getTime()
@@ -106,6 +120,11 @@ export function statusFor(
   )
     return "expired";
   if (qualityNotes(item).length) return "needs-review";
+  if (
+    closingBoundary !== null &&
+    closingBoundary - now.getTime() <= 7 * 86400000
+  )
+    return "expiring-soon";
   if (
     item.applicationDeadline &&
     Date.parse(item.applicationDeadline) - now.getTime() <= 7 * 86400000

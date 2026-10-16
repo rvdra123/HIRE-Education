@@ -103,7 +103,7 @@ export async function persist(r: Opportunity) {
       r.paid,
       r.commitment,
       r.status,
-      r.applicationDeadline,
+      r.applicationDeadline || r.applicationClosingDate || null,
       r.firstSeenAt,
       r.lastSeenAt,
       r.lastVerifiedAt,

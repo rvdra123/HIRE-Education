@@ -11,6 +11,8 @@ import { publicUrl } from "../quality";
 import { bramptonListings } from "./brampton";
 import { mcdonaldsJobLinks, mcdonaldsListings } from "./mcdonalds";
 import { skillsOntarioCamps } from "./skills-ontario";
+import { bramptonJobLinks, bramptonJobs } from "./brampton-jobs";
+import { hackClubCommunity } from "./hack-club";
 const agent = "HIREEducationBot";
 function permitted(url: string, source: SourceConfig) {
   const u = new URL(url);
@@ -80,11 +82,19 @@ export async function fetchApprovedSource(
   if (!source.automationApproved)
     throw new Error("Source permission has not been approved");
   const body = await fetchPage(source, signal);
-  if (source.adapter !== "mcdonalds-jobs") return body;
+  if (
+    source.adapter !== "mcdonalds-jobs" &&
+    source.adapter !== "brampton-careers-sitemap"
+  )
+    return body;
   // A bounded first-page selection, never a complete employer inventory.
   // Each detail page goes through the same host, redirect and robots checks.
   const details: { url: string; body: string }[] = [];
-  for (const url of mcdonaldsJobLinks(body)) {
+  const links =
+    source.adapter === "mcdonalds-jobs"
+      ? mcdonaldsJobLinks(body)
+      : bramptonJobLinks(body);
+  for (const url of links) {
     details.push({
       url,
       body: await fetchPage({ ...source, url, adapter: "jsonld" }, signal),
@@ -247,6 +257,10 @@ export function parseSource(body: string, source: SourceConfig): SourceResult {
     if (!Array.isArray(parsed) && !Array.isArray(parsed.items))
       throw new Error("Feed format changed");
   } else if (source.adapter === "mcdonalds-jobs") raw = mcdonaldsListings(body);
+  else if (source.adapter === "brampton-careers-sitemap")
+    raw = bramptonJobs(body);
+  else if (source.adapter === "hack-club-community")
+    raw = hackClubCommunity(body, source);
   else if (source.adapter === "skills-ontario-camps")
     raw = skillsOntarioCamps(body, source);
   else if (source.adapter.startsWith("brampton-"))
