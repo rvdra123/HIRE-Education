@@ -29,6 +29,7 @@ export const listingSchema = z.object({
   compensation: z.string().max(500).nullable().default(null),
   minimumAge: z.number().int().min(0).max(100).nullable().default(null),
   eligibleGrades: z.array(z.number().int().min(9).max(12)).default([]),
+  eligibleCountries: z.array(z.string().min(2).max(80)).max(30).default([]),
   eligibility: z
     .string()
     .max(2000)
@@ -54,6 +55,8 @@ export const listingSchema = z.object({
   applicationClosingDate: z.iso.date().nullable().default(null),
   startDate: z.string().datetime({ offset: true }).nullable().default(null),
   endDate: z.string().datetime({ offset: true }).nullable().default(null),
+  startDateOnly: z.iso.date().nullable().default(null),
+  endDateOnly: z.iso.date().nullable().default(null),
   postedDate: z.string().datetime({ offset: true }).nullable().default(null),
   sourceUrl: z.string().url(),
   applicationUrl: z.string().url(),
@@ -97,6 +100,7 @@ export type SourceConfig = {
     | "mcdonalds-jobs"
     | "brampton-careers-sitemap"
     | "hack-club-community"
+    | "reviewed-programs"
     | "skills-ontario-camps"
     | "ics"
     | "brampton-library-events"
@@ -105,6 +109,7 @@ export type SourceConfig = {
     | "brampton-youth-cabinet"
     | "brampton-summer-company";
   intervalHours: 6 | 12 | 24;
+  collectionTimeoutSeconds?: 45 | 60 | 75 | 90;
   automationApproved: boolean;
   enabledByDefault?: boolean;
   approvalNote: string;

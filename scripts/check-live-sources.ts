@@ -12,7 +12,10 @@ async function main() {
   delete process.env.DATABASE_AUTH_TOKEN;
   const { synchronize } = await import("../lib/opportunities/sync");
   const { database, closeDatabase } = await import("../lib/opportunities/db");
-  const requested = process.argv.slice(2);
+  const coverage = process.argv.includes("--coverage");
+  const requested = process.argv
+    .slice(2)
+    .filter((argument) => argument !== "--coverage");
   const available = enabledSources({});
   for (const id of requested)
     assert.ok(
@@ -46,6 +49,27 @@ async function main() {
       JSON.stringify(first),
     );
     const before = await records();
+    const active = before.filter((r) =>
+      ["active", "expiring-soon"].includes(r.status),
+    );
+    if (coverage) {
+      for (const type of [
+        "job",
+        "volunteer",
+        "internship",
+        "summer-program",
+        "youth-program",
+        "career-program",
+        "mentorship",
+        "leadership",
+        "competition",
+      ])
+        assert.ok(
+          active.filter((record) => record.opportunityType === type).length >=
+            2,
+          `Expected at least two current opportunities for ${type}`,
+        );
+    }
     assert.ok(
       before.length > 0,
       "Live imports must contain real source records",
@@ -175,6 +199,12 @@ async function main() {
           checkedAt: now.toISOString(),
           liveImport: first,
           records: before.length,
+          countsByType: Object.fromEntries(
+            [...new Set(active.map((r) => r.opportunityType))].map((type) => [
+              type,
+              active.filter((r) => r.opportunityType === type).length,
+            ]),
+          ),
           active: before.filter(
             (r) => r.status === "active" || r.status === "expiring-soon",
           ).length,

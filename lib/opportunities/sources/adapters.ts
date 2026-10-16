@@ -13,6 +13,7 @@ import { mcdonaldsJobLinks, mcdonaldsListings } from "./mcdonalds";
 import { skillsOntarioCamps } from "./skills-ontario";
 import { bramptonJobLinks, bramptonJobs } from "./brampton-jobs";
 import { hackClubCommunity } from "./hack-club";
+import { reviewedPageUrls, reviewedPrograms } from "./reviewed-programs";
 const agent = "HIREEducationBot";
 function permitted(url: string, source: SourceConfig) {
   const u = new URL(url);
@@ -82,6 +83,14 @@ export async function fetchApprovedSource(
   if (!source.automationApproved)
     throw new Error("Source permission has not been approved");
   const body = await fetchPage(source, signal);
+  if (source.adapter === "reviewed-programs") {
+    const pages = [{ url: source.url, body }];
+    for (const url of reviewedPageUrls(source).filter(
+      (url) => url !== source.url,
+    ))
+      pages.push({ url, body: await fetchPage({ ...source, url }, signal) });
+    return JSON.stringify({ pages });
+  }
   if (
     source.adapter !== "mcdonalds-jobs" &&
     source.adapter !== "brampton-careers-sitemap"
@@ -261,6 +270,8 @@ export function parseSource(body: string, source: SourceConfig): SourceResult {
     raw = bramptonJobs(body);
   else if (source.adapter === "hack-club-community")
     raw = hackClubCommunity(body, source);
+  else if (source.adapter === "reviewed-programs")
+    raw = reviewedPrograms(body, source);
   else if (source.adapter === "skills-ontario-camps")
     raw = skillsOntarioCamps(body, source);
   else if (source.adapter.startsWith("brampton-"))

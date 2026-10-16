@@ -57,9 +57,18 @@ export default async function OpportunityPage({
       "Start",
       item.startDate
         ? displayTime(item.startDate)
-        : "Confirm with the organization",
+        : item.startDateOnly
+          ? `${displayDateOnly(item.startDateOnly, true)} (time not stated)`
+          : "Confirm with the organization",
     ],
-    ["End", item.endDate ? displayTime(item.endDate) : "Not stated"],
+    [
+      "End",
+      item.endDate
+        ? displayTime(item.endDate)
+        : item.endDateOnly
+          ? `${displayDateOnly(item.endDateOnly, true)} (time not stated)`
+          : "Not stated",
+    ],
     [
       "Originally posted",
       item.postedDate ? displayDate(item.postedDate, true) : "Not stated",

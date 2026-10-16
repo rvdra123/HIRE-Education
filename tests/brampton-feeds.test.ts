@@ -183,6 +183,17 @@ test("only verified adapters default on, explicit source selection/disable is re
       "brampton-summer-company",
       "skills-ontario-brampton-camps",
       "hack-club-community",
+      "energymag-internship",
+      "building-u-internship",
+      "launchx-online-summer",
+      "yale-young-global-scholars",
+      "diamond-challenge",
+      "waterloo-math-contests",
+      "microsoft-learning-paths",
+      "adplist-mentoring",
+      "coding-coach-mentorship",
+      "hack-club-leadership",
+      "hack-club-project-programs",
     ],
   );
   assert.deepEqual(enabledSources({ OPPORTUNITY_SOURCE_IDS: "" }), []);

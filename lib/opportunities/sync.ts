@@ -73,7 +73,15 @@ export async function synchronize({
       let added = 0,
         updated = 0;
       try {
-        const body = await fetchSource(source, AbortSignal.timeout(45000));
+        const body = await fetchSource(
+          source,
+          AbortSignal.timeout(
+            Math.min(
+              (source.collectionTimeoutSeconds || 45) * 1000,
+              budgetEnds - Date.now(),
+            ),
+          ),
+        );
         const parsed = parseSource(body, source);
         if (
           !parsed.items.length &&

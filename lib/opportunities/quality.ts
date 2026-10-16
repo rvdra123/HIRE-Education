@@ -39,7 +39,7 @@ export function fingerprint(item: NormalizedListing) {
         normalize(item.title),
         normalize(item.organization),
         normalize(item.location),
-        item.startDate?.slice(0, 10) || "",
+        item.startDate?.slice(0, 10) || item.startDateOnly || "",
       ].join("|"),
     )
     .digest("hex");
@@ -64,6 +64,7 @@ export function suitableForStudents(item: NormalizedListing) {
   return (
     positive &&
     (item.remote ||
+      item.eligibleCountries?.includes("Canada") ||
       /brampton|peel|mississauga|caledon|toronto|gta|ontario|canada/i.test(
         `${item.location} ${item.city} ${item.province} ${item.country}`,
       ))
@@ -105,6 +106,11 @@ export function statusFor(
   if (item.applicationStatus === "closed") return "expired";
   if (closingBoundary !== null && now.getTime() >= closingBoundary)
     return "expired";
+  if (item.endDateOnly) {
+    const [year, month, day] = item.endDateOnly.split("-").map(Number);
+    if (now.getTime() >= Date.parse(torontoBoundary(year, month - 1, day + 1)))
+      return "expired";
+  }
   if (
     item.applicationDeadline &&
     Date.parse(item.applicationDeadline) <= now.getTime()

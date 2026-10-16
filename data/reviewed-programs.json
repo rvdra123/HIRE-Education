@@ -1,0 +1,560 @@
+[
+  {
+    "id": "energymag-quarter-time",
+    "sourceId": "energymag-internship",
+    "listing": {
+      "title": "EnergyMag year-round virtual research internship",
+      "organization": "EnergyMag",
+      "description": "Unpaid remote research internship for high-school sophomores, juniors and seniors. Quarter-time placements run year-round for 1–9 months at approximately 8 hours per week. Research renewable-energy storage companies, technologies or markets with a mentor. Apply through the form on the official page; selection and places are not guaranteed.",
+      "opportunityType": "internship",
+      "category": "STEM",
+      "location": "Online — worldwide",
+      "remote": true,
+      "sourceUrl": "https://energymag.net/internships/",
+      "applicationUrl": "https://energymag.net/internships/",
+      "eligibility": "High-school sophomores, juniors and seniors; GPA over 3.25 and at least one honors science or honors English class, with exceptions considered by EnergyMag. A writing sample, academic record or interview may be requested.",
+      "commitment": "ongoing",
+      "paid": "volunteer",
+      "compensation": "Unpaid",
+      "eligibleGrades": [10, 11, 12],
+      "hours": "Approximately 8 hours per week; 1–9 months"
+    },
+    "evidence": [
+      {
+        "kind": "html",
+        "url": "https://energymag.net/internships/",
+        "text": [
+          "Quarter-time internships are available all year round",
+          "internships are unpaid",
+          "sophomores, juniors and seniors only",
+          "GPA over 3.25",
+          "approximately 8 hours per week"
+        ],
+        "selectors": [
+          "form[action=\"https://energymag.net/internships/\"] input[type=email]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "building-u-high-school",
+    "sourceId": "building-u-internship",
+    "listing": {
+      "title": "building-U remote high-school team internship",
+      "organization": "building-U",
+      "description": "Free-to-join remote internship intake for grades 9–12, open year-round worldwide. Join student teams working on research, marketing, coding, business development or social media. Placements require at least three months. The official page asks applicants to email an introduction, with a resume if available; compensation is not stated.",
+      "opportunityType": "internship",
+      "category": "Technology",
+      "location": "Online — worldwide",
+      "remote": true,
+      "sourceUrl": "https://building-u.com/opportunities/internships/",
+      "applicationUrl": "https://building-u.com/opportunities/internships/",
+      "eligibility": "Currently enrolled in grade 9, 10, 11 or 12. Teams include students from Canada and around the world. Email the address on the official page to join an information session and discuss a suitable team.",
+      "commitment": "ongoing",
+      "eligibleGrades": [9, 10, 11, 12],
+      "cost": "Free to join; compensation not stated",
+      "hours": "3 months or longer"
+    },
+    "evidence": [
+      {
+        "kind": "html",
+        "url": "https://building-u.com/opportunities/internships/",
+        "text": [
+          "Internships run year round",
+          "ONLINE so you can join our team from wherever you are in the world",
+          "9th, 10th, 11th, or 12th grade",
+          "Financial: FREE",
+          "internships@building-U.com"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "launchx-online-2027",
+    "sourceId": "launchx-online-summer",
+    "listing": {
+      "title": "LaunchX Online Entrepreneurship — Summer 2027",
+      "organization": "LaunchX",
+      "description": "Tuition-based online entrepreneurship program for high-school students aged 14–18, July 5–August 6, 2027. The page lists US$7,495, while its FAQ quotes a starting price of US$6,495; confirm the current price with LaunchX. Financial awards and separate application fees may apply. Build a startup with a global student team. Applications for 2027 are open.",
+      "opportunityType": "summer-program",
+      "category": "Business",
+      "location": "Online — worldwide",
+      "remote": true,
+      "sourceUrl": "https://www.launchx.com/program/online-entrepreneurship",
+      "applicationUrl": "https://www.launchx.com/admissions/how-to-apply",
+      "eligibility": "High-school students aged 14–18 worldwide. Selective admission; parental or guardian agreement is required for minors. Full-time participation over five weeks. Applications may close before the final deadline if the program fills.",
+      "commitment": "summer",
+      "minimumAge": 14,
+      "cost": "US$7,495 listed tuition; application fees may apply",
+      "hours": "Full time for five weeks",
+      "startDateOnly": "2027-07-05",
+      "endDateOnly": "2027-08-06",
+      "applicationClosingDate": "2027-03-31"
+    },
+    "evidence": [
+      {
+        "kind": "html",
+        "url": "https://www.launchx.com/program/online-entrepreneurship",
+        "text": [
+          "Applications for our 2027 programs are now open",
+          "Online (Worldwide)",
+          "July 5",
+          "August 6",
+          "$7,495",
+          "$6,495",
+          "high school students ages 14–18"
+        ]
+      },
+      {
+        "kind": "html",
+        "url": "https://www.launchx.com/admissions/how-to-apply",
+        "text": [
+          "Summer Final Deadline — March 31, 2027",
+          "2027 programs are now open"
+        ],
+        "links": ["https://mymissioncontrol.app"]
+      }
+    ]
+  },
+  {
+    "id": "yygs-2027",
+    "sourceId": "yale-young-global-scholars",
+    "listing": {
+      "title": "Yale Young Global Scholars — Summer 2027",
+      "organization": "Yale University",
+      "description": "Residential two-week summer program at Yale in New Haven, Connecticut, USA, with June and July 2027 sessions. Tuition is US$7,500 plus a US$100 regular-decision application fee; travel costs extra. Need-based aid and application fee waivers are available. Canadian students may apply. Regular-decision applications remain open until January 6, 2027, at 11:59 p.m. Eastern.",
+      "opportunityType": "summer-program",
+      "category": "Education",
+      "location": "Yale University, New Haven, Connecticut, USA",
+      "remote": false,
+      "sourceUrl": "https://globalscholars.yale.edu/",
+      "applicationUrl": "https://globalscholars.yale.edu/how-to-apply",
+      "eligibility": "Ages 16–18 by July 18, 2027; current high-school sophomores or juniors (grades 10–11 or international equivalent), graduating in May/June 2028 or 2029 in the Northern Hemisphere. Strong English, first-time YYGS participation and parent/guardian involvement are required. Applicants from all countries, including Canada, are accepted.",
+      "commitment": "summer",
+      "city": "New Haven",
+      "province": "Connecticut",
+      "country": "United States",
+      "eligibleCountries": ["Canada"],
+      "minimumAge": 16,
+      "eligibleGrades": [10, 11],
+      "cost": "US$7,500 tuition + US$100 application; travel extra",
+      "hours": "One residential two-week session in June or July 2027",
+      "applicationDeadline": "2027-01-07T04:59:00Z"
+    },
+    "evidence": [
+      {
+        "kind": "html",
+        "url": "https://globalscholars.yale.edu/",
+        "text": [
+          "THE YYGS APPLICATION IS NOW OPEN",
+          "residential sessions for June & July 2027",
+          "We are not offering online sessions"
+        ]
+      },
+      {
+        "kind": "html",
+        "url": "https://globalscholars.yale.edu/eligibility",
+        "text": [
+          "16-18 years old by July 18, 2027",
+          "current high school sophomore or junior",
+          "ALL countries"
+        ]
+      },
+      {
+        "kind": "html",
+        "url": "https://globalscholars.yale.edu/tuition",
+        "text": ["$7,500 USD", "travel is not covered", "full cost of tuition"]
+      },
+      {
+        "kind": "html",
+        "url": "https://globalscholars.yale.edu/application-deadlines",
+        "text": ["11:59pm ET on January 6, 2027", "$100 USD"]
+      },
+      {
+        "kind": "html",
+        "url": "https://globalscholars.yale.edu/how-to-apply",
+        "text": ["Click APPLY NOW"],
+        "links": ["https://apply.globalscholars.yale.edu/apply/"]
+      }
+    ]
+  },
+  {
+    "id": "diamond-challenge-2027",
+    "sourceId": "diamond-challenge",
+    "listing": {
+      "title": "Diamond Challenge — 2027 entrepreneurship competition",
+      "organization": "University of Delaware — Horn Entrepreneurship",
+      "description": "Global high-school entrepreneurship competition with business and social-innovation tracks. The 2027 submission window opened September 16 and closes January 14, 2027, at 5 p.m. EST. Teams develop an original venture concept, written narrative and introductory video. Remote pitching is available; finalists must attend the summit in person unless a stated visa-related deferral is granted.",
+      "opportunityType": "competition",
+      "category": "Business",
+      "location": "Online entry and pitching; finalists travel to Delaware, USA",
+      "remote": true,
+      "sourceUrl": "https://diamondchallenge.org/competition/",
+      "applicationUrl": "https://diamondchallenge.org/competition/",
+      "eligibility": "Teams of 2–4 high-school students aged 14–18 at the submission deadline, with an adult advisor aged 21 or older. One team and concept per student. Open to all countries, including Canada. Review the official rules, original-work requirements and finalist travel conditions.",
+      "commitment": "short-term",
+      "hybrid": true,
+      "minimumAge": 14,
+      "applicationDeadline": "2027-01-14T22:00:00Z"
+    },
+    "evidence": [
+      {
+        "kind": "html",
+        "url": "https://diamondchallenge.org/competition/",
+        "text": [
+          "2027 Competition Timeline",
+          "September 16 | Submission Window Opens",
+          "January 14 | Submission Deadline (5PM EST)",
+          "2-4 high school students aged 14-18",
+          "Virtual/Pre-Recorded",
+          "Student teams qualifying for the final round"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "cimc-2026",
+    "sourceId": "waterloo-math-contests",
+    "listing": {
+      "title": "Canadian Intermediate Mathematics Contest — 2026",
+      "organization": "University of Waterloo — CEMC",
+      "description": "School-supervised mathematics competition on November 18, 2026, in North and South America. Schools must order by October 22. The participant fee is C$14, with processing and shipping charges per school order. CIMC is aimed at grades 9–10. Ask your teacher to arrange registration; no individual placement is guaranteed.",
+      "opportunityType": "competition",
+      "category": "STEM",
+      "location": "Participating schools in Canada and worldwide",
+      "remote": false,
+      "sourceUrl": "https://cemc.uwaterloo.ca/contests/csimc",
+      "applicationUrl": "https://cemc.uwaterloo.ca/contests/csimc",
+      "eligibility": "Grades 9–10; motivated younger students may also write. School-supervised individual paper contest. Contact your mathematics teacher or contest supervisor before the ordering deadline.",
+      "commitment": "one-time",
+      "province": "",
+      "country": "Canada",
+      "eligibleGrades": [9, 10],
+      "cost": "C$14 per participant; school order and shipping fees extra",
+      "hours": "Two-hour contest, supervised at school",
+      "applicationClosingDate": "2026-10-22",
+      "startDateOnly": "2026-11-18",
+      "endDateOnly": "2026-11-18"
+    },
+    "evidence": [
+      {
+        "kind": "html",
+        "url": "https://cemc.uwaterloo.ca/contests/csimc",
+        "text": [
+          "Wednesday, November 18, 2026",
+          "Thursday, October 22, 2026",
+          "Students in Grades 9 and 10",
+          "Students in Grades 11 and 12",
+          "Contest fee per participant: $14.00",
+          "Written in school"
+        ],
+        "links": [
+          "https://cemc2.math.uwaterloo.ca/contest/Sigma/school/supervisorPortalLogin.php"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "csmc-2026",
+    "sourceId": "waterloo-math-contests",
+    "listing": {
+      "title": "Canadian Senior Mathematics Contest — 2026",
+      "organization": "University of Waterloo — CEMC",
+      "description": "School-supervised mathematics competition on November 18, 2026, in North and South America. Schools must order by October 22. The participant fee is C$14, with processing and shipping charges per school order. CSMC is aimed at grades 11–12; official-participant age and residency rules apply. Ask your teacher to arrange registration; no individual placement is guaranteed.",
+      "opportunityType": "competition",
+      "category": "STEM",
+      "location": "Participating schools in Canada and worldwide",
+      "remote": false,
+      "sourceUrl": "https://cemc.uwaterloo.ca/contests/csimc",
+      "applicationUrl": "https://cemc.uwaterloo.ca/contests/csimc",
+      "eligibility": "Grades 11–12 and CÉGEP; motivated younger students may also write. Official Canadian participants must live in Canada and be born on or after January 1, 2008. School-supervised paper contest; ask your mathematics teacher to register.",
+      "commitment": "one-time",
+      "province": "",
+      "country": "Canada",
+      "eligibleGrades": [11, 12],
+      "cost": "C$14 per participant; school order and shipping fees extra",
+      "hours": "Two-hour contest, supervised at school",
+      "applicationClosingDate": "2026-10-22",
+      "startDateOnly": "2026-11-18",
+      "endDateOnly": "2026-11-18"
+    },
+    "evidence": [
+      {
+        "kind": "html",
+        "url": "https://cemc.uwaterloo.ca/contests/csimc",
+        "text": [
+          "Wednesday, November 18, 2026",
+          "Thursday, October 22, 2026",
+          "Students in Grades 9 and 10",
+          "Students in Grades 11 and 12",
+          "Contest fee per participant: $14.00",
+          "Written in school"
+        ],
+        "links": [
+          "https://cemc2.math.uwaterloo.ca/contest/Sigma/school/supervisorPortalLogin.php"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "microsoft-cloud-concepts",
+    "sourceId": "microsoft-learning-paths",
+    "listing": {
+      "title": "Microsoft Learn — Introduction to Cloud Infrastructure",
+      "organization": "Microsoft Learn",
+      "description": "Free, self-paced beginner learning path introducing cloud computing, cloud benefits and service types. Three modules build foundational cloud-career knowledge. Reading the training is free; optional Azure subscriptions, practical cloud resources and certification exams can have separate costs. This is training, not an internship or job placement.",
+      "opportunityType": "career-program",
+      "category": "Technology",
+      "location": "Online — worldwide",
+      "remote": true,
+      "sourceUrl": "https://learn.microsoft.com/en-us/training/paths/microsoft-azure-fundamentals-describe-cloud-concepts/",
+      "applicationUrl": "https://learn.microsoft.com/en-us/training/paths/microsoft-azure-fundamentals-describe-cloud-concepts/",
+      "eligibility": "Open to anyone interested in learning; basic familiarity with IT terms and concepts is recommended. Confirm account and parent/guardian requirements if creating a Microsoft profile. You can explore the public learning material before committing to any cloud subscription.",
+      "commitment": "short-term",
+      "cost": "Free training; optional cloud and exam costs are separate"
+    },
+    "evidence": [
+      {
+        "kind": "microsoft-path",
+        "url": "https://learn.microsoft.com/en-us/training/paths/microsoft-azure-fundamentals-describe-cloud-concepts/",
+        "title": "Introduction to Cloud Infrastructure: Describe cloud concepts",
+        "moduleCount": 3,
+        "prerequisites": "Basic familiarity with IT terms and concepts",
+        "firstModuleUrl": "https://learn.microsoft.com/en-us/training/modules/describe-cloud-compute/"
+      },
+      {
+        "kind": "html",
+        "url": "https://learn.microsoft.com/en-us/training/support/faq",
+        "text": ["Microsoft Learn training is free and available to anyone"]
+      }
+    ]
+  },
+  {
+    "id": "microsoft-first-csharp",
+    "sourceId": "microsoft-learning-paths",
+    "listing": {
+      "title": "Microsoft Learn — Write your first code using C#",
+      "organization": "Microsoft Learn",
+      "description": "Free, self-paced beginner programming learning path with four modules. Practise C# syntax, variables, numeric operations and decision logic to begin developing applications. No prerequisites are listed. This is a skills-training opportunity, not paid employment or an internship.",
+      "opportunityType": "career-program",
+      "category": "Technology",
+      "location": "Online — worldwide",
+      "remote": true,
+      "sourceUrl": "https://learn.microsoft.com/en-us/training/paths/get-started-c-sharp-part-1/",
+      "applicationUrl": "https://learn.microsoft.com/en-us/training/paths/get-started-c-sharp-part-1/",
+      "eligibility": "No prerequisites. The learning path explicitly includes students in its audience. Confirm account and parent/guardian requirements if creating a Microsoft profile.",
+      "commitment": "short-term",
+      "cost": "Free training"
+    },
+    "evidence": [
+      {
+        "kind": "microsoft-path",
+        "url": "https://learn.microsoft.com/en-us/training/paths/get-started-c-sharp-part-1/",
+        "title": "Write your first code using C# (Get started with C#, Part 1)",
+        "moduleCount": 4,
+        "prerequisites": "None",
+        "firstModuleUrl": "https://learn.microsoft.com/en-us/training/modules/csharp-write-first/"
+      },
+      {
+        "kind": "html",
+        "url": "https://learn.microsoft.com/en-us/training/support/faq",
+        "text": ["Microsoft Learn training is free and available to anyone"]
+      }
+    ]
+  },
+  {
+    "id": "adplist-student-mentorship",
+    "sourceId": "adplist-mentoring",
+    "listing": {
+      "title": "ADPList online career mentorship",
+      "organization": "ADPList",
+      "description": "Find online mentors in design, product, engineering, marketing and other fields. ADPList explicitly welcomes students exploring career paths and offers sessions across more than 160 countries. It is free to start; confirm the chosen mentor's availability and any optional-service prices. A mentor match or response is not guaranteed.",
+      "opportunityType": "mentorship",
+      "category": "Technology",
+      "location": "Online — worldwide",
+      "remote": true,
+      "sourceUrl": "https://adplist.org/find-a-mentor",
+      "applicationUrl": "https://adplist.org/find-a-mentor",
+      "eligibility": "Students exploring career paths are explicitly included. Minimum age is not stated on the reviewed intake; minors should confirm account eligibility and parent/guardian requirements before signing up.",
+      "commitment": "ongoing",
+      "cost": "Free to start; confirm optional-service prices"
+    },
+    "evidence": [
+      {
+        "kind": "html",
+        "url": "https://adplist.org/find-a-mentor",
+        "text": [
+          "Find a Mentor Online",
+          "Free to start",
+          "160+ countries",
+          "student exploring career paths"
+        ],
+        "links": ["https://adplist.org/explore"]
+      }
+    ]
+  },
+  {
+    "id": "coding-coach-mentorship",
+    "sourceId": "coding-coach-mentorship",
+    "listing": {
+      "title": "Coding Coach — free programming mentorship",
+      "organization": "Coding Coach",
+      "description": "Free online mentoring platform connecting junior developers and learners with experienced programmers worldwide. Browse available mentors and discuss coding skills, questions and career direction. The public mentor feed currently confirms available mentors; response, scheduling and a suitable match remain subject to each mentor.",
+      "opportunityType": "mentorship",
+      "category": "Technology",
+      "location": "Online — worldwide",
+      "remote": true,
+      "sourceUrl": "https://codingcoach.io/guidelines/mentorship-guidelines/",
+      "applicationUrl": "https://mentors.codingcoach.io/",
+      "eligibility": "Open to anyone, anywhere according to the official mentoring guidelines. No minimum age is stated; minors should confirm platform and parent/guardian requirements. Choose a mentor relevant to your skill level and goals.",
+      "commitment": "ongoing",
+      "cost": "Free"
+    },
+    "evidence": [
+      {
+        "kind": "html",
+        "url": "https://codingcoach.io/guidelines/mentorship-guidelines/",
+        "text": ["free platform", "anyone, anywhere", "mentorship"]
+      },
+      {
+        "kind": "coding-coach",
+        "url": "https://mentors.codingcoach.io/.netlify/functions/mentors"
+      }
+    ]
+  },
+  {
+    "id": "hack-club-school-leader",
+    "sourceId": "hack-club-leadership",
+    "listing": {
+      "title": "Start and lead a Hack Club at your school",
+      "organization": "Hack Club",
+      "description": "Apply to start a student-led coding club at your high school. Hack Club provides a worldwide network, free club resources and support for student leaders to organise meetings and help peers build projects. This is distinct from joining the online community. Grants and rewards have separate conditions and are not guaranteed.",
+      "opportunityType": "leadership",
+      "category": "Technology",
+      "location": "Online — worldwide",
+      "remote": true,
+      "sourceUrl": "https://hackclub.com/clubs/",
+      "applicationUrl": "https://hackclub.com/clubs/",
+      "eligibility": "High-school students in a worldwide network of clubs. Hack Club's core programs serve ages 13–18. Coordinate school requirements with a teacher and review parent/guardian consent and the code of conduct.",
+      "commitment": "ongoing",
+      "minimumAge": 13,
+      "cost": "Free club resources",
+      "eligibleGrades": [9, 10, 11, 12]
+    },
+    "evidence": [
+      {
+        "kind": "html",
+        "url": "https://hackclub.com/clubs/",
+        "text": [
+          "worldwide network of high school coding clubs",
+          "Start a club",
+          "For free"
+        ],
+        "links": ["https://apply.hackclub.com"]
+      },
+      {
+        "kind": "html",
+        "url": "https://hackclub.com/privacy-and-terms",
+        "text": [
+          "core programs are for middle school and high school students (ages 13-18)"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "hack-club-dyad",
+    "sourceId": "hack-club-project-programs",
+    "listing": {
+      "title": "Hack Club Dyad — build a project with a friend",
+      "organization": "Hack Club",
+      "description": "Free online software-building program for teams of exactly two teenagers aged 13–18. Build a project together and track your coding time. Each participant normally contributes five hours, with a stated three-hour exception for a first-time participant. The published activity runs October 14–November 1, 2026. Game rewards depend on review and program terms.",
+      "opportunityType": "youth-program",
+      "category": "Technology",
+      "location": "Online — worldwide",
+      "remote": true,
+      "sourceUrl": "https://dyad.hackclub.com/",
+      "applicationUrl": "https://dyad.hackclub.com/",
+      "eligibility": "Hack Club core programs are for ages 13–18 worldwide. Work in a team of exactly two; follow project originality and time-tracking rules. Minors need parent or guardian permission for challenges.",
+      "commitment": "short-term",
+      "minimumAge": 13,
+      "cost": "Free",
+      "hours": "Normally five hours per participant; see first-time exception",
+      "startDateOnly": "2026-10-14",
+      "endDateOnly": "2026-11-01"
+    },
+    "evidence": [
+      {
+        "kind": "hack-club",
+        "url": "https://hackclub.com/api/v1/events",
+        "slug": "dyad",
+        "programUrl": "https://dyad.hackclub.com/",
+        "start": "2026-10-14",
+        "end": "2026-11-01"
+      },
+      {
+        "kind": "html",
+        "url": "https://dyad.hackclub.com/",
+        "text": [
+          "Anyone 13-18, inclusive",
+          "exactly two people",
+          "Open Dashboard"
+        ]
+      },
+      {
+        "kind": "html",
+        "url": "https://hackclub.com/privacy-and-terms",
+        "text": [
+          "core programs are for middle school and high school students (ages 13-18)"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "hack-club-snek",
+    "sourceId": "hack-club-project-programs",
+    "listing": {
+      "title": "Hack Club Snek — learn Pygame and build a game",
+      "organization": "Hack Club",
+      "description": "Free, beginner-friendly online Pygame project program for teens. Build and submit a game, track coding time with Hackatime, and follow the published rules: at least two additional features and original or properly sourced assets. The API lists the activity as ongoing through November 6, 2026. Rewards are subject to review and availability, not paid employment.",
+      "opportunityType": "youth-program",
+      "category": "Technology",
+      "location": "Online — worldwide",
+      "remote": true,
+      "sourceUrl": "https://snek.hackclub.com/",
+      "applicationUrl": "https://snek.hackclub.com/",
+      "eligibility": "Hack Club core programs are for ages 13–18 worldwide. Beginner friendly. Follow the project guide, track coding time and use original or permitted assets; no AI-generated assets. Minors need parent or guardian permission for challenges.",
+      "commitment": "short-term",
+      "minimumAge": 13,
+      "cost": "Free",
+      "hours": "Self-directed project; track time through Hackatime",
+      "startDateOnly": "2026-10-06",
+      "endDateOnly": "2026-11-06"
+    },
+    "evidence": [
+      {
+        "kind": "hack-club",
+        "url": "https://hackclub.com/api/v1/events",
+        "slug": "snek",
+        "programUrl": "https://snek.hackclub.com/",
+        "start": "2026-10-06",
+        "end": "2026-11-06"
+      },
+      {
+        "kind": "html",
+        "url": "https://snek.hackclub.com/",
+        "text": [
+          "Submit your project",
+          "at least 2 additional features",
+          "Track your coding time via Hackatime"
+        ]
+      },
+      {
+        "kind": "html",
+        "url": "https://hackclub.com/privacy-and-terms",
+        "text": [
+          "core programs are for middle school and high school students (ages 13-18)"
+        ]
+      }
+    ]
+  }
+]

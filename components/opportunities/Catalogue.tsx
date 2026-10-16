@@ -78,7 +78,7 @@ export default function Catalogue({
   const [search, setSearch] = useState("");
   const [debounced, setDebounced] = useState("");
   const [type, setType] = useState("");
-  const [location, setLocation] = useState("nearby");
+  const [location, setLocation] = useState("");
   const [grade, setGrade] = useState("");
   const [category, setCategory] = useState("");
   const [commitment, setCommitment] = useState("");
@@ -192,7 +192,7 @@ export default function Catalogue({
   const clear = () => {
     setSearch("");
     setType("");
-    setLocation("nearby");
+    setLocation("");
     setGrade("");
     setCategory("");
     setCommitment("");
@@ -219,7 +219,7 @@ export default function Catalogue({
   const active =
     search ||
     type ||
-    location !== "nearby" ||
+    location !== "" ||
     grade ||
     category ||
     commitment ||
@@ -548,6 +548,7 @@ export function ListingCard({
         <span>
           {item.paid === "unspecified" ? "Compensation not listed" : item.paid}
         </span>
+        {item.cost && <span>Cost: {item.cost}</span>}
         <span>
           {item.eligibleGrades.length
             ? `Grades ${item.eligibleGrades.join(", ")}`

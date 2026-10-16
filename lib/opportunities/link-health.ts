@@ -16,7 +16,7 @@ export async function checkListingLinks(
     args: [new Date(now.getTime() - 86400000).toISOString()],
   });
   for (const row of rows.rows) {
-    if (Date.now() > stopAt - 8000) break;
+    if (Date.now() > stopAt - 20000) break;
     const record = JSON.parse(String(row.data)) as Opportunity;
     const config = configured.find((s) => s.id === record.sourceId);
     if (
@@ -28,7 +28,7 @@ export async function checkListingLinks(
     try {
       const body = await fetchPage(
         { ...config, url: record.applicationUrl },
-        AbortSignal.timeout(8000),
+        AbortSignal.timeout(20000),
       );
       record.linkFailures = 0;
       if (
