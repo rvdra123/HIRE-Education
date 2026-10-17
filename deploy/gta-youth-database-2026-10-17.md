@@ -59,7 +59,7 @@ checks could not establish current automated access.
 
 ## Collection and preservation
 
-All 32 enabled sources use the existing six-hour schedule. Official sitemaps,
+All 31 production-enabled sources use the existing six-hour schedule. Official sitemaps,
 public RSS, public frontend JSON or reviewed evidence pages use approved-host,
 redirect, robots, timeout and streamed byte limits. XML and PDF media types are
 negotiated explicitly. No application, authentication, personal profile or
@@ -119,3 +119,14 @@ closing restores focus. Source-checked courses and directories appear first.
 Production completion requires the deployed commit, successful protected refresh,
 healthy enabled sources, actual API counts and browser-visible filters/content.
 Build success alone does not establish production availability.
+
+## Production availability adjustment
+
+Production deployed the complete expansion and imported all new sources except
+TRCA Youth Council. Its local collection passed but the production collector
+reported failure and imported no record; the public generic report does not
+establish the precise cause. The source is therefore withheld, with its reviewed
+record and official directory link retained. No fixture substitutes for it. The
+remaining 31 enabled sources imported successfully: 55 current opportunities
+(including 22 paid jobs and 13 volunteer intakes) and 15 events. This differs from
+the 32-source local snapshot by that one leadership intake.

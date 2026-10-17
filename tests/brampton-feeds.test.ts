@@ -196,7 +196,6 @@ test("only verified adapters default on, explicit source selection/disable is re
       "hack-club-project-programs",
       "mississauga-careers",
       "food-banks-mississauga-youth",
-      "trca-youth-council",
       "canadian-cadets-registration",
       "toronto-library-literacy-volunteers",
       "toronto-ltc-youth-volunteers",
@@ -213,7 +212,7 @@ test("only verified adapters default on, explicit source selection/disable is re
   assert.deepEqual(
     enabledSources({
       OPPORTUNITY_SOURCE_IDS:
-        "job-bank,regeneration-brampton-volunteer,brampton-library",
+        "job-bank,regeneration-brampton-volunteer,trca-youth-council,brampton-library",
     }).map((s) => s.id),
     ["brampton-library"],
   );
