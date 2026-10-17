@@ -194,13 +194,27 @@ test("only verified adapters default on, explicit source selection/disable is re
       "coding-coach-mentorship",
       "hack-club-leadership",
       "hack-club-project-programs",
+      "mississauga-careers",
+      "food-banks-mississauga-youth",
+      "trca-youth-council",
+      "canadian-cadets-registration",
+      "toronto-library-literacy-volunteers",
+      "toronto-ltc-youth-volunteers",
+      "bgc-peel-youth-intakes",
+      "mississauga-current-youth-volunteers",
+      "ajax-careers",
+      "ajax-library-paid-pages",
+      "second-harvest-student-volunteers",
+      "toronto-youth-cabinet-working-groups",
+      "richmond-hill-youth-jobs",
     ],
   );
   assert.deepEqual(enabledSources({ OPPORTUNITY_SOURCE_IDS: "" }), []);
   assert.deepEqual(
-    enabledSources({ OPPORTUNITY_SOURCE_IDS: "job-bank,brampton-library" }).map(
-      (s) => s.id,
-    ),
+    enabledSources({
+      OPPORTUNITY_SOURCE_IDS:
+        "job-bank,regeneration-brampton-volunteer,brampton-library",
+    }).map((s) => s.id),
     ["brampton-library"],
   );
   assert.ok(sources().every((s) => s.intervalHours === 6));

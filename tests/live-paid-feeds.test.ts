@@ -21,17 +21,19 @@ test("City sitemap yields real paid vacancies with exact wages, ages, qualificat
   );
   assert.equal(result.rejected, 0);
   assert.equal(result.complete, false);
-  assert.equal(result.items.length, 5);
+  assert.equal(result.items.length, 7);
   assert.deepEqual(
     result.items.map((r) => r.minimumAge),
-    [15, 18, 16, 15, 18],
+    [16, 15, 18, 16, 18, 15, 18],
   );
   assert.deepEqual(
     result.items.map((r) => r.compensation),
     [
+      "$26.79 per hour",
       "$24.26 per hour",
       "$37.73 per hour",
       "$37.73 per hour",
+      "$18.53 per hour",
       "$21.09 per hour",
       "$22.42 per hour",
     ],
@@ -56,8 +58,24 @@ test("City sitemap yields real paid vacancies with exact wages, ages, qualificat
     );
     assert.deepEqual(qualityNotes(item), []);
   }
-  assert.match(result.items[0].eligibility, /National Lifeguard/);
-  assert.match(result.items[1].eligibility, /Certified Personal Trainer/);
+  assert.match(
+    result.items.find((item) => item.title === "Swim Instructor & Lifeguard")!
+      .eligibility,
+    /National Lifeguard/,
+  );
+  assert.match(
+    result.items.find((item) => item.title === "Personal Trainer")!.eligibility,
+    /Certified Personal Trainer/,
+  );
+  const deck = result.items.find((item) => item.title === "Deck Supervisor")!;
+  assert.match(deck.eligibility, /Minimum 1 year experience/);
+  assert.match(deck.eligibility, /Aquatic Supervisor/);
+  const bartender = result.items.find(
+    (item) => item.title === "BARTENDER - CULTURAL SERVICES",
+  )!;
+  assert.match(bartender.eligibility, /Smart Serve/);
+  assert.match(bartender.location, /Rose Theatre/);
+  assert.equal(bartender.applicationClosingDate, "2026-10-30");
   assert.equal(result.items[0].applicationClosingDate, "2026-10-19");
 });
 
@@ -104,10 +122,23 @@ test("City details require matching public identity, complete selection, positiv
       );
     else
       assert.equal(
-        parseSource(JSON.stringify(changed), config).items[0].applicationStatus,
+        parseSource(JSON.stringify(changed), config).items.find(
+          (item) => item.title === "Swim Instructor & Lifeguard",
+        )!.applicationStatus,
         "unknown",
       );
   }
+  const pool = structuredClone(data);
+  pool.details[0].body = pool.details[0].body.replace(
+    "SELECTION CRITERIA:",
+    "This job posting is not for an existing vacancy. SELECTION CRITERIA:",
+  );
+  assert.equal(
+    parseSource(JSON.stringify(pool), config).items.find(
+      (item) => item.title === "Swim Instructor & Lifeguard",
+    )!.applicationStatus,
+    "unknown",
+  );
   data.details[0].body = data.details[0].body.replace(
     'href="https://careers.brampton.ca/job/Swim-Instructor-',
     'href="https://unapproved.example/job/Swim-Instructor-',
@@ -136,7 +167,7 @@ test("City collection follows only selected sitemap details through the approved
     },
   );
   assert.deepEqual(calls, [config.url, ...bramptonJobLinks(data.search)]);
-  assert.equal(parseSource(body, config).items.length, 5);
+  assert.equal(parseSource(body, config).items.length, 7);
   await assert.rejects(
     fetchApprovedSource(config, AbortSignal.timeout(1000), async (page) => {
       if (page.url === config.url) return data.search;

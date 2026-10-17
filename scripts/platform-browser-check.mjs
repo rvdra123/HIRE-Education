@@ -114,7 +114,7 @@ await learning.getByRole("button", { name: "Clear filters" }).click();
 await learning.getByRole("button", { name: /Show 12 more courses/ }).click();
 assert.equal(await learning.locator("article").count(), 18);
 const practice = page.locator("#interview-practice");
-assert.ok((await practice.innerText()).includes("Question 1 of 12"));
+assert.ok((await practice.innerText()).includes("Question 1 of 24"));
 await practice
   .getByRole("textbox", { name: "Your practice answer" })
   .fill("TEST FIXTURE: I helped organize a school project.");
@@ -126,9 +126,28 @@ assert.match(
     .inputValue(),
   /TEST FIXTURE/,
 );
+await practice
+  .getByRole("searchbox", { name: "Search interview questions" })
+  .fill("no-such-question-12345");
+assert.ok((await practice.innerText()).includes("No questions match these filters"));
+await practice.getByRole("button", { name: "Reset interview filters" }).click();
+assert.match(
+  await practice.getByRole("textbox", { name: "Your practice answer" }).inputValue(),
+  /TEST FIXTURE/,
+);
+await practice.locator(".practice-filters select").first().selectOption("Technology internship");
+await practice.getByRole("searchbox", { name: "Search interview questions" }).fill("API key");
+assert.ok((await practice.innerText()).includes("Question 1 of 1"));
+assert.ok(await practice.getByRole("button", { name: "Next question" }).isDisabled());
+await practice.getByRole("button", { name: "Show guidance" }).click();
+assert.ok((await practice.locator("#interview-guidance").innerText()).includes("Do not use, copy, share, or test"));
+await practice.getByRole("button", { name: "Reset interview filters" }).click();
 await practice.getByRole("button", { name: "Practise for 60 seconds" }).click();
 assert.ok(await practice.getByRole("timer").isVisible());
-await practice.getByRole("button", { name: "Stop timer" }).click();
+await practice.locator(".practice-filters select").nth(1).selectOption("Safety and boundaries");
+assert.equal(await practice.getByRole("timer").count(), 0);
+assert.ok((await practice.locator(".practice-topic").innerText()).includes("Safety and boundaries"));
+await practice.getByRole("button", { name: "Reset interview filters" }).click();
 await page.goto(`${origin}/opportunities`, {
   waitUntil: "networkidle",
 });

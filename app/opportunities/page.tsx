@@ -4,9 +4,9 @@ import SiteHeader from "@/components/SiteHeader";
 import Catalogue from "@/components/opportunities/Catalogue";
 import EventsCalendar from "@/components/opportunities/EventsCalendar";
 export const metadata: Metadata = {
-  title: "Student Opportunities in Brampton, Ontario | HIRE Education",
+  title: "Student Opportunities in Peel and the GTA | HIRE Education",
   description:
-    "Browse verified jobs, volunteering, internships and youth programs for high school students in Brampton and nearby communities.",
+    "Browse verified jobs, volunteering, internships and youth programs for high school students in Brampton, Peel and the Greater Toronto Area.",
 };
 export default function OpportunitiesPage() {
   return (
@@ -21,7 +21,7 @@ export default function OpportunitiesPage() {
           <span>Student opportunities</span>
         </nav>
         <div className="page-heading">
-          <h1>Student opportunities in Brampton</h1>
+          <h1>Student opportunities in Peel and the GTA</h1>
           <p>
             Find work, volunteering, internships, and programs that fit your
             interests and school schedule.

@@ -16,7 +16,7 @@ export default function StaticSite({ preview = false }: { preview?: boolean }) {
     const update = () => {
       const next = readStaticLocation(window.location.hash);
       setLocation(next);
-      document.title = `${next.path === "/resume-reviewer" ? "Free Student Resume Checker" : next.path === "/privacy" ? "Privacy Policy" : next.path === "/opportunities" ? "Brampton Student Opportunities" : "Career Support for Brampton Students"} | HIRE Education`;
+      document.title = `${next.path === "/resume-reviewer" ? "Free Student Resume Checker" : next.path === "/privacy" ? "Privacy Policy" : next.path === "/opportunities" ? "Peel and GTA Student Opportunities" : "Career Support for Peel and GTA Students"} | HIRE Education`;
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => {
         frame = requestAnimationFrame(() => {
@@ -112,7 +112,7 @@ export default function StaticSite({ preview = false }: { preview?: boolean }) {
           <SiteHeader />
           <main className="container feature-page">
             <div className="page-heading">
-              <h1>Student opportunities in Brampton</h1>
+              <h1>Student opportunities in Peel and the GTA</h1>
               <p>
                 Find official career pages, volunteering portals, and student
                 programs. Check application status, eligibility, and deadlines

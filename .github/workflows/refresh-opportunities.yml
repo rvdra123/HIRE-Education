@@ -4,6 +4,8 @@ on:
     branches: [main]
     paths:
       - "data/sources.json"
+      - "data/reviewed-programs.json"
+      - "data/richmond-jobs.json"
       - "lib/opportunities/**"
       - "app/api/cron/**"
       - "app/api/catalogue-status/**"

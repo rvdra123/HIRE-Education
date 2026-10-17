@@ -8,6 +8,7 @@ import {
 } from "../lib/opportunities/sources/adapters";
 import { reviewedPageUrls } from "../lib/opportunities/sources/reviewed-programs";
 import { qualityNotes, statusFor } from "../lib/opportunities/quality";
+import capturedFixture from "./fixtures/feeds/reviewed-programs.json";
 
 const fixture = async () =>
   JSON.parse(
@@ -16,8 +17,8 @@ const fixture = async () =>
       "utf8",
     ),
   );
-const selected = sources().filter(
-  (source) => source.adapter === "reviewed-programs",
+const selected = sources().filter((source) =>
+  capturedFixture.sourceIds.includes(source.id),
 );
 const config = (id: string) => selected.find((source) => source.id === id)!;
 const envelope = (pages: Record<string, string>, id: string) =>

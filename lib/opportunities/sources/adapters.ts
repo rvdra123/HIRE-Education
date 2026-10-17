@@ -1,6 +1,7 @@
 import robotsParser from "robots-parser";
 import { XMLParser } from "fast-xml-parser";
-import { serverFetch, boundedText } from "@/lib/security/fetch";
+import { serverFetch, boundedBytes, boundedText } from "@/lib/security/fetch";
+import { createHash } from "node:crypto";
 import {
   listingSchema,
   type SourceConfig,
@@ -14,6 +15,9 @@ import { skillsOntarioCamps } from "./skills-ontario";
 import { bramptonJobLinks, bramptonJobs } from "./brampton-jobs";
 import { hackClubCommunity } from "./hack-club";
 import { reviewedPageUrls, reviewedPrograms } from "./reviewed-programs";
+import { mississaugaJobs } from "./mississauga-jobs";
+import { ajaxJobLinks, ajaxJobs } from "./ajax-jobs";
+import { richmondJobLinks, richmondJobs } from "./richmond-jobs";
 const agent = "HIREEducationBot";
 function permitted(url: string, source: SourceConfig) {
   const u = new URL(url);
@@ -30,7 +34,8 @@ async function get(url: string, source: SourceConfig, signal: AbortSignal) {
       redirect: "manual",
       headers: {
         "User-Agent": `${agent}/1.0 (student opportunity directory)`,
-        Accept: "application/json,text/calendar,text/html,text/plain",
+        Accept:
+          "application/json,application/xml,text/xml,text/calendar,text/html,text/plain,application/pdf;q=0.9,*/*;q=0.5",
       },
     });
     if ([301, 302, 303, 307, 308].includes(response.status)) {
@@ -73,6 +78,21 @@ export async function fetchApprovedPage(
     throw new Error("Source crawl delay requires a slower adapter");
   const response = await get(source.url, source, signal);
   if (!response.ok) throw new Error(`Source returned HTTP ${response.status}`);
+  if (
+    response.headers
+      .get("content-type")
+      ?.toLowerCase()
+      .startsWith("application/pdf")
+  ) {
+    const bytes = await boundedBytes(response);
+    if (bytes.subarray(0, 5).toString("ascii") !== "%PDF-")
+      throw new Error("Source PDF identity could not be checked");
+    // Facts are reviewed from the public document. Any byte change requires a new review.
+    return JSON.stringify({
+      documentType: "pdf",
+      sha256: createHash("sha256").update(bytes).digest("hex"),
+    });
+  }
   return boundedText(response);
 }
 export async function fetchApprovedSource(
@@ -93,7 +113,9 @@ export async function fetchApprovedSource(
   }
   if (
     source.adapter !== "mcdonalds-jobs" &&
-    source.adapter !== "brampton-careers-sitemap"
+    source.adapter !== "brampton-careers-sitemap" &&
+    source.adapter !== "ajax-careers-sitemap" &&
+    source.adapter !== "richmond-careers-sitemap"
   )
     return body;
   // A bounded first-page selection, never a complete employer inventory.
@@ -102,7 +124,11 @@ export async function fetchApprovedSource(
   const links =
     source.adapter === "mcdonalds-jobs"
       ? mcdonaldsJobLinks(body)
-      : bramptonJobLinks(body);
+      : source.adapter === "ajax-careers-sitemap"
+        ? ajaxJobLinks(body)
+        : source.adapter === "richmond-careers-sitemap"
+          ? richmondJobLinks(body)
+          : bramptonJobLinks(body);
   for (const url of links) {
     details.push({
       url,
@@ -268,6 +294,11 @@ export function parseSource(body: string, source: SourceConfig): SourceResult {
   } else if (source.adapter === "mcdonalds-jobs") raw = mcdonaldsListings(body);
   else if (source.adapter === "brampton-careers-sitemap")
     raw = bramptonJobs(body);
+  else if (source.adapter === "mississauga-careers-rss")
+    raw = mississaugaJobs(body);
+  else if (source.adapter === "ajax-careers-sitemap") raw = ajaxJobs(body);
+  else if (source.adapter === "richmond-careers-sitemap")
+    raw = richmondJobs(body);
   else if (source.adapter === "hack-club-community")
     raw = hackClubCommunity(body, source);
   else if (source.adapter === "reviewed-programs")

@@ -18,7 +18,11 @@ export function CertificationCard({
           {c.logo}
         </div>
         <span className={styles.freeBadge}>
-          Free {c.credentialKind.toLowerCase()}
+          {c.freeCredential
+            ? "Free credential"
+            : c.credentialKind === "Learning only"
+              ? "Free learning"
+              : "Check award details"}
         </span>
       </div>
       <p className={styles.organization}>{c.organization}</p>
@@ -32,12 +36,30 @@ export function CertificationCard({
         <Award size={17} />
         <div>
           <span>{c.credential}</span>
-          <small>Self-paced learning</small>
+          <small>
+            {c.freeCredential
+              ? "No-cost award confirmed"
+              : "See learning and award costs below"}
+          </small>
         </div>
       </div>
+      <p className={styles.learningCost}>{c.cost}</p>
       <details className="course-details">
-        <summary>Credential and account details</summary>
-        <p>{c.cost}</p>
+        <summary>Access, age and source details</summary>
+        {c.accessNotes && <p>{c.accessNotes}</p>}
+        <p>
+          {c.verificationStatus === "course-verified"
+            ? "Course facts checked"
+            : c.verificationStatus === "provider-verified"
+              ? "Provider information checked; confirm this course’s current details"
+              : "Current course and award details need confirmation with the provider"}
+          {c.verifiedOn ? `: ${c.verifiedOn}` : "."}
+        </p>
+        {c.evidenceUrl && c.evidenceUrl !== c.url && (
+          <a href={c.evidenceUrl} target="_blank" rel="noopener noreferrer">
+            Provider’s course and award information ↗
+          </a>
+        )}
       </details>
       <a
         className={styles.courseLink}
@@ -57,33 +79,54 @@ export default function Discovery() {
   const [provider, setProvider] = useState("All providers");
   const [level, setLevel] = useState("All levels");
   const [credential, setCredential] = useState("All credentials");
+  const [awardCost, setAwardCost] = useState("");
   const [visible, setVisible] = useState(6);
   useEffect(
     () => setVisible(6),
-    [query, category, provider, level, credential],
+    [query, category, provider, level, credential, awardCost],
   );
   const filtered = useMemo(
     () =>
-      certifications.filter(
-        (c) =>
-          (category === "All" ||
-            c.categories.includes(category as (typeof c.categories)[number])) &&
-          (provider === "All providers" || c.organization === provider) &&
-          (level === "All levels" || c.difficulty === level) &&
-          (credential === "All credentials" ||
-            c.credentialKind === credential) &&
-          `${c.title} ${c.organization} ${c.description}`
-            .toLowerCase()
-            .includes(query.toLowerCase()),
-      ),
-    [query, category, provider, level, credential],
+      certifications
+        .filter(
+          (c) =>
+            (category === "All" ||
+              c.categories.includes(
+                category as (typeof c.categories)[number],
+              )) &&
+            (provider === "All providers" || c.organization === provider) &&
+            (level === "All levels" || c.difficulty === level) &&
+            (credential === "All credentials" ||
+              c.credentialKind === credential) &&
+            (!awardCost ||
+              (awardCost === "free-award"
+                ? c.freeCredential === true
+                : c.freeCredential !== true)) &&
+            `${c.title} ${c.organization} ${c.description} ${c.tags.join(" ")} ${c.accessNotes || ""}`
+              .toLowerCase()
+              .includes(query.toLowerCase()),
+        )
+        .sort((a, b) => {
+          const rank = (status?: string) =>
+            status === "course-verified"
+              ? 0
+              : status === "provider-verified"
+                ? 1
+                : 2;
+          return (
+            rank(a.verificationStatus) - rank(b.verificationStatus) ||
+            Number(!!b.freeCredential) - Number(!!a.freeCredential)
+          );
+        }),
+    [query, category, provider, level, credential, awardCost],
   );
   const active =
     !!query ||
     category !== "All" ||
     provider !== "All providers" ||
     level !== "All levels" ||
-    credential !== "All credentials";
+    credential !== "All credentials" ||
+    !!awardCost;
   return (
     <section className={styles.learningSection} id="certifications">
       <div className="container">
@@ -149,10 +192,26 @@ export default function Discovery() {
               onChange={(e) => setCredential(e.target.value)}
             >
               <option>All credentials</option>
-              <option>Certificate</option>
-              <option>Digital badge</option>
-              <option>Participation statement</option>
-              <option>Completion record</option>
+              {[
+                ...new Set(
+                  certifications.map((course) => course.credentialKind),
+                ),
+              ]
+                .sort()
+                .map((kind) => (
+                  <option key={kind}>{kind}</option>
+                ))}
+            </select>
+            <select
+              aria-label="Learning and award cost"
+              value={awardCost}
+              onChange={(e) => setAwardCost(e.target.value)}
+            >
+              <option value="">All free learning</option>
+              <option value="free-award">Free credential confirmed</option>
+              <option value="learning">
+                Learning only or award cost varies
+              </option>
             </select>
             <select
               aria-label="Learning difficulty"
@@ -178,6 +237,7 @@ export default function Discovery() {
                 setProvider("All providers");
                 setLevel("All levels");
                 setCredential("All credentials");
+                setAwardCost("");
               }}
             >
               Clear filters

@@ -72,7 +72,7 @@ const css = result.outputFiles.find((f) => f.path.endsWith(".css")).text;
 const font = readFileSync(
   "node_modules/@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2",
 ).toString("base64");
-const html = `<!doctype html><html lang="en-CA"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>HIRE Education | Brampton student career resources</title><link rel="icon" href="${logo}"><style>@font-face{font-family:'Manrope Variable';font-style:normal;font-weight:200 800;font-display:swap;src:url(data:font/woff2;base64,${font}) format('woff2')}${css}.offline-preview-note{padding:10px 20px;background:#203b5b;color:#eef5ff;text-align:center;font:12px/1.7 Arial,sans-serif}</style></head><body><div id="root"></div><noscript>Enable JavaScript to use the interactive guides.</noscript><script>${js}</script></body></html>`;
+const html = `<!doctype html><html lang="en-CA"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>HIRE Education | Peel and GTA student career resources</title><link rel="icon" href="${logo}"><style>@font-face{font-family:'Manrope Variable';font-style:normal;font-weight:200 800;font-display:swap;src:url(data:font/woff2;base64,${font}) format('woff2')}${css}.offline-preview-note{padding:10px 20px;background:#203b5b;color:#eef5ff;text-align:center;font:12px/1.7 Arial,sans-serif}</style></head><body><div id="root"></div><noscript>Enable JavaScript to use the interactive guides.</noscript><script>${js}</script></body></html>`;
 writeFileSync(
   path.join(outputDirectory, pages ? "index.html" : "HIRE-Education.html"),
   html,

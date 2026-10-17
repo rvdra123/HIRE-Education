@@ -556,5 +556,753 @@
         ]
       }
     ]
+  },
+  {
+    "id": "regeneration-brampton-volunteer",
+    "sourceId": "regeneration-brampton-volunteer",
+    "listing": {
+      "title": "Regeneration Brampton — year-round community volunteering",
+      "organization": "Regeneration Brampton",
+      "description": "Year-round volunteer intake supporting the Meal Program, Marketplace and Warehouse in Brampton. The official page offers weekday and weekend shifts, orientation and role-specific training, with no experience required. High-school service hours and co-op hours can be documented. Contact the volunteer coordinator through the official page to arrange the application and a suitable role; acceptance and particular shifts are not guaranteed.",
+      "opportunityType": "volunteer",
+      "category": "Community",
+      "location": "Brampton, Ontario",
+      "sourceUrl": "https://regenbrampton.com/get-involved/volunteer/",
+      "applicationUrl": "https://regenbrampton.com/get-involved/volunteer/",
+      "eligibility": "Minimum age 16. Volunteers under 18 require parental consent; volunteers 18+ require a current Level 2 Criminal Matters and Judicial Record Check. Closed-toe shoes required. Role matching and shadow shifts are part of onboarding.",
+      "city": "Brampton",
+      "minimumAge": 16,
+      "paid": "volunteer",
+      "compensation": "Unpaid volunteering",
+      "commitment": "ongoing",
+      "hours": "Flexible weekday and weekend shifts; no minimum commitment stated"
+    },
+    "evidence": [
+      {
+        "kind": "html",
+        "url": "https://regenbrampton.com/get-involved/volunteer/",
+        "text": [
+          "Year-Round Opportunities Available",
+          "Complete a short application and connect with our volunteer coordinator",
+          "Volunteers must be a minimum of 16 years of age",
+          "All Volunteers under 18 require a Parental Consent Form",
+          "high school co-op placements",
+          "no experience required"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fbm-reclaimfresh",
+    "sourceId": "food-banks-mississauga-youth",
+    "listing": {
+      "title": "Food Banks Mississauga — ReclaimFRESH food-rescue volunteer",
+      "organization": "Food Banks Mississauga",
+      "description": "Current application intake to sort rescued fresh and frozen food, check quality, and keep storage areas clean. Shifts are two hours with flexible commitment at 4544 Eastgate Parkway, Mississauga. New volunteers apply through the official My Impact link, wait for a welcome email, then request available shifts; shift confirmation is required.",
+      "opportunityType": "volunteer",
+      "category": "Community",
+      "location": "4544 Eastgate Parkway, Mississauga, Ontario",
+      "sourceUrl": "https://www.foodbanksmississauga.ca/volunteer/reclaim-fresh/",
+      "applicationUrl": "https://www.foodbanksmississauga.ca/volunteer/reclaim-fresh/",
+      "eligibility": "The organization welcomes independent volunteers from 14; some roles require 18. ReclaimFRESH asks volunteers to stand and be active for two hours, lift with assistance as needed, follow food-safety rules, and wear closed-toe shoes. Potential exposure to all types of food; confirm suitability if you have food allergies.",
+      "city": "Mississauga",
+      "minimumAge": 14,
+      "paid": "volunteer",
+      "compensation": "Unpaid volunteering",
+      "commitment": "ongoing",
+      "hours": "2 hours per shift; flexible commitment"
+    },
+    "evidence": [
+      {
+        "kind": "html",
+        "url": "https://www.foodbanksmississauga.ca/volunteer/reclaim-fresh/",
+        "text": [
+          "ReclaimFRESH Volunteer",
+          "Start the application process today!",
+          "2 hours per shift",
+          "Flexible commitment",
+          "create an account on My Impact",
+          "If you are confirmed for the shift"
+        ],
+        "links": [
+          "https://app.betterimpact.com/Application?OrganizationGuid=31658f3c-f83b-418c-9112-2348ef8e076d&ApplicationFormNumber=1"
+        ]
+      },
+      {
+        "kind": "html",
+        "url": "https://www.foodbanksmississauga.ca/volunteer/",
+        "text": [
+          "The minimum age to volunteer independently is 14",
+          "Some roles may require volunteers to be at least 18 years old"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "trca-youth-general",
+    "sourceId": "trca-youth-council",
+    "listing": {
+      "title": "TRCA Youth Council — general membership",
+      "organization": "Toronto and Region Conservation Authority",
+      "description": "Join a Greater Toronto Area network of young people working on environmental issues and connections to greenspace. General members choose their level of participation and join activities on a drop-in basis, with opportunities to propose projects. The official page currently invites general-membership applications. The 2026–27 executive intake is closed and is not part of this listing.",
+      "opportunityType": "leadership",
+      "category": "Environment",
+      "location": "Greater Toronto Area, Ontario",
+      "sourceUrl": "https://trca.ca/conservation/watershed-management/regional-watershed-alliance/youth-council/",
+      "applicationUrl": "https://trca.ca/conservation/watershed-management/regional-watershed-alliance/youth-council/",
+      "eligibility": "Ages 16–30; reside or attend school within TRCA’s jurisdiction. Includes high-school youth who meet these conditions. Check the jurisdiction and participation details with TRCA.",
+      "minimumAge": 16,
+      "commitment": "ongoing",
+      "hours": "General members choose participation; activities on a drop-in basis"
+    },
+    "evidence": [
+      {
+        "kind": "html",
+        "url": "https://trca.ca/conservation/watershed-management/regional-watershed-alliance/youth-council/",
+        "text": [
+          "GENERAL MEMBER",
+          "your level of participation is up to you",
+          "APPLY FOR GENERAL MEMBERSHIP",
+          "Applications for the Youth Council Executive for 2026-2027 are now closed."
+        ],
+        "links": [
+          "https://trca.ca/conservation/watershed-management/regional-watershed-alliance/youth-council/recruitment/"
+        ]
+      },
+      {
+        "kind": "html",
+        "url": "https://trca.ca/get-involved/youth-opportunities/",
+        "text": [
+          "TRCA Youth Council",
+          "Ages: 16-30",
+          "Reside or go to school within TRCA’s jurisdiction"
+        ]
+      },
+      {
+        "kind": "html",
+        "url": "https://trca.ca/conservation/watershed-management/regional-watershed-alliance/youth-council/recruitment/",
+        "text": [
+          "To join Toronto and Region Conservation Authority’s (TRCA) Youth Council, please complete and submit the form below.",
+          "Youth Council General Member Application Questions"
+        ],
+        "selectors": ["form"]
+      }
+    ]
+  },
+  {
+    "id": "canadian-cadets-youth-registration",
+    "sourceId": "canadian-cadets-registration",
+    "listing": {
+      "title": "Canadian Cadet Program — Sea, Army or Air registration",
+      "organization": "Government of Canada — Cadets and Junior Canadian Rangers",
+      "description": "Current national registration intake for Sea, Army or Air Cadets, including local corps and squadrons in the Greater Toronto Area. The program develops leadership, citizenship, fitness and practical skills. Use the official unit directory to choose a nearby unit, then begin online registration. Unit staff contact the family to review identification and next steps. Cadets are not members of the Canadian Armed Forces and are not expected to join the military.",
+      "opportunityType": "youth-program",
+      "category": "Leadership",
+      "location": "Greater Toronto Area and across Canada",
+      "sourceUrl": "https://www.canada.ca/en/department-national-defence/services/cadets-junior-canadian-rangers/cadets/join-us.html",
+      "applicationUrl": "https://www.canada.ca/en/department-national-defence/services/cadets-junior-canadian-rangers/cadets/join-us.html",
+      "eligibility": "Canadian residents aged 12 through 18 who have not turned 19. Provincial health insurance or equivalent is required. A participant cannot belong to another cadet corps or squadron at the same time. Parent or guardian contact details are required during registration.",
+      "minimumAge": 12,
+      "commitment": "ongoing"
+    },
+    "evidence": [
+      {
+        "kind": "html",
+        "url": "https://www.canada.ca/en/department-national-defence/services/cadets-junior-canadian-rangers/cadets/join-us.html",
+        "text": [
+          "Be a resident of Canada",
+          "Be at least 12 years of age and not have attained 19 years of age",
+          "Not belong to another cadet group",
+          "REGISTER NOW!",
+          "The corps/squadron staff will be in touch"
+        ],
+        "links": [
+          "https://registration.cadets.gc.ca/get-started.html",
+          "https://app.cadets.gc.ca/directory-repertoirev3/en/cadet-directory.html"
+        ]
+      },
+      {
+        "kind": "html",
+        "url": "https://www.canada.ca/en/department-national-defence/services/cadets-junior-canadian-rangers/cadets/about/frequently-asked-questions.html",
+        "text": [
+          "As a cadet you are not a member of the Canadian Armed Forces",
+          "you are not expected to join the military"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "tpl-leading-to-reading-current",
+    "sourceId": "toronto-library-literacy-volunteers",
+    "listing": {
+      "title": "Toronto Public Library — Leading to Reading teen volunteers",
+      "organization": "Toronto Public Library",
+      "description": "Help children in grades 1–6 develop reading and writing skills in a supervised one-hour weekly library session. The official page currently confirms limited volunteer applications at Barbara Frum, Mount Dennis and York Woods, for specified session times. Other branches have different availability, and many are closed to applications. Submit the application form in person or through the official email on the page; interviews take place as openings arise.",
+      "opportunityType": "volunteer",
+      "category": "Education",
+      "location": "Selected Toronto Public Library branches, Toronto, Ontario",
+      "sourceUrl": "https://tpl.ca/support-us/volunteering/leading-to-reading/",
+      "applicationUrl": "https://tpl.ca/support-us/volunteering/leading-to-reading/",
+      "eligibility": "Adult and teen volunteers who speak and write English fluently, communicate well with children, work independently and act as mature role models. A numerical minimum age is not published on this page. Required self-directed training and a Vulnerable Sector Check, paid for by TPL. Hours qualify toward Ontario high-school community service. Recruitment can take four to six weeks from interview.",
+      "city": "Toronto",
+      "paid": "volunteer",
+      "compensation": "Unpaid volunteering",
+      "commitment": "ongoing",
+      "hours": "One hour each week, plus required training"
+    },
+    "evidence": [
+      {
+        "kind": "html",
+        "url": "https://tpl.ca/support-us/volunteering/leading-to-reading/",
+        "text": [
+          "adult and teen volunteers",
+          "one hour weekly scheduled session",
+          "hours qualify towards the 40 hours of community service graduation requirement",
+          "Barbara Frum",
+          "Mount Dennis",
+          "York Woods",
+          "This location is currently only accepting limited applications for Monday at 6:45 pm and Wednesday at 5:30 pm sessions.",
+          "This location is currently only accepting limited applications for 9:30 am, 10:30 am and 2:15 pm sessions.",
+          "This location is currently only accepting limited applications for the 6:45 pm session.",
+          "Please fill out an application form and submit it in person at a branch or email it",
+          "four to six weeks"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "toronto-long-term-care-volunteer",
+    "sourceId": "toronto-ltc-youth-volunteers",
+    "listing": {
+      "title": "City of Toronto — long-term care home student volunteering",
+      "organization": "City of Toronto — Seniors Services and Long-Term Care",
+      "description": "Rolling volunteer intake at the City’s ten long-term care homes. Support residents through visits, games, arts, music, mealtime assistance or special events, with orientation and staff support. Student volunteers can earn high-school service hours; high-school co-op inquiries are also accepted. Choose a home and return the official application, references and any required parent waiver to its volunteer coordinator. Individual role availability and placement are confirmed by the home.",
+      "opportunityType": "volunteer",
+      "category": "Community",
+      "location": "City-operated long-term care homes, Toronto, Ontario",
+      "sourceUrl": "https://www.toronto.ca/community-people/get-involved/volunteer-with-the-city/long-term-care-home-volunteer/",
+      "applicationUrl": "https://www.toronto.ca/community-people/get-involved/volunteer-with-the-city/long-term-care-home-volunteer/",
+      "eligibility": "High-school student volunteers are explicitly welcomed, but this page does not give a numerical minimum age. Applicants under 18 need the parent/guardian waiver. Screening includes application, orientation, references and a police vulnerable-sector screen. Ask the selected coordinator about role suitability, screening and commitment. The City advertises student volunteer hours/high-school credit; confirm school approval before counting hours toward graduation.",
+      "city": "Toronto",
+      "paid": "volunteer",
+      "compensation": "Unpaid volunteering",
+      "commitment": "ongoing",
+      "hours": "Days, evenings or weekends; most volunteers attend once weekly"
+    },
+    "evidence": [
+      {
+        "kind": "html",
+        "url": "https://www.toronto.ca/community-people/get-involved/volunteer-with-the-city/long-term-care-home-volunteer/",
+        "text": [
+          "We are always looking for volunteers to join our team.",
+          "Seniors Services and Long-Term Care operates 10 long-term care homes",
+          "SSLTCParent-Guardian Waiver (if under 18 years of age)",
+          "earn your hours for high school credit",
+          "application, orientation, police reference check",
+          "The forms can be sent electronically via email or dropped off at the LTC home"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bgc-peel-keystone",
+    "sourceId": "bgc-peel-youth-intakes",
+    "listing": {
+      "title": "BGC Peel — Keystone youth leadership registration",
+      "organization": "BGC Peel",
+      "description": "Leadership program for ages 14–18 in Peel. Build teamwork, healthy choices, public-speaking and event-planning skills while completing activities in leadership, service to the club and community, and learning for life. The official page currently asks families to contact a Senior Program Coordinator to register. Participation requires membership registration; the published school-year membership fee is $20, with possible activity costs. Confirm available sites and spaces with BGC Peel.",
+      "opportunityType": "leadership",
+      "category": "Leadership",
+      "location": "Brampton and Mississauga, Peel Region, Ontario",
+      "sourceUrl": "https://www.bgcpeel.org/programs/youth-programs/",
+      "applicationUrl": "https://www.bgcpeel.org/programs/youth-programs/",
+      "eligibility": "Youth aged 14–18. Registration forms, membership fee and proof of age required. Program schedule, location, suitability and space are confirmed with BGC Peel. Scholarships are opportunities to apply, not guaranteed awards.",
+      "minimumAge": 14,
+      "commitment": "ongoing",
+      "cost": "$20 published school-year membership; some activities cost extra"
+    },
+    "evidence": [
+      {
+        "kind": "html",
+        "url": "https://www.bgcpeel.org/programs/youth-programs/",
+        "text": [
+          "Ages: 14-18 for Keystone",
+          "Contact Us to Register",
+          "Keystone (Ages 14 – 18)",
+          "TODAY to REGISTER",
+          "Leadership, Teamwork, Healthy Choices, Service to Club and Community, and Learning for Life"
+        ]
+      },
+      {
+        "kind": "html",
+        "url": "https://www.bgcpeel.org/programs/membership-portal/",
+        "text": [
+          "all children and youth must complete our registration forms and pay membership fees",
+          "The fee is $20.00 per child for the School Year",
+          "Individual sites may incur extra costs for field trips and other activities",
+          "Age Verification Required"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bgc-peel-employment-readiness",
+    "sourceId": "bgc-peel-youth-intakes",
+    "listing": {
+      "title": "BGC Peel — youth employment-readiness workshops",
+      "organization": "BGC Peel",
+      "description": "Youth employment-readiness support covering resumes, interview skills, personal strengths and career or education planning. The official page asks interested youth to contact BGC Peel to register. This is a skills program, not a paid job offer; any separate agency employment requires its own hiring process. Ask the coordinator about current workshops, ages, schedules, membership and any fees.",
+      "opportunityType": "career-program",
+      "category": "Career skills",
+      "location": "Brampton and Mississauga, Peel Region, Ontario",
+      "sourceUrl": "https://www.bgcpeel.org/programs/youth-programs/",
+      "applicationUrl": "https://www.bgcpeel.org/programs/youth-programs/",
+      "eligibility": "Youth interested in building work and school skills. A numerical age range and workshop-specific cost are not stated for this employment section; confirm with the program coordinator before registering. Program leadership opportunities and volunteer mentorship may also be discussed.",
+      "commitment": "unspecified",
+      "cost": "Confirm workshop fees and any required membership with BGC Peel"
+    },
+    "evidence": [
+      {
+        "kind": "html",
+        "url": "https://www.bgcpeel.org/programs/youth-programs/",
+        "text": [
+          "Youth Employment",
+          "Resume writing and interview skills workshops",
+          "Contact Us to Register",
+          "Employment readiness workshops including resume writing and interview skills",
+          "TODAY to REGISTER"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bgc-peel-high-school-volunteer",
+    "sourceId": "bgc-peel-youth-intakes",
+    "listing": {
+      "title": "BGC Peel — high-school volunteer intake",
+      "organization": "BGC Peel",
+      "description": "Application intake for high-school community-service volunteering in Peel. BGC Peel considers roles case by case in homework, recreation, gym and youth programs, events, administration and camps. Email the resume and cover letter to the official address with the area of interest in the subject. Placements depend on available roles, suitability and screening; this listing does not promise a space in every program.",
+      "opportunityType": "volunteer",
+      "category": "Community",
+      "location": "Brampton and Mississauga, Peel Region, Ontario",
+      "sourceUrl": "https://www.bgcpeel.org/get-involved/volunteer/",
+      "applicationUrl": "https://www.bgcpeel.org/get-involved/volunteer/",
+      "eligibility": "High-school students are explicitly welcomed for community-service hours. Minimum age varies or is not stated for most areas; bingo fundraising requires 18+. Successful applicants must complete a vulnerable-sector criminal reference check before placement. Confirm age, screening and availability for the chosen role.",
+      "paid": "volunteer",
+      "compensation": "Unpaid volunteering",
+      "commitment": "unspecified"
+    },
+    "evidence": [
+      {
+        "kind": "html",
+        "url": "https://www.bgcpeel.org/get-involved/volunteer/",
+        "text": [
+          "for high school students to complete their community service hours",
+          "on a case by case basis",
+          "please email your resume and cover letter",
+          "Subject: Volunteer Opportunity + (the area)",
+          "criminal reference check (vulnerable sector)"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mississauga-cooksville-tag",
+    "sourceId": "mississauga-current-youth-volunteers",
+    "listing": {
+      "title": "Cooksville Library — Teen Advisory Group volunteer",
+      "organization": "City of Mississauga",
+      "description": "Current Cooksville Library Teen Advisory Group intake. Meet other high-school students, advise library staff on teen needs, and help plan and organize teen programs and community initiatives. The City’s official volunteer portal currently lists the group as recruiting and provides an Apply to Volunteer control. Placement is subject to the City’s volunteer screening and available spaces.",
+      "opportunityType": "volunteer",
+      "category": "Community",
+      "location": "Cooksville Library, 3024 Hurontario Street, Mississauga, Ontario",
+      "sourceUrl": "https://app.betterimpact.com/PublicEnterprise/EnterpriseGvi?enterpriseGuid=e3200288-2b64-4ed8-a26d-5bd0f4c5170b&gviGuid=b3994048-df3d-47ec-a6ff-21b26d5a73db",
+      "applicationUrl": "https://app.betterimpact.com/PublicEnterprise/EnterpriseGvi?enterpriseGuid=e3200288-2b64-4ed8-a26d-5bd0f4c5170b&gviGuid=b3994048-df3d-47ec-a6ff-21b26d5a73db",
+      "eligibility": "High-school students aged 14+. Review the detailed position description and City screening requirements on the official page. Schedule and ongoing commitment are not stated in the summary.",
+      "city": "Mississauga",
+      "paid": "volunteer",
+      "compensation": "Unpaid volunteering",
+      "minimumAge": 14,
+      "eligibleGrades": [9, 10, 11, 12],
+      "commitment": "ongoing"
+    },
+    "evidence": [
+      {
+        "kind": "html",
+        "url": "https://app.betterimpact.com/PublicEnterprise/EnterpriseGvi?enterpriseGuid=e3200288-2b64-4ed8-a26d-5bd0f4c5170b&gviGuid=b3994048-df3d-47ec-a6ff-21b26d5a73db",
+        "text": [
+          "Join the Teen Advisory Group",
+          "High school students’ ages 14+",
+          "Cooksville Library: 3024 Hurontario St #212",
+          "Apply to Volunteer"
+        ],
+        "selectors": ["a[href*=\"/Application/LoggedInApplicationRedirect\"]"]
+      },
+      {
+        "kind": "html",
+        "url": "https://app.betterimpact.com/PublicEnterprise/EnterpriseSearch?EnterpriseGuid=e3200288-2b64-4ed8-a26d-5bd0f4c5170b&SearchType=SuitabilityClassification&SearchId=3273",
+        "text": ["Search Results"],
+        "selectors": [
+          "a[href*=\"gviGuid=b3994048-df3d-47ec-a6ff-21b26d5a73db\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mississauga-malton-program-volunteer",
+    "sourceId": "mississauga-current-youth-volunteers",
+    "listing": {
+      "title": "Malton Community Centre — recreation program volunteer",
+      "organization": "City of Mississauga",
+      "description": "Current program-volunteer intake supporting City recreation activities at Malton Community Centre. Work with staff to help deliver and supervise programs and experiences in a safe, friendly environment. The City’s youth volunteer search currently lists this role as recruiting and provides an application control. Specific programs, shifts and acceptance are confirmed during recruitment.",
+      "opportunityType": "volunteer",
+      "category": "Community",
+      "location": "Malton Community Centre, 3540 Morning Star Drive, Mississauga, Ontario",
+      "sourceUrl": "https://app.betterimpact.com/PublicEnterprise/EnterpriseGvi?enterpriseGuid=e3200288-2b64-4ed8-a26d-5bd0f4c5170b&gviGuid=ca9b35ca-bfdd-45fa-8761-1c35f8a0e23e",
+      "applicationUrl": "https://app.betterimpact.com/PublicEnterprise/EnterpriseGvi?enterpriseGuid=e3200288-2b64-4ed8-a26d-5bd0f4c5170b&gviGuid=ca9b35ca-bfdd-45fa-8761-1c35f8a0e23e",
+      "eligibility": "At least 14 years old. HIGH FIVE Principles of Healthy Child Development is highly recommended, rather than stated as mandatory in the summary. Review the full position description and City screening requirements.",
+      "city": "Mississauga",
+      "paid": "volunteer",
+      "compensation": "Unpaid volunteering",
+      "minimumAge": 14,
+      "commitment": "ongoing"
+    },
+    "evidence": [
+      {
+        "kind": "html",
+        "url": "https://app.betterimpact.com/PublicEnterprise/EnterpriseGvi?enterpriseGuid=e3200288-2b64-4ed8-a26d-5bd0f4c5170b&gviGuid=ca9b35ca-bfdd-45fa-8761-1c35f8a0e23e",
+        "text": [
+          "Do you enjoy recreation activities?",
+          "Volunteers must be at least 14 + years old",
+          "highly recommended",
+          "Malton Community Centre",
+          "3540 Morning Star Drive",
+          "Apply to Volunteer"
+        ],
+        "selectors": ["a[href*=\"/Application/LoggedInApplicationRedirect\"]"]
+      },
+      {
+        "kind": "html",
+        "url": "https://app.betterimpact.com/PublicEnterprise/EnterpriseSearch?EnterpriseGuid=e3200288-2b64-4ed8-a26d-5bd0f4c5170b&SearchType=SuitabilityClassification&SearchId=3273",
+        "text": ["Search Results"],
+        "selectors": [
+          "a[href*=\"gviGuid=ca9b35ca-bfdd-45fa-8761-1c35f8a0e23e\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mississauga-natural-ice-rink-volunteer",
+    "sourceId": "mississauga-current-youth-volunteers",
+    "listing": {
+      "title": "Mississauga — Natural Ice Rinks Program volunteer",
+      "organization": "City of Mississauga",
+      "description": "Current winter volunteer intake to help maintain natural ice rinks in City parks. Duties include flooding, snow removal and day-to-day rink maintenance for the season. Parks Operations provides equipment and inspects ice weekly. Apply through the City’s public volunteer page, then confirm the assigned rink, training and schedule. This is unpaid volunteering.",
+      "opportunityType": "volunteer",
+      "category": "Community",
+      "location": "Mississauga, Ontario",
+      "sourceUrl": "https://app.betterimpact.com/PublicEnterprise/EnterpriseGvi?enterpriseGuid=e3200288-2b64-4ed8-a26d-5bd0f4c5170b&gviGuid=6a60bfbe-65ab-46b3-a5a9-a0a3b6010726",
+      "applicationUrl": "https://app.betterimpact.com/PublicEnterprise/EnterpriseGvi?enterpriseGuid=e3200288-2b64-4ed8-a26d-5bd0f4c5170b&gviGuid=6a60bfbe-65ab-46b3-a5a9-a0a3b6010726",
+      "eligibility": "At least 14 on the date of the first shift. Read the position description and natural-ice-rink guide for responsibilities, working conditions and screening. Exact season dates and weekly hours are not published in the summary.",
+      "city": "Mississauga",
+      "paid": "volunteer",
+      "compensation": "Unpaid volunteering",
+      "minimumAge": 14,
+      "commitment": "ongoing"
+    },
+    "evidence": [
+      {
+        "kind": "html",
+        "url": "https://app.betterimpact.com/PublicEnterprise/EnterpriseGvi?enterpriseGuid=e3200288-2b64-4ed8-a26d-5bd0f4c5170b&gviGuid=6a60bfbe-65ab-46b3-a5a9-a0a3b6010726",
+        "text": [
+          "Natural Ice Rinks Program Volunteers",
+          "for the duration of the season",
+          "provides all required equipment",
+          "must be 14 years of age or older on the date of the first shift",
+          "Apply to Volunteer"
+        ],
+        "selectors": ["a[href*=\"/Application/LoggedInApplicationRedirect\"]"]
+      },
+      {
+        "kind": "html",
+        "url": "https://app.betterimpact.com/PublicEnterprise/EnterpriseSearch?EnterpriseGuid=e3200288-2b64-4ed8-a26d-5bd0f4c5170b&SearchType=SuitabilityClassification&SearchId=3273",
+        "text": ["Search Results"],
+        "selectors": [
+          "a[href*=\"gviGuid=6a60bfbe-65ab-46b3-a5a9-a0a3b6010726\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mississauga-parade-marshal-2026",
+    "sourceId": "mississauga-current-youth-volunteers",
+    "listing": {
+      "title": "Mississauga Santa Claus Parade — Parade Marshal volunteer",
+      "organization": "City of Mississauga",
+      "description": "Monitor a section of the route, watch for obstructions or safety concerns, communicate with City staff, and help keep spectators a safe distance from moving vehicles. Applications currently close November 3, 2026. Staging is at the Living Arts Centre. The page lists approximate volunteer hours of 5–8 p.m., subject to change, and training after successful recruitment. Its training weekday labels conflict with the November dates, so confirm the final training and event schedule with City staff before committing.",
+      "opportunityType": "volunteer",
+      "category": "Community",
+      "location": "Living Arts Centre, 4141 Living Arts Drive, Mississauga, Ontario",
+      "sourceUrl": "https://app.betterimpact.com/PublicEnterprise/EnterpriseGvi?enterpriseGuid=e3200288-2b64-4ed8-a26d-5bd0f4c5170b&gviGuid=b45e0b16-f469-4c8b-9177-2050b751b3d5",
+      "applicationUrl": "https://app.betterimpact.com/PublicEnterprise/EnterpriseGvi?enterpriseGuid=e3200288-2b64-4ed8-a26d-5bd0f4c5170b&gviGuid=b45e0b16-f469-4c8b-9177-2050b751b3d5",
+      "eligibility": "Must have reached age 16 by October 15, as stated on the role page. Youth may be partnered with adult volunteers where possible. This is a walking parade and skating skills are not required. Screening and training apply.",
+      "city": "Mississauga",
+      "paid": "volunteer",
+      "compensation": "Unpaid volunteering",
+      "minimumAge": 16,
+      "commitment": "one-time",
+      "applicationClosingDate": "2026-11-03",
+      "hours": "Approximately 5–8 p.m., subject to change; confirm event date and training schedule"
+    },
+    "evidence": [
+      {
+        "kind": "html",
+        "url": "https://app.betterimpact.com/PublicEnterprise/EnterpriseGvi?enterpriseGuid=e3200288-2b64-4ed8-a26d-5bd0f4c5170b&gviGuid=b45e0b16-f469-4c8b-9177-2050b751b3d5",
+        "text": [
+          "Volunteer Parade Marshals",
+          "Applications Close: Tuesday, November 3, 2026",
+          "age of 16 years by October 15",
+          "skating skills are not required",
+          "Living Arts Centre",
+          "Apply to Volunteer"
+        ],
+        "selectors": ["a[href*=\"/Application/LoggedInApplicationRedirect\"]"]
+      },
+      {
+        "kind": "html",
+        "url": "https://app.betterimpact.com/PublicEnterprise/EnterpriseSearch?EnterpriseGuid=e3200288-2b64-4ed8-a26d-5bd0f4c5170b&SearchType=SuitabilityClassification&SearchId=3273",
+        "text": ["Search Results"],
+        "selectors": [
+          "a[href*=\"gviGuid=b45e0b16-f469-4c8b-9177-2050b751b3d5\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mississauga-parade-ambassador-2026",
+    "sourceId": "mississauga-current-youth-volunteers",
+    "listing": {
+      "title": "Mississauga Santa Claus Parade — Parade Ambassador volunteer",
+      "organization": "City of Mississauga",
+      "description": "Walk with an assigned section to support the pace of the parade and keep participants with their correct groups. Applications currently close November 3, 2026. Staging is at the Living Arts Centre. The page lists approximate volunteer hours of 5–8 p.m., subject to change, and training after successful recruitment. Its training weekday labels conflict with the November dates, so confirm the final training and event schedule with City staff before committing.",
+      "opportunityType": "volunteer",
+      "category": "Community",
+      "location": "Living Arts Centre, 4141 Living Arts Drive, Mississauga, Ontario",
+      "sourceUrl": "https://app.betterimpact.com/PublicEnterprise/EnterpriseGvi?enterpriseGuid=e3200288-2b64-4ed8-a26d-5bd0f4c5170b&gviGuid=548feb18-10cc-478e-ab02-2a0e1128fba9",
+      "applicationUrl": "https://app.betterimpact.com/PublicEnterprise/EnterpriseGvi?enterpriseGuid=e3200288-2b64-4ed8-a26d-5bd0f4c5170b&gviGuid=548feb18-10cc-478e-ab02-2a0e1128fba9",
+      "eligibility": "Must have reached age 14 by October 15, as stated on the role page. Youth may be partnered with adult volunteers where possible. This is a walking parade and skating skills are not required. Screening and training apply.",
+      "city": "Mississauga",
+      "paid": "volunteer",
+      "compensation": "Unpaid volunteering",
+      "minimumAge": 14,
+      "commitment": "one-time",
+      "applicationClosingDate": "2026-11-03",
+      "hours": "Approximately 5–8 p.m., subject to change; confirm event date and training schedule"
+    },
+    "evidence": [
+      {
+        "kind": "html",
+        "url": "https://app.betterimpact.com/PublicEnterprise/EnterpriseGvi?enterpriseGuid=e3200288-2b64-4ed8-a26d-5bd0f4c5170b&gviGuid=548feb18-10cc-478e-ab02-2a0e1128fba9",
+        "text": [
+          "Volunteer Parade Ambassadors",
+          "Applications Close: Tuesday, November 3, 2026",
+          "age of 14 years by October 15",
+          "skating skills are not required",
+          "Living Arts Centre",
+          "Apply to Volunteer"
+        ],
+        "selectors": ["a[href*=\"/Application/LoggedInApplicationRedirect\"]"]
+      },
+      {
+        "kind": "html",
+        "url": "https://app.betterimpact.com/PublicEnterprise/EnterpriseSearch?EnterpriseGuid=e3200288-2b64-4ed8-a26d-5bd0f4c5170b&SearchType=SuitabilityClassification&SearchId=3273",
+        "text": ["Search Results"],
+        "selectors": [
+          "a[href*=\"gviGuid=548feb18-10cc-478e-ab02-2a0e1128fba9\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mississauga-parade-staging-2026",
+    "sourceId": "mississauga-current-youth-volunteers",
+    "listing": {
+      "title": "Mississauga Santa Claus Parade — Event Staging Support volunteer",
+      "organization": "City of Mississauga",
+      "description": "Help staff in the pre-parade staging or post-parade pickup area, direct participants and support the correct lineup order. Applications currently close November 3, 2026. Staging is at the Living Arts Centre. The page lists approximate volunteer hours of 5–8 p.m., subject to change, and training after successful recruitment. Its training weekday labels conflict with the November dates, so confirm the final training and event schedule with City staff before committing.",
+      "opportunityType": "volunteer",
+      "category": "Community",
+      "location": "Living Arts Centre, 4141 Living Arts Drive, Mississauga, Ontario",
+      "sourceUrl": "https://app.betterimpact.com/PublicEnterprise/EnterpriseGvi?enterpriseGuid=e3200288-2b64-4ed8-a26d-5bd0f4c5170b&gviGuid=2341e36f-0dfa-4b7e-b518-53b5e6d55736",
+      "applicationUrl": "https://app.betterimpact.com/PublicEnterprise/EnterpriseGvi?enterpriseGuid=e3200288-2b64-4ed8-a26d-5bd0f4c5170b&gviGuid=2341e36f-0dfa-4b7e-b518-53b5e6d55736",
+      "eligibility": "Must have reached age 16 by October 15, as stated on the role page. Youth may be partnered with adult volunteers where possible. This is a walking parade and skating skills are not required. Screening and training apply.",
+      "city": "Mississauga",
+      "paid": "volunteer",
+      "compensation": "Unpaid volunteering",
+      "minimumAge": 16,
+      "commitment": "one-time",
+      "applicationClosingDate": "2026-11-03",
+      "hours": "Approximately 5–8 p.m., subject to change; confirm event date and training schedule"
+    },
+    "evidence": [
+      {
+        "kind": "html",
+        "url": "https://app.betterimpact.com/PublicEnterprise/EnterpriseGvi?enterpriseGuid=e3200288-2b64-4ed8-a26d-5bd0f4c5170b&gviGuid=2341e36f-0dfa-4b7e-b518-53b5e6d55736",
+        "text": [
+          "Event Staging Support Volunteer",
+          "Applications Close: Tuesday, November 3, 2026",
+          "age of 16 years by October 15",
+          "skating skills are not required",
+          "Living Arts Centre",
+          "Apply to Volunteer"
+        ],
+        "selectors": ["a[href*=\"/Application/LoggedInApplicationRedirect\"]"]
+      },
+      {
+        "kind": "html",
+        "url": "https://app.betterimpact.com/PublicEnterprise/EnterpriseSearch?EnterpriseGuid=e3200288-2b64-4ed8-a26d-5bd0f4c5170b&SearchType=SuitabilityClassification&SearchId=3273",
+        "text": ["Search Results"],
+        "selectors": [
+          "a[href*=\"gviGuid=2341e36f-0dfa-4b7e-b518-53b5e6d55736\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ajax-library-pages-2026-10",
+    "sourceId": "ajax-library-paid-pages",
+    "listing": {
+      "title": "Library Page — three existing part-time vacancies",
+      "organization": "Ajax Public Library",
+      "description": "Three existing permanent part-time library Page vacancies: one at Audley Branch and two at Main Branch. Sort and shelve library materials, keep shelves tidy, and help prepare program materials. The published hourly pay is $17.15 for applicants under 18 and $18.20 for applicants over 18; the source does not explicitly clarify the rate for someone exactly 18. Work approximately 10–15 hours per week, with days, evenings and weekends required. Completion of Grade 10 is preferred. Apply by emailing the documents requested in the official posting. External deadline: October 23, 2026 at 5 p.m. Toronto time.",
+      "opportunityType": "job",
+      "category": "Library and community services",
+      "location": "Audley Branch and Main Branch, Ajax, Ontario",
+      "city": "Ajax",
+      "paid": "paid",
+      "compensation": "$17.15/hour under 18; $18.20/hour over 18 (age-18 rate not clarified)",
+      "eligibility": "Completion of Grade 10 preferred. Strong attention to detail; ability to work independently is an asset. Successful candidates must provide a satisfactory vulnerable sector/criminal records check. Minimum age is not stated; confirm age eligibility and the pay rate if exactly 18.",
+      "commitment": "part-time",
+      "hours": "Approximately 10–15 hours per week; minimum 10; days, evenings and weekends",
+      "sourceUrl": "https://www.ajaxlibrary.ca/jobs-volunteers",
+      "applicationUrl": "https://www.ajaxlibrary.ca/sites/default/files/inline-files/Part-Time%20Pages_.pdf",
+      "applicationDeadline": "2026-10-23T21:00:00.000Z"
+    },
+    "evidence": [
+      {
+        "kind": "html",
+        "url": "https://www.ajaxlibrary.ca/jobs-volunteers",
+        "text": [
+          "Current Job Opportunities",
+          "Page (Permanent, Part-Time - Three (3) Vacancies)",
+          "Friday, October 23, 2026, at 5 p.m."
+        ],
+        "links": [
+          "https://www.ajaxlibrary.ca/sites/default/files/inline-files/Part-Time%20Pages_.pdf"
+        ]
+      },
+      {
+        "kind": "pdf-sha256",
+        "url": "https://www.ajaxlibrary.ca/sites/default/files/inline-files/Part-Time%20Pages_.pdf",
+        "sha256": "542794e70fea06b73a3bbf96914f7ef15a1e235e3a403dd499a866c910645005"
+      }
+    ],
+    "reviewNotes": "PDF states existing vacancy, grade10preferred, threevacancies with specific branches, under18/over18wages. Exact-age18 omitted in official word choice so disclosed; no invented minage, no source postingdate timestamp (publishedcalendarOct9notneeded). ExternaldeadlinepositiveonHTML+PDF; HTML provides5p.m., Toronto timezone geographicalbased. Keep existing timestampdateonly convention. PublicPDF648341bytes SHA256stored; fulltext saved ajax-library-page.txt."
+  },
+  {
+    "id": "second-harvest-student-volunteer",
+    "sourceId": "second-harvest-student-volunteers",
+    "listing": {
+      "title": "Second Harvest — high-school food-rescue volunteer intake",
+      "organization": "Second Harvest",
+      "description": "Year-round volunteer application intake for Toronto food-rescue support, including warehouse assistance, food sorting and helping distribute rescued food. The official page explicitly welcomes high-school students aged 16 or older. Apply through the linked form; the volunteer team contacts applicants whose skills, interests and availability match current positions. Advance booking is required, and applying does not guarantee a placement or shift.",
+      "opportunityType": "volunteer",
+      "category": "Community",
+      "location": "Second Harvest headquarters and assigned sites, Toronto, Ontario",
+      "city": "Toronto",
+      "sourceUrl": "https://www.secondharvest.ca/get-involved/volunteer",
+      "applicationUrl": "https://www.secondharvest.ca/get-involved/volunteer",
+      "eligibility": "High-school students must be at least 16. Role-specific age requirements can be higher; general event support requires 19 and is excluded from this listing. Some roles on trucks or in the warehouse have additional requirements. No drop-ins; confirm a role and shift in advance. Court-appointed volunteer hours are not accepted.",
+      "minimumAge": 16,
+      "paid": "volunteer",
+      "compensation": "Unpaid volunteering",
+      "commitment": "ongoing",
+      "hours": "Varies by role and confirmed shift"
+    },
+    "evidence": [
+      {
+        "kind": "html",
+        "url": "https://www.secondharvest.ca/get-involved/volunteer",
+        "text": [
+          "Join our Second Harvest volunteer community!",
+          "Operations Support",
+          "Year-Round",
+          "Students must be a minimum age of 16 years old to volunteer with Second Harvest.",
+          "All volunteer applications are reviewed",
+          "whose skills, interests and availability best match the requirements of our current volunteer positions",
+          "all volunteers, including corporate and community groups are required to book in advance"
+        ],
+        "links": ["https://www.secondharvest.ca/form/volunteer-form"]
+      },
+      {
+        "kind": "html",
+        "url": "https://www.secondharvest.ca/form/volunteer-form",
+        "text": [
+          "Join the volunteer crew at Second Harvest!",
+          "Fill out the form below to begin volunteering today!"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "toronto-youth-cabinet-education-2026-27",
+    "sourceId": "toronto-youth-cabinet-working-groups",
+    "listing": {
+      "title": "Toronto Youth Cabinet — Education Working Group 2026–27",
+      "organization": "Toronto Youth Cabinet",
+      "description": "Current 2026–27 Education Working Group application with a live public form. Work on more inclusive and accessible education for Toronto students through youth advocacy, outreach and partnerships. The form lists volunteer hours, possible reference letters and connections to Toronto City Council as benefits. It publishes “Friday, October 30th @ 11:59 PM” without repeating the year or timezone; confirm the exact deadline with TYC. Selection and executive roles are not guaranteed.",
+      "opportunityType": "leadership",
+      "category": "Leadership",
+      "location": "Toronto, Ontario",
+      "city": "Toronto",
+      "sourceUrl": "https://www.thetyc.ca/applications",
+      "applicationUrl": "https://docs.google.com/forms/d/e/1FAIpQLScYOtAtDw_S9MhxSz5RxHZO7mpC3xXGKzhF_C_DhYXnXEs9xw/viewform",
+      "minimumAge": 14,
+      "eligibility": "TYC membership is open to youth aged 14–24 inclusive who live, work, play or learn in Toronto. The Education form asks about 2026–27 extracurricular commitments, Toronto ward, motivation, and weekly availability of 2, 3 or 4+ hours. Reliable, dedicated and organized applicants interested in education issues are sought. No fee is stated.",
+      "commitment": "ongoing",
+      "hours": "Application asks about availability of 2, 3 or 4+ hours weekly"
+    },
+    "evidence": [
+      {
+        "kind": "html",
+        "url": "https://www.thetyc.ca/applications",
+        "text": ["Working Group Applications", "Now Open", "Education"],
+        "links": [
+          "https://docs.google.com/forms/d/e/1FAIpQLScYOtAtDw_S9MhxSz5RxHZO7mpC3xXGKzhF_C_DhYXnXEs9xw/viewform"
+        ]
+      },
+      {
+        "kind": "html",
+        "url": "https://www.thetyc.ca/get-involved",
+        "text": [
+          "TYC membership is open to all youth between the ages of 14 and 24 (inclusive)",
+          "live, work, play, or learn in the City of Toronto",
+          "monthly cabinet meetings"
+        ]
+      },
+      {
+        "kind": "html",
+        "url": "https://docs.google.com/forms/d/e/1FAIpQLScYOtAtDw_S9MhxSz5RxHZO7mpC3xXGKzhF_C_DhYXnXEs9xw/viewform",
+        "text": [
+          "Education Working Group Application Form 2026 - 2027",
+          "creating a more inclusive and accessible educational environment",
+          "Gain volunteer hours",
+          "Application Deadline: Friday, October 30th @ 11:59 PM",
+          "Please list all of your other extracurricular commitments for the 2026-2027 school year",
+          "Submit"
+        ],
+        "selectors": ["form[action*=\"formResponse\"]"]
+      }
+    ]
   }
 ]

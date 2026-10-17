@@ -9,7 +9,7 @@ const identity = (value: string) =>
     .toLowerCase()
     .replace(/[^a-z0-9]/g, "");
 const selected =
-  /swim-instructor|lifeguard|outdoor-skate-instructor|aquafit-instructor|personal-trainer|fitness-floor-staff/i;
+  /swim-instructor|lifeguard|outdoor-skate-instructor|aquafit-instructor|personal-trainer|fitness-floor-staff|deck-supervisor|bartender-cultural-services/i;
 
 export function bramptonJobLinks(body: string) {
   const $ = load(body, { xml: true });
@@ -83,6 +83,7 @@ export function bramptonJobs(body: string): ListingInput[] {
       .filter((s) => /Minimum \d{1,2} years of age/i.test(s));
     const count = /Number of Positions:\s*(\d+)/i.exec(summary)?.[1];
     const hours = /Hours of Work:\s*(.+?)\s*Location:/i.exec(summary)?.[1];
+    const cultural = identity(title) === "bartenderculturalservices";
     if (
       !rate ||
       !age ||
@@ -91,7 +92,9 @@ export function bramptonJobs(body: string): ListingInput[] {
       !hours ||
       qualifications.length !== 1 ||
       !/Part Time \(PT\)/.test(summary) ||
-      !/Division:\s*Recreation/.test(summary)
+      !(cultural
+        ? /Division:\s*Cultural Services/.test(summary)
+        : /Division:\s*Recreation/.test(summary))
     )
       throw new Error("City careers job requirements changed");
     const closing = z.iso.date().parse(`${date[3]}-${date[1]}-${date[2]}`);
@@ -109,16 +112,20 @@ export function bramptonJobs(body: string): ListingInput[] {
     const open =
       apply &&
       Number(count) > 0 &&
-      !/talent pool|future vacanc|no longer available|applications? (?:are )?closed/i.test(
+      !/talent pool|candidate pool|future (?:opportunit|vacanc)|not (?:for )?an? existing vacancy|no longer available|applications? (?:are )?closed/i.test(
         text,
       );
     return {
       title,
       organization: "City of Brampton",
-      description: `Paid part-time recreation position in Brampton. The City advertises ${count} positions at ${rate} per hour. Minimum age: ${age}. Closing date: ${closing}; the source does not publish a closing time. Required qualifications and permitted certification completion periods: ${qualifications[0]} Check the official posting for duties and the full hiring conditions.`,
+      description: `Paid part-time ${cultural ? "theatre food and beverage service" : "recreation"} position in Brampton. The City advertises ${count} positions at ${rate} per hour. Minimum age: ${age}. Closing date: ${closing}; the source does not publish a closing time. Required qualifications and permitted certification completion periods: ${qualifications[0]} Check the official posting for duties and the full hiring conditions.`,
       opportunityType: "job",
-      category: "Recreation and instruction",
-      location: "Brampton, Ontario",
+      category: cultural
+        ? "Hospitality and customer service"
+        : "Recreation and instruction",
+      location: cultural
+        ? "Rose Theatre, Brampton, Ontario"
+        : "Brampton, Ontario",
       city: "Brampton",
       paid: "paid",
       compensation: `${rate} per hour`,

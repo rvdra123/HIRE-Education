@@ -1,4 +1,5 @@
 import "server-only";
+import { gtaCities } from "./geography";
 import { randomUUID } from "node:crypto";
 import { database, initDatabase } from "./db";
 import { canonicalUrl, fingerprint, qualityNotes, statusFor } from "./quality";
@@ -209,15 +210,24 @@ export async function queryCatalog(q: CatalogQuery = {}, events = false) {
   };
   if (q.from) add("json_extract(data,'$.startDate')>=?", q.from);
   if (q.until) add("json_extract(data,'$.startDate')<?", q.until);
-  if (q.search)
+  for (const term of (q.search || "")
+    .slice(0, 150)
+    .toLowerCase()
+    .split(/\s+/)
+    .filter(Boolean))
     add(
       "search_text LIKE ? ESCAPE '\\'",
-      `%${q.search.toLowerCase().replace(/[\\%_]/g, "\\$&")}%`,
+      `%${term.replace(/[\\%_]/g, "\\$&")}%`,
     );
   if (q.type) add("type=?", q.type);
   if (q.location && q.location !== "nearby") {
     if (q.location === "Remote") where.push("remote=1");
-    else if (q.location === "Peel Region")
+    else if (q.location === "GTA") {
+      where.push(
+        `(city IN (${gtaCities.map(() => "?").join(",")}) OR location LIKE '%GTA%' OR location LIKE '%Greater Toronto Area%')`,
+      );
+      args.push(...gtaCities);
+    } else if (q.location === "Peel Region")
       where.push(
         "(city IN ('Brampton','Mississauga','Caledon') OR location LIKE '%Peel%')",
       );
@@ -264,7 +274,7 @@ export async function queryCatalog(q: CatalogQuery = {}, events = false) {
         ? "deadline IS NULL,deadline ASC"
         : events
           ? "json_extract(data,'$.startDate') ASC"
-          : "CASE WHEN city='Brampton' THEN 0 WHEN city IN ('Mississauga','Caledon') THEN 1 WHEN remote=1 THEN 2 ELSE 3 END, CASE WHEN json_extract(data,'$.sourceType') IN ('government','official') THEN 0 ELSE 1 END, CASE WHEN status='expiring-soon' THEN 0 ELSE 1 END, CASE WHEN json_extract(data,'$.minimumAge') IS NOT NULL THEN 0 ELSE 1 END,first_seen_at DESC";
+          : "CASE WHEN city='Brampton' THEN 0 WHEN city IN ('Mississauga','Caledon') THEN 1 WHEN city IN ('Toronto','Ajax','Pickering','Whitby','Oshawa','Vaughan','Markham','Richmond Hill','Newmarket','Oakville','Burlington','Milton') THEN 2 WHEN remote=1 THEN 3 ELSE 4 END, CASE WHEN json_extract(data,'$.sourceType') IN ('government','official') THEN 0 ELSE 1 END, CASE WHEN status='expiring-soon' THEN 0 ELSE 1 END, CASE WHEN json_extract(data,'$.minimumAge') IS NOT NULL THEN 0 ELSE 1 END,first_seen_at DESC";
   const rows = await database().execute({
     sql: `SELECT data FROM opportunities WHERE ${clause} ORDER BY ${order} LIMIT ? OFFSET ?`,
     args: [...args, size, (page - 1) * size],

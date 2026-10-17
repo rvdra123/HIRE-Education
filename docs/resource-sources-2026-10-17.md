@@ -1,0 +1,15 @@
+# Career resource library review — October 16–17, 2026
+
+The library in `lib/career-resources-data.ts` contains 106 website resources and 41 YouTube channels across 12 topics. It includes Peel/GTA employment and library services, work rights and scam prevention, career exploration, education funding, digital projects, youth wellbeing and inclusive supports. Provider scope and youth/general audience are explicit. Information links do not establish a current vacancy, open intake, free service or guaranteed eligibility.
+
+The original website destinations remain represented. The two cards linking to the same LinkedIn Help page are combined, and the expanded Job Bank career-planning card replaces the original duplicate destination. Original coaching channels are retained within the searchable library after their identities were checked against their official websites. Their advice is labeled general/adult content; US examples are not presented as Ontario hiring rules.
+
+Newly reviewed website entries use the final public source URL and a source-review date. Every YouTube entry has `identitySourceUrl`, the official provider page that published its channel link. Direct YouTube requests failed in the review environment, so channel identity is verified by those official links rather than a claim about every video's availability. General learning, sponsorships, paid products and optional credentials remain distinct from high-school programs and free credentials.
+
+The review excluded inaccessible sources and misleading successful responses. For example, the old FCAC Financial Toolkit page says it is offline, a SciShow URL redirected to an image, Canva returned an unsupported-client page, and the past Hack the6ix event was not represented as an open opportunity. Existing official links that were not freshly reviewed do not receive a new review date.
+
+Useful eligibility details are kept visible, including Brampton Library makerspace independent use at 14+ with a card and waiver; Holland Bloorview's high-school age, school-year and Toronto participation requirements; its separate current/former-client mentorship requirements; and program-specific 18+ pathways within general youth-service directories. School credit courses, optional paid credentials, scholarship matching and job placement are not described as universally free or guaranteed.
+
+Search covers title, provider, topic, description, scope and audience notes. Topic, provider, scope and audience filters intersect; results load 12 at a time. `#youtube-resources`, the static edition's `#/?section=youtube-resources`, and `resourceTopic` query links select the shared library without discarding interview drafts.
+
+Validation includes dataset destination/identity constraints, combined filtering, explicit program restrictions, ordinary/static topic routing, and desktop/mobile browser checks for pagination, no-results/reset, the actual interview CTA and same-hash re-entry. Raw source notes and verification records from this session are retained in `/workspace/youth-expansion-2026-10-16/resources/`.

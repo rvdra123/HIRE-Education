@@ -92,6 +92,13 @@ export default function Catalogue({
   const [countdown, setCountdown] = useState("");
   const resultsRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
+    const initial = new URLSearchParams(window.location.search).get("search");
+    if (initial) {
+      setSearch(initial.slice(0, 150));
+      setDebounced(initial.slice(0, 150));
+    }
+  }, []);
+  useEffect(() => {
     try {
       setSaved(JSON.parse(readOptional("hire-catalogue-saved") || "[]"));
     } catch {
@@ -297,6 +304,15 @@ export default function Catalogue({
                     "Peel Region",
                     "Mississauga",
                     "Caledon",
+                    "Toronto",
+                    "Ajax",
+                    "Pickering",
+                    "Whitby",
+                    "Oshawa",
+                    "Vaughan",
+                    "Markham",
+                    "Oakville",
+                    "Burlington",
                     "GTA",
                     "Ontario",
                     "Remote",
@@ -314,7 +330,7 @@ export default function Catalogue({
                 <option value="recommended">Recommended</option>
                 <option value="newest">Newest</option>
                 <option value="deadline">Deadline soon</option>
-                <option value="local">Brampton relevance</option>
+                <option value="local">Peel and GTA proximity</option>
               </select>
             </label>
           </div>

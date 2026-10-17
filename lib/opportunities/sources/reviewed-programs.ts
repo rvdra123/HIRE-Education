@@ -5,6 +5,11 @@ import { listingSchema, type ListingInput, type SourceConfig } from "../types";
 
 const evidence = z.discriminatedUnion("kind", [
   z.object({
+    kind: z.literal("pdf-sha256"),
+    url: z.string().url(),
+    sha256: z.string().regex(/^[a-f0-9]{64}$/),
+  }),
+  z.object({
     kind: z.literal("html"),
     url: z.string().url(),
     text: z.array(z.string().min(1)).min(1),
@@ -90,7 +95,15 @@ export function reviewedPrograms(
     .map((record) => {
       for (const check of record.evidence) {
         const html = pages.get(check.url)!;
-        if (check.kind === "microsoft-path") {
+        if (check.kind === "pdf-sha256") {
+          const document = z
+            .object({ documentType: z.literal("pdf"), sha256: z.string() })
+            .parse(JSON.parse(html));
+          if (document.sha256 !== check.sha256)
+            throw new Error(
+              "Reviewed PDF changed; program facts need a new review",
+            );
+        } else if (check.kind === "microsoft-path") {
           // Learn serves its public structured document when JSON is requested.
           const path = z
             .object({
