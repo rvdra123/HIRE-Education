@@ -4271,9 +4271,16 @@ p {
   font-size: 12px;
   line-height: 1.7;
 }
+.practice-question-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin: 14px 0;
+}
 .practice-topic {
   display: inline-block;
-  margin-top: 8px;
+  margin: 0;
   padding: 4px 9px;
   background: #193955;
   border: 1px solid #3e6288;

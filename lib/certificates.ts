@@ -337,7 +337,7 @@ export const certifications: Certification[] = [
     title: "Python",
     organization: "Kaggle Learn",
     description:
-      "Practise Python functions, data structures, and useful programming patterns.",
+      "Practice Python functions, data structures, and useful programming patterns.",
     url: "https://www.kaggle.com/learn",
     categories: ["Data", "Technology"],
     difficulty: "Beginner",
@@ -360,7 +360,7 @@ export const certifications: Certification[] = [
     title: "JavaScript Algorithms and Data Structures",
     organization: "freeCodeCamp",
     description:
-      "Practise programming fundamentals and solve JavaScript problems.",
+      "Practice programming fundamentals and solve JavaScript problems.",
     url: "https://www.freecodecamp.org/learn",
     categories: ["Technology", "Data"],
     difficulty: "Beginner",
@@ -723,7 +723,7 @@ export const certifications: Certification[] = [
     title: "Python Essentials 1",
     organization: "Cisco Networking Academy",
     description:
-      "Practise Python syntax, variables, conditions, loops, and basic problem solving.",
+      "Practice Python syntax, variables, conditions, loops, and basic problem solving.",
     url: "https://www.netacad.com/catalogs/learn",
     categories: ["Technology"],
     difficulty: "Beginner",
@@ -971,7 +971,7 @@ export const certifications: Certification[] = [
     id: "freecodecamp-relational-database",
     title: "Relational Database",
     organization: "freeCodeCamp",
-    description: "Practise SQL, relational data, and command-line tools.",
+    description: "Practice SQL, relational data, and command-line tools.",
     url: "https://www.freecodecamp.org/learn",
     categories: ["Technology", "Data"],
     difficulty: "Beginner",
@@ -1108,7 +1108,7 @@ export const certifications: Certification[] = [
     title: "Inbound Sales Certification",
     organization: "HubSpot Academy",
     description:
-      "Practise asking questions and understanding a customer before suggesting a solution.",
+      "Practice asking questions and understanding a customer before suggesting a solution.",
     url: "https://academy.hubspot.com/courses",
     categories: ["Marketing", "Business"],
     difficulty: "Beginner",
@@ -1130,7 +1130,7 @@ export const certifications: Certification[] = [
     id: "cisco-networking-academy-javascript-essentials-1",
     title: "JavaScript Essentials 1",
     organization: "Cisco Networking Academy",
-    description: "Learn basic JavaScript and practise writing simple programs.",
+    description: "Learn basic JavaScript and practice writing simple programs.",
     url: "https://www.netacad.com/catalogs/learn",
     categories: ["Technology"],
     difficulty: "Beginner",
@@ -1220,7 +1220,7 @@ export const certifications: Certification[] = [
     title: "Professional Skills",
     organization: "IBM SkillsBuild",
     description:
-      "Practise collaboration, communication, and workplace problem solving.",
+      "Practice collaboration, communication, and workplace problem solving.",
     url: "https://skillsbuild.org/students",
     categories: ["Technology", "Career Skills"],
     difficulty: "Beginner",
@@ -1381,7 +1381,7 @@ export const certifications: Certification[] = [
     title: "Quality Assurance",
     organization: "freeCodeCamp",
     description:
-      "Practise checking software behaviour and writing useful tests.",
+      "Practice checking software behaviour and writing useful tests.",
     url: "https://www.freecodecamp.org/learn",
     categories: ["Technology"],
     difficulty: "Beginner",
@@ -1608,7 +1608,7 @@ export const certifications: Certification[] = [
     title: "Advanced SQL",
     organization: "Kaggle Learn",
     description:
-      "Practise joins, nested queries, and more advanced data questions.",
+      "Practice joins, nested queries, and more advanced data questions.",
     url: "https://www.kaggle.com/learn",
     categories: ["Data", "Technology"],
     difficulty: "Mixed levels",
@@ -1675,7 +1675,7 @@ export const certifications: Certification[] = [
     title: "English for IT 1",
     organization: "Cisco Networking Academy",
     description:
-      "Practise English vocabulary used in technology and technical workplaces.",
+      "Practice English vocabulary used in technology and technical workplaces.",
     url: "https://www.netacad.com/catalogs/learn",
     categories: ["Technology"],
     difficulty: "Beginner",
@@ -2499,7 +2499,7 @@ export const certifications: Certification[] = [
     title: "PRDV212: Interpersonal Communication",
     organization: "Saylor University",
     description:
-      "Practise communicating with another person and managing everyday interactions.",
+      "Practice communicating with another person and managing everyday interactions.",
     url: "https://learn.saylor.org/course/prdv212",
     categories: ["Career Skills"],
     difficulty: "Beginner",
@@ -2886,7 +2886,7 @@ export const certifications: Certification[] = [
     title: "PRDV003: Word Processing",
     organization: "Saylor University",
     description:
-      "Practise creating, formatting and editing professional documents.",
+      "Practice creating, formatting and editing professional documents.",
     url: "https://learn.saylor.org/course/prdv003",
     categories: ["Technology", "Career Skills"],
     difficulty: "Beginner",
@@ -3229,7 +3229,7 @@ export const certifications: Certification[] = [
     title: "PRDV103: Interviewing Skills",
     organization: "Saylor University",
     description:
-      "Prepare for job interviews and practise explaining your experience.",
+      "Prepare for job interviews and practice explaining your experience.",
     url: "https://learn.saylor.org/course/prdv103",
     categories: ["Career Skills"],
     difficulty: "Beginner",
@@ -3525,7 +3525,7 @@ export const certifications: Certification[] = [
     title: "Professional Networking for Career Growth",
     organization: "HP LIFE",
     description:
-      "Build professional relationships and practise networking for career growth.",
+      "Build professional relationships and practice networking for career growth.",
     url: "https://www.life-global.org/course/427-professional-networking-for-career-growth",
     categories: ["Business", "Career Skills"],
     difficulty: "Beginner",
@@ -4801,7 +4801,7 @@ export const certifications: Certification[] = [
     title: "Introduction to Git",
     organization: "GitHub Skills",
     description:
-      "Practise Git version control using a game project and local development tools.",
+      "Practice Git version control using a game project and local development tools.",
     url: "https://github.com/skills/introduction-to-git",
     categories: ["Technology", "Career Skills"],
     difficulty: "Beginner",
@@ -4825,7 +4825,7 @@ export const certifications: Certification[] = [
     title: "Review pull requests",
     organization: "GitHub Skills",
     description:
-      "Practise reviewing a teammate’s proposed changes and collaborating on a project.",
+      "Practice reviewing a teammate’s proposed changes and collaborating on a project.",
     url: "https://github.com/skills/review-pull-requests",
     categories: ["Technology", "Career Skills"],
     difficulty: "Beginner",
@@ -4849,7 +4849,7 @@ export const certifications: Certification[] = [
     title: "Resolve merge conflicts",
     organization: "GitHub Skills",
     description:
-      "Learn why conflicting changes occur and practise resolving them.",
+      "Learn why conflicting changes occur and practice resolving them.",
     url: "https://github.com/skills/resolve-merge-conflicts",
     categories: ["Technology", "Career Skills"],
     difficulty: "Beginner",
@@ -5087,7 +5087,7 @@ export const certifications: Certification[] = [
     title: "Secure code game",
     organization: "GitHub Skills",
     description:
-      "Practise identifying and fixing software-security problems through a game.",
+      "Practice identifying and fixing software-security problems through a game.",
     url: "https://github.com/skills/secure-code-game",
     categories: ["Technology", "Career Skills"],
     difficulty: "Mixed levels",

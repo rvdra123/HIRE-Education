@@ -59,7 +59,7 @@ const resumeSections = [
     label: "Your contribution matters",
     text: "School events, peer tutoring, community groups, and service activities can show real workplace skills. Name the role, organization, and dates, then describe your contribution. If you list hours, use only hours you can accurately support.",
     example:
-      "Peer tutor · School homework club · September 2026 to present. Help two Grade 9 students practise algebra each week.",
+      "Peer tutor · School homework club · September 2026 to present. Help two Grade 9 students practice algebra each week.",
   },
   {
     title: "Education",
@@ -204,7 +204,7 @@ function ResumePaper() {
         </div>
         <ul>
           <li>
-            Help two Grade 9 students practise algebra during weekly homework
+            Help two Grade 9 students practice algebra during weekly homework
             sessions.
           </li>
           <li>
@@ -242,7 +242,7 @@ function ResumePaper() {
       <section>
         <h5>ACTIVITIES</h5>
         <p>
-          <strong>School volleyball team</strong> · Practise twice weekly and
+          <strong>School volleyball team</strong> · Practice twice weekly and
           help set up equipment for team sessions.
         </p>
       </section>

@@ -59,7 +59,7 @@ export const skills: CareerSkill[] = [
     matters:
       "Clear questions and updates help a team avoid mistakes and support customers.",
     build:
-      "Present a class project, write a club update, or practise explaining a task to a friend.",
+      "Present a class project, write a club update, or practice explaining a task to a friend.",
     prove:
       "Describe how you explained an idea, answered questions, or kept a group informed.",
   },
@@ -199,7 +199,7 @@ export const skills: CareerSkill[] = [
     matters:
       "Respectful conduct helps everyone work safely and confidently together.",
     build:
-      "Practise clear emails, ask for feedback, and own mistakes with a plan to fix them.",
+      "Practice clear emails, ask for feedback, and own mistakes with a plan to fix them.",
     prove:
       "Explain how you handled feedback or a difficult situation respectfully and responsibly.",
   },

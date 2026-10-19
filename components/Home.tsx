@@ -66,7 +66,7 @@ const guides: Entry[] = [
   {
     title: "First-interview practice",
     description:
-      "Practise questions for retail, food service, recreation, and volunteering.",
+      "Practice questions for retail, food service, recreation, and volunteering.",
     url: "#interview-practice",
     type: "Practice",
   },

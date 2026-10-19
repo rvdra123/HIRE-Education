@@ -1716,7 +1716,7 @@ export const educationalChannels: CareerResource[] = [
     organization: "TED-Ed",
     category: "YouTube learning",
     description:
-      "Explore animated educational lessons across science, history, language and other subjects. Use them to practise curiosity and explaining an idea clearly.",
+      "Explore animated educational lessons across science, history, language and other subjects. Use them to practice curiosity and explaining an idea clearly.",
     url: "https://www.youtube.com/tededucation",
     mark: "YT",
     region: "Online",
@@ -1782,7 +1782,7 @@ export const educationalChannels: CareerResource[] = [
     organization: "Numberphile",
     category: "YouTube learning",
     description:
-      "Explore mathematical ideas, puzzles and conversations. Topics range in difficulty and are useful for practising how to explain a problem.",
+      "Explore mathematical ideas, puzzles and conversations. Topics range in difficulty and are useful for practicing how to explain a problem.",
     url: "https://youtube.com/numberphile",
     mark: "YT",
     region: "Online",

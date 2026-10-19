@@ -6,7 +6,7 @@ const featuredChannels = [
     id: "youtube-vinhgiang",
     topic: "Communication",
     description:
-      "Practise speaking clearly, using your voice, and feeling more comfortable in a conversation.",
+      "Practice speaking clearly, using your voice, and feeling more comfortable in a conversation.",
     initials: "VG",
     color: "amber",
   },

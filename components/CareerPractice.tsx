@@ -58,10 +58,10 @@ export default function CareerPractice() {
         <div className="section-heading-simple">
           <h2 className="section-title">Prepare for your first interview</h2>
           <p className="section-description">
-            Practise {interviewQuestionCount} distinct questions across{" "}
+            Practice {interviewQuestionCount} distinct questions across{" "}
             {interviewRoles.length} role and interview categories. Use school,
             sports, clubs, volunteering, or other real responsibilities. No paid
-            experience is required to practise.
+            experience is required to practice.
           </p>
         </div>
         <div className="practice-layout">
@@ -159,12 +159,14 @@ export default function CareerPractice() {
                     ))}
                   </select>
                 </label>
-                <span className="small-note">
-                  Question {index + 1} of {filtered.length}
-                </span>
-                <p className="practice-topic">
-                  {current.role} · {current.topic}
-                </p>
+                <div className="practice-question-meta">
+                  <span className="small-note">
+                    Question {index + 1} of {filtered.length}
+                  </span>{" "}
+                  <span className="practice-topic">
+                    {current.role} · {current.topic}
+                  </span>
+                </div>
                 <h3 className="question-transition" key={answerKey}>
                   {current.question}
                 </h3>
@@ -238,7 +240,7 @@ export default function CareerPractice() {
                   >
                     <Clock3 size={15} />
                     {seconds === null
-                      ? "Practise for 60 seconds"
+                      ? "Practice for 60 seconds"
                       : "Stop timer"}
                   </button>
                   {seconds !== null && (

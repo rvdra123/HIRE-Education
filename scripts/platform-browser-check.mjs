@@ -142,7 +142,7 @@ assert.ok(await practice.getByRole("button", { name: "Next question" }).isDisabl
 await practice.getByRole("button", { name: "Show guidance" }).click();
 assert.ok((await practice.locator("#interview-guidance").innerText()).includes("Do not use, copy, share, or test"));
 await practice.getByRole("button", { name: "Reset interview filters" }).click();
-await practice.getByRole("button", { name: "Practise for 60 seconds" }).click();
+await practice.getByRole("button", { name: "Practice for 60 seconds" }).click();
 assert.ok(await practice.getByRole("timer").isVisible());
 await practice.locator(".practice-filters select").nth(1).selectOption("Safety and boundaries");
 assert.equal(await practice.getByRole("timer").count(), 0);

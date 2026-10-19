@@ -57,7 +57,7 @@ const questionLibrary = {
       approach:
         "Choose a genuine manageable area, describe steps you are taking, and explain progress. Do not disguise a boast as a weakness or claim a safety-critical skill you lack.",
       example:
-        "I used to speak too quickly in presentations. I now practise with a timer and pause after key points, and classmates find my explanations easier to follow.",
+        "I used to speak too quickly in presentations. I now practice with a timer and pause after key points, and classmates find my explanations easier to follow.",
     },
     {
       topic: "Experience and strengths",
@@ -209,7 +209,7 @@ const questionLibrary = {
       question:
         "How would you use AI tools while preparing an interview answer?",
       approach:
-        "Use tools only to organize or practise your own experiences, follow any employer rules, and check the wording. Do not invent credentials, share private data, or secretly use prohibited assistance during an assessment.",
+        "Use tools only to organize or practice your own experiences, follow any employer rules, and check the wording. Do not invent credentials, share private data, or secretly use prohibited assistance during an assessment.",
       example:
         "I could ask for a structure using an anonymous school example, then rewrite it in my own words and check that every action described really happened.",
     },
@@ -247,7 +247,7 @@ const questionLibrary = {
       approach:
         "Choose a real team project. Describe your contribution and how you helped the group finish.",
       example:
-        "For a class presentation, I organized our shared slides and checked that everyone had time to practise. We finished the presentation by the deadline.",
+        "For a class presentation, I organized our shared slides and checked that everyone had time to practice. We finished the presentation by the deadline.",
     },
     {
       topic: "Customer service",
@@ -312,7 +312,7 @@ const questionLibrary = {
       approach:
         "Choose a specific suggestion, explain how you changed your work, and describe what improved.",
       example:
-        "A teacher said my presentation slides were too crowded. I shortened the text and practised explaining the ideas aloud. My next presentation was easier for classmates to follow.",
+        "A teacher said my presentation slides were too crowded. I shortened the text and practiced explaining the ideas aloud. My next presentation was easier for classmates to follow.",
     },
     {
       topic: "Teamwork",
@@ -380,7 +380,7 @@ const questionLibrary = {
       question:
         "How would you learn a new checkout system without pretending to know it?",
       approach:
-        "Ask for supervised training, practise approved steps, and check before processing an unfamiliar transaction. Never use a coworker's login.",
+        "Ask for supervised training, practice approved steps, and check before processing an unfamiliar transaction. Never use a coworker's login.",
       example:
         "I learned the sign-in system for a school event by watching the organizer, repeating the steps, and asking them to check my first entries.",
     },
@@ -518,7 +518,7 @@ const questionLibrary = {
       approach:
         "Explain how you divided work, communicated, and helped the team finish safely.",
       example:
-        "Our class had limited time to set up a display. I checked which materials were missing, brought them to the group, and let the presenter focus on practising.",
+        "Our class had limited time to set up a display. I checked which materials were missing, brought them to the group, and let the presenter focus on practicing.",
     },
     {
       topic: "Motivation",
@@ -1122,7 +1122,7 @@ const questionLibrary = {
       approach:
         "Protect academic integrity: explain, guide practice, and follow school or centre rules without doing assessed work or impersonating the learner.",
       example:
-        "I would say I can help them understand the method and practise a similar question, but they need to write and submit their own answer.",
+        "I would say I can help them understand the method and practice a similar question, but they need to write and submit their own answer.",
     },
     {
       topic: "Ethics and privacy",
@@ -1181,7 +1181,7 @@ const questionLibrary = {
       approach:
         "Use only the required factual learning observations in the approved system. Avoid diagnoses, personal opinions, unnecessary private details, or copying records to a personal account.",
       example:
-        "For a supervised school activity, I would record that we practised multiplication and which step needed review, then give the note to the teacher through the approved process.",
+        "For a supervised school activity, I would record that we practiced multiplication and which step needed review, then give the note to the teacher through the approved process.",
     },
     {
       topic: "Customer service",
@@ -1258,9 +1258,9 @@ const questionLibrary = {
       question:
         "How would you prepare for a tutoring interview's subject exercise?",
       approach:
-        "Review the stated subjects and format, practise explaining reasoning aloud, and use only permitted aids. Be honest about questions you cannot solve.",
+        "Review the stated subjects and format, practice explaining reasoning aloud, and use only permitted aids. Be honest about questions you cannot solve.",
       example:
-        "I would revise the course topics I listed on my application, practise a clear explanation, and say where I am unsure rather than hide an answer source.",
+        "I would revise the course topics I listed on my application, practice a clear explanation, and say where I am unsure rather than hide an answer source.",
     },
     {
       topic: "Motivation",
@@ -1471,9 +1471,9 @@ const questionLibrary = {
       question:
         "How would you prepare for a short typing or spreadsheet assessment?",
       approach:
-        "Check the announced format, practise relevant basic skills, and ask about permitted tools or accommodations. Accuracy and honest independent work matter more than exaggerated speed claims.",
+        "Check the announced format, practice relevant basic skills, and ask about permitted tools or accommodations. Accuracy and honest independent work matter more than exaggerated speed claims.",
       example:
-        "I would practise entering a small sample table and checking totals, then complete the employer's assessment using only the tools they allow.",
+        "I would practice entering a small sample table and checking totals, then complete the employer's assessment using only the tools they allow.",
     },
     {
       topic: "Learning and feedback",
@@ -1536,7 +1536,7 @@ const questionLibrary = {
       approach:
         "Clarify authorization, training, testing, review, and rollback procedures. Do not experiment in production or exceed the access assigned to a student role.",
       example:
-        "I would ask to practise in the approved test environment and have the responsible staff member review the change before any live update.",
+        "I would ask to practice in the approved test environment and have the responsible staff member review the change before any live update.",
     },
     {
       topic: "Teamwork",
@@ -1699,7 +1699,7 @@ const questionLibrary = {
       topic: "Learning and feedback",
       question: "What could you ask about training before your first shift?",
       approach:
-        "Ask what orientation covers, who supervises new students, and how unfamiliar tasks are practised safely. Use the answer to understand support, not to suggest you already need no training.",
+        "Ask what orientation covers, who supervises new students, and how unfamiliar tasks are practiced safely. Use the answer to understand support, not to suggest you already need no training.",
       example:
         "'What training and supervised practice would I receive before doing these tasks on my own?'",
     },
