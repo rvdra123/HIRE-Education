@@ -3,6 +3,10 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { ArrowUpRight, ChevronDown, Search } from "lucide-react";
 import { opportunityDirectory } from "@/lib/opportunities/directory";
+import {
+  directoryAreas,
+  matchesDirectoryArea,
+} from "@/lib/opportunities/directory-filters";
 
 export default function OpportunityDirectory({
   compact = false,
@@ -18,17 +22,23 @@ export default function OpportunityDirectory({
   useEffect(() => setVisible(compact ? 6 : 12), [search, group, area, compact]);
   const entries = useMemo(
     () =>
-      opportunityDirectory.filter(
-        (entry) =>
-          (!events ||
-            entry.group === "Events & learning" ||
-            entry.group === "Programs & competitions") &&
-          (group === "All" || entry.group === group) &&
-          (area === "All areas" || entry.area.includes(area)) &&
-          `${entry.name} ${entry.description} ${entry.area} ${entry.group}`
-            .toLowerCase()
-            .includes(search.toLowerCase().trim()),
-      ),
+      opportunityDirectory
+        .filter(
+          (entry) =>
+            (!events ||
+              entry.group === "Events & learning" ||
+              entry.group === "Programs & competitions") &&
+            (group === "All" || entry.group === group) &&
+            matchesDirectoryArea(entry.area, area) &&
+            `${entry.name} ${entry.description} ${entry.area} ${entry.group}`
+              .toLowerCase()
+              .includes(search.toLowerCase().trim()),
+        )
+        .sort(
+          (a, b) =>
+            Number(b.reviewStatus === "verified") -
+            Number(a.reviewStatus === "verified"),
+        ),
     [search, group, area, events],
   );
   return (
@@ -88,15 +98,7 @@ export default function OpportunityDirectory({
           value={area}
           onChange={(e) => setArea(e.target.value)}
         >
-          {[
-            "All areas",
-            "Brampton",
-            "Peel",
-            "Mississauga",
-            "GTA",
-            "Ontario",
-            "Online",
-          ].map((a) => (
+          {directoryAreas.map((a) => (
             <option key={a}>{a}</option>
           ))}
         </select>
@@ -117,6 +119,11 @@ export default function OpportunityDirectory({
             </div>
             <h4>{entry.name}</h4>
             <p>{entry.description}</p>
+            <small className="directory-review-note">
+              {entry.reviewStatus === "verified"
+                ? `Website checked ${entry.reviewedOn}`
+                : "Check current website details"}
+            </small>
             <a href={entry.url} target="_blank" rel="noopener noreferrer">
               Visit official website <ArrowUpRight size={16} />
             </a>

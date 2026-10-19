@@ -1,0 +1,34 @@
+{
+  "config": {
+    "network": {
+      "allowed_domains": [
+        "api.github.com",
+        "app.betterimpact.com",
+        "bramlib.libnet.info",
+        "brampton.ca",
+        "bramptonlibrary.ca",
+        "careers-peelregion.icims.com",
+        "careers.brampton.ca",
+        "careers.mcdonalds.ca",
+        "careers.timhortons.ca",
+        "careers.walmart.ca",
+        "form.jotform.com",
+        "forms.cloud.microsoft",
+        "hire-education.vercel.app",
+        "jobbank.gc.ca",
+        "ontario.ca",
+        "peelregion.ca",
+        "skillsontario.com",
+        "www.brampton.ca",
+        "www.bramptonlibrary.ca",
+        "www.careers.timhortons.ca",
+        "www.jacentralontario.org",
+        "www.jobbank.gc.ca",
+        "www.mcdonalds.com",
+        "www.ontario.ca",
+        "www.peelregion.ca",
+        "www.skillsontario.com"
+      ]
+    }
+  }
+}

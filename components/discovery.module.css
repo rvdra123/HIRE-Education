@@ -1575,6 +1575,13 @@
 .learningSearchRow .searchInput {
   flex: 1 1 270px;
 }
+.learningCost {
+  color: #c5d5e8;
+  font-size: 12px;
+  line-height: 1.7;
+  margin: 0 0 16px;
+  overflow-wrap: anywhere;
+}
 .learningSearchRow > select,
 .learningSearchRow > select:last-child {
   flex: 1 1 150px;

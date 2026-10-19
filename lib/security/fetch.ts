@@ -8,7 +8,7 @@ export async function serverFetch(
     typeof proxyFetch
   >[1]) as unknown as Response;
 }
-export async function boundedText(response: Response, maxBytes = 2_000_000) {
+export async function boundedBytes(response: Response, maxBytes = 2_000_000) {
   if (!response.body) throw new Error("Empty response");
   const reader = response.body.getReader();
   const chunks: Uint8Array[] = [];
@@ -24,5 +24,8 @@ export async function boundedText(response: Response, maxBytes = 2_000_000) {
   } finally {
     await reader.cancel().catch(() => {});
   }
-  return Buffer.concat(chunks).toString("utf8");
+  return Buffer.concat(chunks);
+}
+export async function boundedText(response: Response, maxBytes = 2_000_000) {
+  return (await boundedBytes(response, maxBytes)).toString("utf8");
 }

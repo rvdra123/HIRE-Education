@@ -20,7 +20,7 @@ import {
   writeOptional,
   PRIVACY_EVENT,
 } from "@/lib/privacy/storage";
-import { displayDate, displayTime } from "@/lib/format";
+import { displayDate, displayDateOnly, displayTime } from "@/lib/format";
 type Result = {
   items: Opportunity[];
   total: number;
@@ -78,7 +78,7 @@ export default function Catalogue({
   const [search, setSearch] = useState("");
   const [debounced, setDebounced] = useState("");
   const [type, setType] = useState("");
-  const [location, setLocation] = useState("nearby");
+  const [location, setLocation] = useState("");
   const [grade, setGrade] = useState("");
   const [category, setCategory] = useState("");
   const [commitment, setCommitment] = useState("");
@@ -91,6 +91,13 @@ export default function Catalogue({
   const [refresh, setRefresh] = useState(0);
   const [countdown, setCountdown] = useState("");
   const resultsRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const initial = new URLSearchParams(window.location.search).get("search");
+    if (initial) {
+      setSearch(initial.slice(0, 150));
+      setDebounced(initial.slice(0, 150));
+    }
+  }, []);
   useEffect(() => {
     try {
       setSaved(JSON.parse(readOptional("hire-catalogue-saved") || "[]"));
@@ -192,7 +199,7 @@ export default function Catalogue({
   const clear = () => {
     setSearch("");
     setType("");
-    setLocation("nearby");
+    setLocation("");
     setGrade("");
     setCategory("");
     setCommitment("");
@@ -219,7 +226,7 @@ export default function Catalogue({
   const active =
     search ||
     type ||
-    location !== "nearby" ||
+    location !== "" ||
     grade ||
     category ||
     commitment ||
@@ -297,6 +304,15 @@ export default function Catalogue({
                     "Peel Region",
                     "Mississauga",
                     "Caledon",
+                    "Toronto",
+                    "Ajax",
+                    "Pickering",
+                    "Whitby",
+                    "Oshawa",
+                    "Vaughan",
+                    "Markham",
+                    "Oakville",
+                    "Burlington",
                     "GTA",
                     "Ontario",
                     "Remote",
@@ -314,7 +330,7 @@ export default function Catalogue({
                 <option value="recommended">Recommended</option>
                 <option value="newest">Newest</option>
                 <option value="deadline">Deadline soon</option>
-                <option value="local">Brampton relevance</option>
+                <option value="local">Peel and GTA proximity</option>
               </select>
             </label>
           </div>
@@ -548,6 +564,7 @@ export function ListingCard({
         <span>
           {item.paid === "unspecified" ? "Compensation not listed" : item.paid}
         </span>
+        {item.cost && <span>Cost: {item.cost}</span>}
         <span>
           {item.eligibleGrades.length
             ? `Grades ${item.eligibleGrades.join(", ")}`
@@ -572,10 +589,13 @@ export function ListingCard({
       <div className="listing-footer">
         <small>
           Last checked: {displayDate(item.lastVerifiedAt)}
-          {item.applicationDeadline && (
+          {(item.applicationDeadline || item.applicationClosingDate) && (
             <>
               <br />
-              Deadline: {displayDate(item.applicationDeadline)}
+              Deadline:{" "}
+              {item.applicationDeadline
+                ? displayDate(item.applicationDeadline)
+                : displayDateOnly(item.applicationClosingDate!)}
             </>
           )}
         </small>

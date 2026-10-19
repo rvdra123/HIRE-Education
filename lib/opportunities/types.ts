@@ -29,6 +29,7 @@ export const listingSchema = z.object({
   compensation: z.string().max(500).nullable().default(null),
   minimumAge: z.number().int().min(0).max(100).nullable().default(null),
   eligibleGrades: z.array(z.number().int().min(9).max(12)).default([]),
+  eligibleCountries: z.array(z.string().min(2).max(80)).max(30).default([]),
   eligibility: z
     .string()
     .max(2000)
@@ -50,8 +51,12 @@ export const listingSchema = z.object({
     .datetime({ offset: true })
     .nullable()
     .default(null),
+  // A source-published calendar date without an invented time or timezone.
+  applicationClosingDate: z.iso.date().nullable().default(null),
   startDate: z.string().datetime({ offset: true }).nullable().default(null),
   endDate: z.string().datetime({ offset: true }).nullable().default(null),
+  startDateOnly: z.iso.date().nullable().default(null),
+  endDateOnly: z.iso.date().nullable().default(null),
   postedDate: z.string().datetime({ offset: true }).nullable().default(null),
   sourceUrl: z.string().url(),
   applicationUrl: z.string().url(),
@@ -89,9 +94,27 @@ export type SourceConfig = {
   url: string;
   organization: string;
   trust: SourceTrust;
-  adapter: "json" | "jsonld" | "ics";
+  adapter:
+    | "json"
+    | "jsonld"
+    | "mcdonalds-jobs"
+    | "brampton-careers-sitemap"
+    | "mississauga-careers-rss"
+    | "ajax-careers-sitemap"
+    | "richmond-careers-sitemap"
+    | "hack-club-community"
+    | "reviewed-programs"
+    | "skills-ontario-camps"
+    | "ics"
+    | "brampton-library-events"
+    | "brampton-library-volunteer"
+    | "brampton-volunteer"
+    | "brampton-youth-cabinet"
+    | "brampton-summer-company";
   intervalHours: 6 | 12 | 24;
+  collectionTimeoutSeconds?: 45 | 60 | 75 | 90;
   automationApproved: boolean;
+  enabledByDefault?: boolean;
   approvalNote: string;
   completeFeed: boolean;
   allowedHosts: string[];

@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   ArrowDown,
   ArrowRight,
@@ -28,6 +28,15 @@ import {
 import styles from "./career-resources.module.css";
 import Brand from "./Brand";
 import CareerPractice from "./CareerPractice";
+import {
+  resources,
+  resourceCategories,
+  resourceRegions,
+  filterCareerResources,
+  resourceTopicFromLocation,
+  type ResourceFilters,
+} from "@/lib/career-resources-data";
+export { resources } from "@/lib/career-resources-data";
 
 type CareerSkill = {
   title: string;
@@ -228,167 +237,6 @@ const experienceSteps = [
   },
 ];
 
-type ResourceCategory =
-  | "Jobs & work"
-  | "Resume & interviews"
-  | "Explore your path"
-  | "Local & community"
-  | "LinkedIn";
-type Resource = {
-  title: string;
-  organization: string;
-  category: ResourceCategory;
-  description: string;
-  url: string;
-  mark: string;
-};
-
-const resourceCategories: ResourceCategory[] = [
-  "Jobs & work",
-  "Resume & interviews",
-  "Explore your path",
-  "Local & community",
-  "LinkedIn",
-];
-
-export const resources: Resource[] = [
-  {
-    title: "Find your first job",
-    organization: "Government of Canada · Job Bank",
-    category: "Jobs & work",
-    description:
-      "Search by Brampton and review the experience, schedule, and eligibility listed by each employer.",
-    url: "https://www.jobbank.gc.ca/",
-    mark: "CA",
-  },
-  {
-    title: "Youth employment support",
-    organization: "Government of Ontario",
-    category: "Jobs & work",
-    description:
-      "Explore Ontario programs that help young people build skills, prepare for work, and look for a job.",
-    url: "https://www.ontario.ca/page/get-help-finding-youth-or-student-job",
-    mark: "ON",
-  },
-  {
-    title: "Student & graduate jobs",
-    organization: "Government of Canada",
-    category: "Jobs & work",
-    description:
-      "Explore federal student employment programs and read each program’s current eligibility before applying.",
-    url: "https://www.canada.ca/en/services/jobs/opportunities/student.html",
-    mark: "CA",
-  },
-  {
-    title: "Build a clear resume",
-    organization: "Government of Canada · Job Bank",
-    category: "Resume & interviews",
-    description:
-      "Use official resume advice and the Resume Builder. An account may be needed for some tools.",
-    url: "https://www.jobbank.gc.ca/findajob/resume-builder",
-    mark: "JB",
-  },
-  {
-    title: "Prepare for an interview",
-    organization: "Government of Canada · Job Bank",
-    category: "Resume & interviews",
-    description:
-      "Get practical guidance for preparing answers, researching employers, and following up after an interview.",
-    url: "https://www.jobbank.gc.ca/findajob/resources",
-    mark: "JB",
-  },
-  {
-    title: "Find employment services",
-    organization: "Employment Ontario",
-    category: "Resume & interviews",
-    description:
-      "Find local help with job searching, applications, training, and interview preparation. Confirm service eligibility.",
-    url: "https://www.ontario.ca/page/employment-ontario",
-    mark: "ON",
-  },
-  {
-    title: "Explore skilled trades",
-    organization: "Ontario Youth Apprenticeship Program",
-    category: "Explore your path",
-    description:
-      "Learn about exploring an apprenticeship through high school co-op. Ask your school about participation.",
-    url: "https://oyap.com/",
-    mark: "OY",
-  },
-  {
-    title: "Explore careers",
-    organization: "Government of Canada · Job Bank",
-    category: "Explore your path",
-    description:
-      "Compare occupations, typical education, job duties, wages, and outlooks as you explore possible paths.",
-    url: "https://www.jobbank.gc.ca/career-planning",
-    mark: "JB",
-  },
-  {
-    title: "Plan your next school step",
-    organization: "Government of Ontario",
-    category: "Explore your path",
-    description:
-      "Understand Ontario high school graduation requirements, including community involvement and career planning.",
-    url: "https://www.ontario.ca/page/high-school-graduation-requirements",
-    mark: "ON",
-  },
-  {
-    title: "Discover your city",
-    organization: "City of Brampton",
-    category: "Local & community",
-    description:
-      "Visit the City’s official website for recreation, community programs, volunteering, and municipal careers.",
-    url: "https://www.brampton.ca/",
-    mark: "BR",
-  },
-  {
-    title: "Find community connections",
-    organization: "Volunteer MBC",
-    category: "Local & community",
-    description:
-      "Explore volunteer listings across Mississauga, Brampton, and Caledon. Check each role’s age and hour requirements.",
-    url: "https://volunteermbc.org/",
-    mark: "VM",
-  },
-  {
-    title: "Learn with your library",
-    organization: "Brampton Library",
-    category: "Local & community",
-    description:
-      "Explore library learning resources, programs, and youth information. Some services require a library card.",
-    url: "https://www.bramptonlibrary.ca/",
-    mark: "BL",
-  },
-  {
-    title: "Explore Peel services",
-    organization: "Region of Peel",
-    category: "Local & community",
-    description:
-      "Find community services and official regional programs relevant to students and families in Brampton.",
-    url: "https://www.peelregion.ca/",
-    mark: "PL",
-  },
-  {
-    title: "Start your professional profile",
-    organization: "LinkedIn Help",
-    category: "LinkedIn",
-    description:
-      "Learn how LinkedIn profiles work. Review the platform’s current age requirements and privacy settings first.",
-    url: "https://www.linkedin.com/help/linkedin",
-    mark: "in",
-  },
-  {
-    title: "Add a certification",
-    organization: "LinkedIn Help",
-    category: "LinkedIn",
-    description:
-      "In LinkedIn Help, search “licenses and certifications” for instructions on adding your credential and verification link.",
-    url: "https://www.linkedin.com/help/linkedin",
-    mark: "in",
-  },
-];
-
 const faqs = [
   {
     question: "Do I need job experience to make a resume?",
@@ -427,11 +275,75 @@ const faqs = [
 ];
 
 export default function CareerResources() {
-  const [resourceCategory, setResourceCategory] =
-    useState<ResourceCategory>("Jobs & work");
-  const visibleResources = resources.filter(
-    (resource) => resource.category === resourceCategory,
+  const [resourceFilters, setResourceFilters] = useState<ResourceFilters>({
+    query: "",
+    category: "",
+    region: "",
+    audience: "",
+    organization: "",
+  });
+  const [resourceLimit, setResourceLimit] = useState(12);
+  const organizations = useMemo(
+    () =>
+      [...new Set(resources.map((resource) => resource.organization))].sort(),
+    [],
   );
+  const filteredResources = useMemo(
+    () => filterCareerResources(resources, resourceFilters),
+    [resourceFilters],
+  );
+  const visibleResources = filteredResources.slice(0, resourceLimit);
+  const hasResourceFilters = Object.values(resourceFilters).some(Boolean);
+  const changeResourceFilter = (key: keyof ResourceFilters, value: string) => {
+    setResourceFilters((previous) => ({ ...previous, [key]: value }));
+    setResourceLimit(12);
+  };
+  const clearResourceFilters = () => {
+    setResourceFilters({
+      query: "",
+      category: "",
+      region: "",
+      audience: "",
+      organization: "",
+    });
+    setResourceLimit(12);
+  };
+  useEffect(() => {
+    const openTopic = (category: string) => {
+      setResourceFilters({
+        query: "",
+        category,
+        region: "",
+        audience: "",
+        organization: "",
+      });
+      setResourceLimit(12);
+    };
+    const applyResourceLink = () => {
+      const topic = resourceTopicFromLocation(
+        window.location.search,
+        window.location.hash,
+      );
+      if (topic) openTopic(topic);
+    };
+    applyResourceLink();
+    const openYouTubeResources = (event: MouseEvent) => {
+      if (!(event.target instanceof Element)) return;
+      const href = event.target.closest("a[href]")?.getAttribute("href");
+      if (
+        href?.startsWith("#") &&
+        resourceTopicFromLocation("", href) === "YouTube learning"
+      ) {
+        openTopic("YouTube learning");
+      }
+    };
+    window.addEventListener("hashchange", applyResourceLink);
+    window.addEventListener("click", openYouTubeResources);
+    return () => {
+      window.removeEventListener("hashchange", applyResourceLink);
+      window.removeEventListener("click", openYouTubeResources);
+    };
+  }, []);
 
   return (
     <>
@@ -549,7 +461,7 @@ export default function CareerResources() {
               </a>
               <p className={styles.schoolNote}>
                 <MapPin size={14} aria-hidden="true" /> Start at your school or
-                in your Brampton community.
+                in your Peel or GTA community.
               </p>
             </div>
             <ol className={styles.experienceLadder}>
@@ -593,8 +505,9 @@ export default function CareerResources() {
                 Career resource library
               </h2>
               <p className="section-description">
-                A shortcut to useful tools and trusted sources, chosen with
-                Brampton high school students in mind.
+                {resources.length} source links for school, your first job,
+                money, wellbeing and what comes next. Start with Peel and GTA
+                supports, or explore Canadian and online learning.
               </p>
             </div>
             <span className={styles.externalHint}>
@@ -607,32 +520,115 @@ export default function CareerResources() {
             role="group"
             aria-label="Filter career resources by topic"
           >
-            {resourceCategories.map((category) => (
+            {["", ...resourceCategories].map((category) => (
               <button
-                key={category}
+                key={category || "all"}
                 type="button"
-                aria-pressed={resourceCategory === category}
+                aria-pressed={resourceFilters.category === category}
                 className={
-                  resourceCategory === category ? styles.activeTab : ""
+                  resourceFilters.category === category ? styles.activeTab : ""
                 }
-                onClick={() => setResourceCategory(category)}
+                onClick={() => changeResourceFilter("category", category)}
               >
-                {category}
+                {category || "All topics"}
               </button>
             ))}
           </div>
-          <div className={styles.resourceResultHeader} aria-live="polite">
-            <span>{resourceCategory}</span>
-            <span>{visibleResources.length} resources</span>
+          <div id="youtube-resources" className={styles.resourceFilters}>
+            <label className={styles.resourceControl}>
+              Search resources
+              <input
+                type="search"
+                value={resourceFilters.query}
+                onChange={(event) =>
+                  changeResourceFilter("query", event.target.value)
+                }
+                placeholder="Try resume, disability, taxes, coding…"
+                maxLength={200}
+                aria-controls="resource-results"
+              />
+            </label>
+            <label className={styles.resourceControl}>
+              Provider scope
+              <select
+                aria-label="Provider scope"
+                value={resourceFilters.region}
+                onChange={(event) =>
+                  changeResourceFilter("region", event.target.value)
+                }
+              >
+                <option value="">All regions & online</option>
+                {resourceRegions.map((region) => (
+                  <option key={region}>{region}</option>
+                ))}
+              </select>
+            </label>
+            <label className={styles.resourceControl}>
+              Audience
+              <select
+                aria-label="Audience"
+                value={resourceFilters.audience}
+                onChange={(event) =>
+                  changeResourceFilter("audience", event.target.value)
+                }
+              >
+                <option value="">All audiences</option>
+                <option value="youth">Youth & school-focused</option>
+                <option value="general">General learning & services</option>
+              </select>
+            </label>
+            <label className={styles.resourceControl}>
+              Provider
+              <select
+                aria-label="Provider"
+                value={resourceFilters.organization}
+                onChange={(event) =>
+                  changeResourceFilter("organization", event.target.value)
+                }
+              >
+                <option value="">All providers</option>
+                {organizations.map((organization) => (
+                  <option key={organization}>{organization}</option>
+                ))}
+              </select>
+            </label>
           </div>
-          <div className={styles.resourceGrid}>
+          <div
+            className={styles.resourceResultHeader}
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            <span>{resourceFilters.category || "All topics"}</span>
+            <span>
+              Showing {visibleResources.length} of {filteredResources.length}{" "}
+              resources
+            </span>
+          </div>
+          {hasResourceFilters && (
+            <div className={styles.resourceActions}>
+              <button
+                type="button"
+                className="btn btn-outline"
+                onClick={clearResourceFilters}
+              >
+                Clear resource filters
+              </button>
+            </div>
+          )}
+          {filteredResources.length === 0 && (
+            <p role="status">
+              No resources match these filters. Try a broader search or clear
+              the filters.
+            </p>
+          )}
+          <div id="resource-results" className={styles.resourceGrid}>
             {visibleResources.map((resource) => (
               <a
                 className={styles.resourceCard}
                 href={resource.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                key={resource.title}
+                key={resource.id}
               >
                 <div className={styles.resourceTop}>
                   <span className={styles.resourceMark}>{resource.mark}</span>
@@ -643,20 +639,51 @@ export default function CareerResources() {
                 </span>
                 <h3>{resource.title}</h3>
                 <p>{resource.description}</p>
+                <span className={styles.resourceAudience}>
+                  {resource.region} ·{" "}
+                  {resource.youthFocused
+                    ? "Youth & school-focused"
+                    : "General audience"}
+                  <br />
+                  {resource.audienceNote}
+                  {resource.sourceReviewedOn && (
+                    <>
+                      <br />
+                      Source page reviewed {resource.sourceReviewedOn}
+                    </>
+                  )}
+                </span>
                 <span className={styles.resourceLink}>
-                  Visit official website{" "}
+                  {resource.format === "YouTube"
+                    ? "Watch on YouTube"
+                    : "Visit source website"}{" "}
                   <ExternalLink size={12} aria-hidden="true" />
                   <span className={styles.srOnly}> (opens in a new tab)</span>
                 </span>
               </a>
             ))}
           </div>
+          {resourceLimit < filteredResources.length && (
+            <div className={styles.resourceActions}>
+              <button
+                type="button"
+                className="btn btn-outline"
+                onClick={() => setResourceLimit((limit) => limit + 12)}
+              >
+                Show {Math.min(12, filteredResources.length - resourceLimit)}{" "}
+                more resources
+              </button>
+            </div>
+          )}
           <p className={styles.resourceNotice}>
             <ShieldCheck size={16} aria-hidden="true" />
             <span>
-              Requirements, programs, and availability can change. Always
-              confirm details at the official source before you apply or sign
-              up.
+              These are information and discovery links. A source review does
+              not confirm an open intake, free service or job placement. Confirm
+              ages, costs, deadlines and access with the provider. YouTube
+              channels are linked from their providers’ own websites; general
+              channels are labeled. Videos may include sponsorships, and a link
+              is not an endorsement or a credential.
             </span>
           </p>
         </div>
@@ -756,7 +783,7 @@ export default function CareerResources() {
               </p>
               <span className={styles.bramptonTag}>
                 <MapPin size={13} aria-hidden="true" /> For high school students
-                in Brampton, Ontario.
+                in Brampton, Peel and the GTA.
               </span>
             </div>
             <div className={styles.footerLinks}>

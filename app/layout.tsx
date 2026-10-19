@@ -8,21 +8,23 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
   ),
-  title: "HIRE Education | Career Resources for Brampton High School Students",
+  title: "HIRE Education | Career Resources for Peel and GTA Students",
   description:
-    "Your next step starts here. Explore student jobs, volunteering, free learning, resume tools and career skills for high school students in Brampton, Ontario, Canada.",
+    "Explore student jobs, volunteering, free courses, career credentials, interview practice and resume tools for high school students in Brampton, Peel and the Greater Toronto Area.",
   applicationName: "HIRE Education",
   keywords: [
     "Brampton high school students",
     "student jobs Brampton",
+    "Peel youth opportunities",
+    "GTA student jobs and volunteering",
     "volunteer hours Ontario",
     "student resume",
     "HIRE Education",
   ],
   openGraph: {
-    title: "HIRE Education | Career support for Brampton students",
+    title: "HIRE Education | Career support for Peel and GTA students",
     description:
-      "Skills, experience and opportunities for Grades 9–12 in Brampton, Ontario.",
+      "Skills, experience and opportunities for Grades 9–12 in Brampton, Peel and the Greater Toronto Area.",
     type: "website",
     locale: "en_CA",
     images: [
@@ -37,7 +39,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "HIRE Education",
-    description: "Career resources for Brampton high school students.",
+    description:
+      "Career resources for high school students in Peel and the GTA.",
     images: ["/opengraph-image.png"],
   },
   robots: { index: true, follow: true },

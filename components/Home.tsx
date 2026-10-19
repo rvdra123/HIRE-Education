@@ -83,12 +83,13 @@ export default function Home({ staticMode = false }: { staticMode?: boolean }) {
     const handler = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
-        setSearchOpen((s) => !s);
+        if (searchOpen) close();
+        else setSearchOpen(true);
       }
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, []);
+  }, [searchOpen, close]);
   return (
     <>
       <a className="skip-link" href="#main-content">
@@ -101,7 +102,7 @@ export default function Home({ staticMode = false }: { staticMode?: boolean }) {
             <div className="hero-content">
               <h1>
                 Career support for{" "}
-                <span className="blue-text">Brampton students</span>
+                <span className="blue-text">Peel and GTA students</span>
               </h1>
               <p className="hero-copy">
                 Find local opportunities, learn useful skills, and put together
@@ -169,10 +170,10 @@ export default function Home({ staticMode = false }: { staticMode?: boolean }) {
               <h2 className="section-title">About HIRE Education</h2>
             </div>
             <p>
-              HIRE Education helps Brampton high school students prepare for
-              work and find ways to gain experience. We bring opportunities,
-              learning resources, and application guidance together so it’s
-              easier to work out your next step.
+              HIRE Education helps high school students in Brampton, Peel and
+              the GTA prepare for work and find ways to gain experience. We
+              bring opportunities, learning resources, and application guidance
+              together so it’s easier to work out your next step.
             </p>
           </div>
         </section>
@@ -186,7 +187,7 @@ export default function Home({ staticMode = false }: { staticMode?: boolean }) {
                 <p className="section-description">
                   {staticMode
                     ? "Explore official employer, volunteering, and student program websites. Check current openings, dates, and eligibility on each source."
-                    : "Explore Brampton and nearby communities. Each published listing shows its application status and when it was last checked."}
+                    : "Explore Brampton, Peel and the Greater Toronto Area, plus online programs. Each published listing shows its application status and when it was last checked."}
                 </p>
               </div>
               <Link
@@ -224,6 +225,9 @@ function GlobalSearch({
 }) {
   const [query, setQuery] = useState("");
   const [live, setLive] = useState<Entry[]>([]);
+  const [liveTotal, setLiveTotal] = useState(0);
+  const [entryType, setEntryType] = useState("");
+  const [visible, setVisible] = useState(20);
   const ref = useRef<HTMLDivElement>(null);
   const input = useRef<HTMLInputElement>(null);
   const results = useMemo(() => {
@@ -261,22 +265,25 @@ function GlobalSearch({
     ];
     const terms = query.toLowerCase().trim().split(/\s+/).filter(Boolean);
     return terms.length
-      ? entries
-          .filter((e) =>
-            terms.every((t) =>
-              `${e.title} ${e.description}`.toLowerCase().includes(t),
-            ),
-          )
-          .slice(0, 30)
+      ? entries.filter((e) =>
+          terms.every((t) =>
+            `${e.title} ${e.description}`.toLowerCase().includes(t),
+          ),
+        )
       : entries.filter((entry) =>
           ["Guide", "Tool", "Practice", "Events", "Checklist"].includes(
             entry.type,
           ),
         );
   }, [query, live, staticMode]);
+  const filteredResults = results.filter(
+    (entry) => !entryType || entry.type === entryType,
+  );
+  useEffect(() => setVisible(20), [query, entryType]);
   useEffect(() => {
     if (staticMode || query.trim().length < 2) {
       setLive([]);
+      setLiveTotal(0);
       return;
     }
     const abort = new AbortController();
@@ -287,7 +294,8 @@ function GlobalSearch({
           { signal: abort.signal },
         )
           .then((r) => r.json())
-          .then((d) =>
+          .then((d) => {
+            setLiveTotal(typeof d.total === "number" ? d.total : 0);
             setLive(
               Array.isArray(d.items)
                 ? d.items.map(
@@ -303,8 +311,8 @@ function GlobalSearch({
                     }),
                   )
                 : [],
-            ),
-          )
+            );
+          })
           .catch(() => {}),
       250,
     );
@@ -321,7 +329,7 @@ function GlobalSearch({
       if (e.key === "Escape") onClose();
       if (e.key === "Tab") {
         const els = ref.current?.querySelectorAll<HTMLElement>(
-          "a[href],button,input",
+          "a[href],button,input,select",
         );
         if (!els?.length) return;
         const first = els[0],
@@ -371,9 +379,46 @@ function GlobalSearch({
             Close
           </button>
         </div>
+        <div className="global-search-tools">
+          <label>
+            Result type
+            <select
+              value={entryType}
+              onChange={(event) => setEntryType(event.target.value)}
+            >
+              <option value="">All results</option>
+              {[
+                ...new Set(
+                  [entryType, ...results.map((entry) => entry.type)].filter(
+                    Boolean,
+                  ),
+                ),
+              ]
+                .sort()
+                .map((kind) => (
+                  <option key={kind}>{kind}</option>
+                ))}
+            </select>
+          </label>
+          <span role="status">
+            {filteredResults.length} results · showing{" "}
+            {Math.min(visible, filteredResults.length)}
+          </span>
+        </div>
+        {!staticMode &&
+          liveTotal > 0 &&
+          (!entryType || entryType === "Opportunity") && (
+            <a
+              className="global-search-all"
+              href={`/opportunities?search=${encodeURIComponent(query.trim())}`}
+              onClick={onClose}
+            >
+              View all {liveTotal} matching live opportunities ↗
+            </a>
+          )}
         <div className="search-results" aria-live="polite">
-          {results.length ? (
-            results.map((item, i) => (
+          {filteredResults.length ? (
+            filteredResults.slice(0, visible).map((item, i) => (
               <a
                 className="search-result"
                 key={`${item.title}-${i}`}
@@ -405,6 +450,14 @@ function GlobalSearch({
             <p className="search-hint">
               No matches. Try “resume”, “volunteer”, or “communication”.
             </p>
+          )}
+          {visible < filteredResults.length && (
+            <button
+              className="btn btn-outline global-search-more"
+              onClick={() => setVisible((value) => value + 20)}
+            >
+              Show {Math.min(20, filteredResults.length - visible)} more results
+            </button>
           )}
         </div>
       </div>

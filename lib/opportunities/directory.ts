@@ -7,9 +7,12 @@ export type OpportunityDirectoryEntry = {
   group: DirectoryGroup;
   area: string;
   description: string;
+  reviewStatus?: "verified" | "unconfirmed";
+  reviewedOn?: string;
 };
 // Official employer and program portals. These are not individual openings,
 // have no invented application status, and are not included in live-listing totals.
+// Review outcomes and unresolved access limits are recorded in data/directory-review.json.
 export const opportunityDirectory: OpportunityDirectoryEntry[] = [
   {
     id: "city-of-brampton-careers",
@@ -19,6 +22,8 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "Brampton",
     description:
       "Look for student, seasonal, recreation, and community-service positions.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "city-of-mississauga-careers",
@@ -28,6 +33,8 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "Mississauga",
     description:
       "Search municipal recreation, camp, library, and seasonal job postings.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "town-of-caledon-careers",
@@ -36,15 +43,19 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     group: "Jobs",
     area: "Caledon",
     description: "Check nearby municipal jobs and seasonal recruitment.",
+    reviewStatus: "unconfirmed",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "region-of-peel-careers",
     name: "Region of Peel careers",
-    url: "https://www.peelregion.ca/careers",
+    url: "https://peelregion.ca/careers",
     group: "Jobs",
     area: "Peel Region",
     description:
       "Explore regional openings and check education requirements before applying.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "job-bank-student-search",
@@ -54,6 +65,8 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "Brampton",
     description:
       "Search the official federal job board for student work in Brampton.",
+    reviewStatus: "unconfirmed",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "canada-summer-jobs-search",
@@ -63,6 +76,8 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "Canada",
     description:
       "Find the official youth job-search tools and seasonal Canada Summer Jobs postings.",
+    reviewStatus: "unconfirmed",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "mcdonald-s-canada",
@@ -71,15 +86,19 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     group: "Jobs",
     area: "Brampton & nearby",
     description: "Search local restaurant crew and guest-service positions.",
+    reviewStatus: "unconfirmed",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "tim-hortons",
     name: "Tim Hortons",
-    url: "https://careers.timhortons.ca/",
+    url: "https://www.careers.timhortons.ca/",
     group: "Jobs",
     area: "Brampton & nearby",
     description:
       "Find team-member roles and check the individual restaurant’s requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "a-w-canada",
@@ -89,6 +108,8 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "Brampton & nearby",
     description:
       "Explore restaurant roles, shifts, and local franchise hiring.",
+    reviewStatus: "unconfirmed",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "starbucks-canada",
@@ -98,6 +119,8 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "Brampton & nearby",
     description:
       "Look for barista openings and check availability expectations.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "walmart-canada",
@@ -107,6 +130,8 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "Brampton & nearby",
     description:
       "Search store roles such as stocking, customer service, and checkout.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "loblaw-companies",
@@ -116,6 +141,8 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "Brampton & nearby",
     description:
       "Look across grocery-store banners for local entry-level roles.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "sobeys-and-freshco",
@@ -124,6 +151,8 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     group: "Jobs",
     area: "Brampton & nearby",
     description: "Search grocery, front-end, and store-team positions by city.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "metro-and-food-basics",
@@ -133,15 +162,19 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "Brampton & nearby",
     description:
       "Explore nearby grocery-store positions and department requirements.",
+    reviewStatus: "unconfirmed",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "costco-canada",
     name: "Costco Canada",
-    url: "https://www.costco.ca/jobs.html",
+    url: "https://www.costco.ca/f/-/jobs",
     group: "Jobs",
     area: "Brampton & nearby",
     description:
       "Use the official employment information to find warehouse opportunities.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "canadian-tire",
@@ -151,6 +184,8 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "Brampton & nearby",
     description:
       "Find retail roles across the company’s store banners and locations.",
+    reviewStatus: "unconfirmed",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "the-home-depot-canada",
@@ -160,6 +195,8 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "Brampton & nearby",
     description:
       "Search store service and merchandising roles; check minimum-age requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "rona",
@@ -169,15 +206,19 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "Brampton & nearby",
     description:
       "Browse home-improvement retail roles and check physical and age requirements.",
+    reviewStatus: "unconfirmed",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "cineplex",
     name: "Cineplex",
-    url: "https://careers.cineplex.com/",
+    url: "https://corp.cineplex.com/careers",
     group: "Jobs",
     area: "Brampton & nearby",
     description:
       "Look for theatre, concession, and guest-experience positions.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "landmark-cinemas",
@@ -186,15 +227,19 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     group: "Jobs",
     area: "Brampton & nearby",
     description: "Explore cinema team positions and local theatre recruitment.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "indigo",
     name: "Indigo",
-    url: "https://careers.indigo.ca/",
+    url: "https://www.indigo.ca/pages/careers",
     group: "Jobs",
     area: "Brampton & nearby",
     description:
       "Find bookstore customer-experience and seasonal retail openings.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "staples-canada",
@@ -203,6 +248,8 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     group: "Jobs",
     area: "Brampton & nearby",
     description: "Explore sales, print-service, and store-support roles.",
+    reviewStatus: "unconfirmed",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "best-buy-canada",
@@ -211,6 +258,8 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     group: "Jobs",
     area: "Brampton & nearby",
     description: "Search retail customer-service and product-advice positions.",
+    reviewStatus: "unconfirmed",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "dollarama",
@@ -220,6 +269,8 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "Brampton & nearby",
     description:
       "Check store-associate openings and the application instructions.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "dollar-tree-canada",
@@ -228,6 +279,8 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     group: "Jobs",
     area: "Brampton & nearby",
     description: "Find store-team opportunities and local hiring information.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "bulk-barn",
@@ -236,6 +289,8 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     group: "Jobs",
     area: "Brampton & nearby",
     description: "Explore food-retail roles and customer-service work.",
+    reviewStatus: "unconfirmed",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "petsmart",
@@ -245,59 +300,73 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "Brampton & nearby",
     description:
       "Search Canadian retail roles and check training and age requirements.",
+    reviewStatus: "unconfirmed",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "michaels",
     name: "Michaels",
-    url: "https://careers.michaels.com/",
+    url: "https://careers.michaels.com/us/en",
     group: "Jobs",
     area: "Brampton & nearby",
     description: "Look for arts-and-crafts retail and seasonal store roles.",
+    reviewStatus: "unconfirmed",
+    reviewedOn: "2026-10-17",
   },
   {
     id: "winners-marshalls-and-homesense",
     name: "Winners, Marshalls and HomeSense",
-    url: "https://jobs.tjx.com/global/en/canada",
+    url: "https://jobs.tjx.com/global/en/search-results?keywords=&p=ChIJ2WrMN9MDDUsRpY9Doiq3aJk&location=Canada",
     group: "Jobs",
     area: "Brampton & nearby",
     description:
       "Search Canadian store-associate roles across the company’s banners.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
   },
   {
     id: "ikea",
     name: "IKEA",
-    url: "https://jobs.ikea.com/",
+    url: "https://jobs.ikea.com/en",
     group: "Jobs",
     area: "GTA",
     description:
       "Filter Canadian store, customer-service, and food-service jobs by location.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "recipe-unlimited-restaurants",
     name: "Recipe Unlimited restaurants",
-    url: "https://www.recipeunlimited.com/careers.html",
+    url: "https://www.recipeunlimited.com/en/careers.html",
     group: "Jobs",
     area: "Brampton & nearby",
     description:
       "Explore restaurant careers across brands such as Harvey’s and Swiss Chalet.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
   },
   {
     id: "pizza-pizza",
     name: "Pizza Pizza",
-    url: "https://www.pizzapizza.ca/careers/",
+    url: "https://www.pizzapizza.ca/company/careers/",
     group: "Jobs",
     area: "Brampton & nearby",
     description:
       "Check restaurant and customer-service opportunities through the official site.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "booster-juice",
     name: "Booster Juice",
-    url: "https://www.boosterjuice.com/careers/",
+    url: "https://boosterjuice.com/en-ca/pages/careers",
     group: "Jobs",
     area: "Brampton & nearby",
     description:
       "Find store-team hiring information and local application routes.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "bramalea-city-centre",
@@ -307,24 +376,30 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "Brampton",
     description:
       "Check the shopping centre’s official site for retailer hiring notices.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "ymca-of-greater-toronto-careers",
     name: "YMCA of Greater Toronto careers",
-    url: "https://ymcagta.org/join-our-team",
+    url: "https://www.ymcagta.org/join-our-team/work-at-the-y",
     group: "Jobs",
     area: "Peel Region & GTA",
     description:
       "Explore camp, recreation, child-care, and community positions; qualifications vary.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "city-of-brampton-volunteering",
     name: "City of Brampton volunteering",
-    url: "https://www.brampton.ca/EN/City-Hall/Employment/Volunteer-Opportunities/Pages/Welcome.aspx",
+    url: "https://www.brampton.ca/EN/City-Hall/Employment/Seasonal/Pages/VolunteerOpportunities.aspx",
     group: "Volunteering",
     area: "Brampton",
     description:
       "Explore municipal volunteer programs, training, and application requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
   },
   {
     id: "volunteer-mbc",
@@ -334,6 +409,8 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "Peel Region",
     description:
       "Search community organizations and regional volunteer opportunities.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "volunteer-toronto",
@@ -343,15 +420,19 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "GTA",
     description:
       "Use youth and virtual filters where available and check travel requirements.",
+    reviewStatus: "unconfirmed",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "william-osler-health-system",
     name: "William Osler Health System",
-    url: "https://www.williamoslerhs.ca/en/who-we-are/volunteering.aspx",
+    url: "https://www.williamoslerhs.ca/who-we-are/volunteer/",
     group: "Volunteering",
     area: "Brampton & Etobicoke",
     description:
-      "Check student volunteer intake periods, age rules, and required commitments.",
+      "The hospital accepts volunteer applications from age 15; check screening, role requirements and commitments at Brampton Civic, Peel Memorial and Etobicoke General.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
   },
   {
     id: "knights-table",
@@ -361,6 +442,8 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "Brampton",
     description:
       "Read the organization’s current volunteer instructions for food and community support.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "regeneration-outreach-community",
@@ -370,6 +453,8 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "Brampton",
     description:
       "Learn about community support work and current volunteer application routes.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "seva-food-bank",
@@ -379,6 +464,8 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "Mississauga & Peel",
     description:
       "Explore food-security volunteering and check age and shift requirements.",
+    reviewStatus: "unconfirmed",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "food-banks-mississauga",
@@ -388,6 +475,8 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "Mississauga",
     description:
       "Find food-bank volunteer information and youth participation requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "habitat-for-humanity-gta",
@@ -397,6 +486,8 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "Peel Region & GTA",
     description:
       "Explore ReStore and other volunteer pathways; build-site age rules differ.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "toronto-and-region-conservation-authority",
@@ -406,6 +497,8 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "Peel Region & GTA",
     description:
       "Find environmental volunteering, community stewardship, and event opportunities.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "credit-valley-conservation",
@@ -415,6 +508,8 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "Peel Region",
     description:
       "Explore conservation activities and outdoor community programs.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "canadian-red-cross",
@@ -424,33 +519,41 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "Ontario & online",
     description:
       "Filter volunteer roles and check training, age, and screening requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "canadian-blood-services",
     name: "Canadian Blood Services",
-    url: "https://www.blood.ca/en/ways-donate/volunteering",
+    url: "https://www.blood.ca/en/ways-donate/volunteer",
     group: "Volunteering",
     area: "Peel Region & GTA",
     description:
       "Read about volunteer support roles; eligibility differs from blood-donation rules.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "special-olympics-ontario",
     name: "Special Olympics Ontario",
-    url: "https://www.specialolympicsontario.com/volunteer/",
+    url: "https://www1.specialolympicsontario.com/get-involved/become-a-volunteer/",
     group: "Volunteering",
     area: "Ontario",
     description:
       "Explore local sport-support roles and check supervision and screening rules.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
   },
   {
     id: "ymca-of-greater-toronto-volunteering",
     name: "YMCA of Greater Toronto volunteering",
-    url: "https://ymcagta.org/volunteer",
+    url: "https://www.ymcagta.org/join-our-team/volunteer-opportunities-webpage",
     group: "Volunteering",
     area: "Peel Region & GTA",
     description:
       "Find ways to support community programs and check each role’s eligibility.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "scouts-canada",
@@ -460,15 +563,19 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "Brampton & nearby",
     description:
       "Explore leadership and volunteer pathways, with different rules for youth and adults.",
+    reviewStatus: "unconfirmed",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "girl-guides-of-canada",
     name: "Girl Guides of Canada",
-    url: "https://www.girlguides.ca/",
+    url: "https://www.girlguides.ca/web/",
     group: "Volunteering",
     area: "Brampton & nearby",
     description:
       "Explore youth leadership and community involvement through local groups.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "ontario-summer-employment-opportunities",
@@ -478,6 +585,8 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "Ontario",
     description:
       "Check the annual student employment program’s eligibility and recruitment dates.",
+    reviewStatus: "unconfirmed",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "ontario-summer-company",
@@ -487,6 +596,8 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "Ontario",
     description:
       "Learn about the student entrepreneurship program, eligibility, and seasonal application window.",
+    reviewStatus: "unconfirmed",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "ontario-youth-apprenticeship-program",
@@ -496,6 +607,8 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "Ontario",
     description:
       "Ask your school about skilled-trades exploration through co-op and OYAP.",
+    reviewStatus: "unconfirmed",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "ja-central-ontario",
@@ -505,24 +618,30 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "GTA & online",
     description:
       "Explore student entrepreneurship, financial literacy, and work-readiness programs.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "skills-ontario",
     name: "Skills Ontario",
-    url: "https://www.skillsontario.com/",
+    url: "https://skillsontario.com/",
     group: "Programs & competitions",
     area: "Ontario",
     description:
       "Find skilled-trades discovery, school competitions, and youth events.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "deca-ontario",
     name: "DECA Ontario",
-    url: "https://deca.ca/",
+    url: "https://deca.ca/v2/",
     group: "Programs & competitions",
     area: "Ontario",
     description:
       "Explore business competitions through a participating school chapter; fees may apply.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "hosa-canada",
@@ -532,6 +651,8 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "Canada",
     description:
       "Explore health-science student events and chapter participation; fees may apply.",
+    reviewStatus: "unconfirmed",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "first-robotics-canada",
@@ -541,6 +662,8 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "Ontario & Canada",
     description:
       "Find robotics teams and competition pathways; team participation costs vary.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "hack-club",
@@ -550,15 +673,19 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "Online & local clubs",
     description:
       "Explore a high-school coding community and student-led building opportunities.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "major-league-hacking",
     name: "Major League Hacking",
-    url: "https://mlh.io/",
+    url: "https://www.mlh.com/",
     group: "Programs & competitions",
     area: "Online & Canada",
     description:
       "Find hackathons and check event-specific age, travel, and registration rules.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "youth-employment-services-yes",
@@ -568,6 +695,8 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "GTA",
     description:
       "Explore youth employment support and check age and location eligibility.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "acces-employment",
@@ -577,6 +706,8 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "Peel Region & GTA",
     description:
       "Find employment support, workshops, and youth-focused programs where available.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "achēv",
@@ -586,23 +717,29 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "Brampton & Peel",
     description:
       "Explore local employment services, workshops, and youth supports.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "costi",
     name: "COSTI",
-    url: "https://www.costi.org/",
+    url: "https://costi.org/",
     group: "Programs & competitions",
     area: "Peel Region & GTA",
     description:
       "Look for employment and newcomer supports with program-specific eligibility.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "newcomer-centre-of-peel",
     name: "Newcomer Centre of Peel",
-    url: "https://www.ncpeel.ca/",
+    url: "https://ncpeel.ca/",
     group: "Programs & competitions",
     area: "Peel Region",
     description: "Explore settlement, youth, and employment support programs.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "brampton-library",
@@ -612,6 +749,8 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "Brampton",
     description:
       "Check the official calendar for teen programs, technology workshops, and volunteering.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "peel-art-gallery-museum-and-archives",
@@ -621,6 +760,8 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "Brampton",
     description:
       "Find creative workshops, community programs, and volunteer information.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "sheridan-college",
@@ -630,6 +771,8 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "Brampton & nearby",
     description:
       "Explore campus events, open houses, and pathways relevant to high school students.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
   {
     id: "brampton-entrepreneur-centre",
@@ -639,5 +782,1624 @@ export const opportunityDirectory: OpportunityDirectoryEntry[] = [
     area: "Brampton",
     description:
       "Check local small-business workshops, youth entrepreneurship resources, and event dates.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "ajax-careers",
+    name: "Town of Ajax careers",
+    url: "https://ajax.ca/town-hall/town-administration/careers-with-the-town/",
+    group: "Jobs",
+    area: "Ajax",
+    description:
+      "Find town employment, recreation and seasonal recruitment information.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "aurora-careers",
+    name: "Town of Aurora recreation jobs",
+    url: "https://www.aurora.ca/recreation-arts-and-culture/recreation-jobs/",
+    group: "Jobs",
+    area: "Aurora",
+    description:
+      "Explore town careers and recreation positions; individual qualifications apply.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "durham-region-careers",
+    name: "Durham Region careers",
+    url: "https://www.durham.ca/regional-government/careers-and-volunteering/",
+    group: "Jobs",
+    area: "Durham Region",
+    description:
+      "Check regional employment and student-recruitment information and education requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "ardene-careers",
+    name: "Ardene careers",
+    url: "https://ardenecorporate.com/join-our-team/",
+    group: "Jobs",
+    area: "GTA",
+    description:
+      "Explore apparel-store careers and check individual position and location requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "boston-pizza-careers",
+    name: "Boston Pizza careers",
+    url: "https://careers.bostonpizza.ca/en",
+    group: "Jobs",
+    area: "GTA",
+    description:
+      "Explore restaurant employment by location; check age and credentials, particularly for alcohol-service roles.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "cobs-bread-careers",
+    name: "COBS Bread careers",
+    url: "https://www.cobsbread.com/pages/careers",
+    group: "Jobs",
+    area: "GTA",
+    description:
+      "Explore bakery sales and production employment and check shift, age and location requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "dairy-queen-careers",
+    name: "Dairy Queen careers",
+    url: "https://www.dairyqueen.com/en-ca/careers/",
+    group: "Jobs",
+    area: "GTA",
+    description:
+      "Explore restaurant team careers and check local franchise requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "farm-boy-careers",
+    name: "Farm Boy careers",
+    url: "https://www.farmboy.ca/careers/",
+    group: "Jobs",
+    area: "GTA",
+    description:
+      "Search grocery-store careers by location and review department and shift requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "gap-inc-careers",
+    name: "Gap Inc. careers",
+    url: "https://www.gapinc.com/en-ca/careers",
+    group: "Jobs",
+    area: "GTA",
+    description:
+      "Explore retail careers across Gap Inc. brands and review local posting requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "giant-tiger-careers",
+    name: "Giant Tiger careers",
+    url: "https://www.gianttiger.com/pages/careers",
+    group: "Jobs",
+    area: "GTA",
+    description:
+      "Explore Canadian discount-store retail careers and check local role and scheduling requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "hm-careers",
+    name: "H&M Canada careers",
+    url: "https://career.hm.com/ca-en/",
+    group: "Jobs",
+    area: "GTA",
+    description:
+      "Search Canadian retail careers and filter locations; eligibility differs by position.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "kumon-careers",
+    name: "Kumon Canada careers",
+    url: "https://www.kumon.com/ca-en/careers",
+    group: "Jobs",
+    area: "GTA",
+    description:
+      "Read official employment information and contact an individual centre only through its published application process; centre roles and eligibility vary.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "lids-careers",
+    name: "Lids careers",
+    url: "https://careers.lids.com/",
+    group: "Jobs",
+    area: "GTA",
+    description:
+      "Search retail careers by Canadian location and review individual position requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "mary-browns-careers",
+    name: "Mary Brown's careers",
+    url: "https://marybrowns.com/careers/",
+    group: "Jobs",
+    area: "GTA",
+    description:
+      "Read restaurant employment information and follow individual location application instructions.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "oxford-learning-careers",
+    name: "Oxford Learning careers",
+    url: "https://oxfordlearning.com/careers/",
+    group: "Jobs",
+    area: "GTA",
+    description:
+      "Search learning-centre positions and check subject, grade-level and education requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "purdys-careers",
+    name: "Purdys Chocolatier careers",
+    url: "https://www.purdys.com/careers",
+    group: "Jobs",
+    area: "GTA",
+    description:
+      "Explore chocolate-store retail careers and check local shift and position requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "rexall-careers",
+    name: "Rexall careers",
+    url: "https://careers.rexall.ca/",
+    group: "Jobs",
+    area: "GTA",
+    description:
+      "Explore retail-store roles; pharmacy roles may require professional credentials.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "sephora-canada-careers",
+    name: "Sephora Canada careers",
+    url: "https://jobs.sephora.com/Canada",
+    group: "Jobs",
+    area: "GTA",
+    description:
+      "Search Canadian retail careers and check local role-specific age, experience and availability requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "spirit-of-math-careers",
+    name: "Spirit of Math careers",
+    url: "https://spiritofmath.com/careers-apply/",
+    group: "Jobs",
+    area: "GTA",
+    description:
+      "Explore math-education roles and check whether a role is open to students or requires a degree.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "wendys-careers",
+    name: "Wendy's careers",
+    url: "https://wendys-careers.com/",
+    group: "Jobs",
+    area: "GTA",
+    description:
+      "Search restaurant careers by location and review the individual employer's eligibility requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "halton-hills-careers",
+    name: "Town of Halton Hills careers",
+    url: "https://www.haltonhills.ca/careers",
+    group: "Jobs",
+    area: "Halton Hills",
+    description:
+      "Look for municipal and recreation positions near Georgetown and Acton.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "halton-region-careers",
+    name: "Halton Region careers",
+    url: "https://careers.halton.ca/",
+    group: "Jobs",
+    area: "Halton Region",
+    description:
+      "Find regional career and student-employment information; not all roles are suitable for high school students.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "markham-careers",
+    name: "City of Markham careers",
+    url: "https://www.markham.ca/about-the-city-of-markham/employment",
+    group: "Jobs",
+    area: "Markham",
+    description:
+      "Browse city careers and check seasonal, recreation and student recruitment requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "town-of-milton-careers",
+    name: "Town of Milton careers",
+    url: "https://www.milton.ca/your-government/careers/",
+    group: "Jobs",
+    area: "Milton",
+    description:
+      "Explore town employment and seasonal opportunities; check age, certifications and availability requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "newmarket-careers",
+    name: "Newmarket recreation, events and culture jobs",
+    url: "https://www.newmarket.ca/recjobs",
+    group: "Jobs",
+    area: "Newmarket",
+    description:
+      "Find municipal employment information and check role-specific education and certification requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "town-of-oakville-careers",
+    name: "Town of Oakville careers",
+    url: "https://www.oakville.ca/town-hall/careers/",
+    group: "Jobs",
+    area: "Oakville",
+    description:
+      "Explore municipal employment and seasonal recreation roles; check each posting's qualifications.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "ontario-parks-student-jobs",
+    name: "Ontario Parks student jobs",
+    url: "https://www.ontarioparks.ca/careers",
+    group: "Jobs",
+    area: "Ontario",
+    description:
+      "Explore park employment; check location, transportation, accommodation and student-program eligibility.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "oshawa-careers",
+    name: "City of Oshawa careers",
+    url: "https://www.oshawa.ca/city-hall/careers/",
+    group: "Jobs",
+    area: "Oshawa",
+    description:
+      "Search city employment and recreation recruitment; check each position's eligibility.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "pickering-careers",
+    name: "City of Pickering careers",
+    url: "https://www.pickering.ca/council-city-administration/employment-opportunities/",
+    group: "Jobs",
+    area: "Pickering",
+    description:
+      "Explore municipal job postings and individual role qualifications.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "city-of-toronto-careers",
+    name: "City of Toronto careers",
+    url: "https://jobs.toronto.ca/jobsatcity/",
+    group: "Jobs",
+    area: "Toronto",
+    description:
+      "Search municipal jobs, recreation recruitment and student opportunities; requirements vary by role.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "toronto-zoo-careers",
+    name: "Toronto Zoo careers",
+    url: "https://www.torontozoo.com/jobs",
+    group: "Jobs",
+    area: "Toronto",
+    description:
+      "Find zoo employment information and check seasonal roles and position-specific qualifications.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "canadas-wonderland-careers",
+    name: "Canada's Wonderland careers",
+    url: "https://jobs.sixflags.com/location/vaughan-jobs/42509/6251999-6093943-6173577/4",
+    group: "Jobs",
+    area: "Vaughan",
+    description:
+      "Explore amusement-park employment and check the minimum age, schedule and training for each role.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "vaughan-careers",
+    name: "City of Vaughan recreation jobs",
+    url: "https://www.vaughan.ca/about-city-vaughan/employment-opportunities/work-us",
+    group: "Jobs",
+    area: "Vaughan",
+    description:
+      "Explore municipal and recreation recruitment and review each role's requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "whitby-careers",
+    name: "Town of Whitby careers",
+    url: "https://www.whitby.ca/town-hall/jobs-with-the-town/",
+    group: "Jobs",
+    area: "Whitby",
+    description:
+      "Explore municipal and recreation careers and check each posting's requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "york-region-careers",
+    name: "York Region careers",
+    url: "https://www.york.ca/york-region/careers",
+    group: "Jobs",
+    area: "York Region",
+    description:
+      "Explore regional student and other employment programs, with role-specific requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "brampton-library-volunteering",
+    name: "Brampton Library volunteering",
+    url: "https://www.bramptonlibrary.ca/your-library/your-support/volunteer",
+    group: "Volunteering",
+    area: "Brampton",
+    description:
+      "Find library volunteer information and check youth roles, application instructions and participation requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "burlington-humane",
+    name: "Burlington Humane Society volunteering",
+    url: "https://burlingtonhumane.ca/volunteer/",
+    group: "Volunteering",
+    area: "Burlington",
+    description:
+      "Review animal-welfare volunteer routes and role-specific eligibility.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "caledon-meals-on-wheels",
+    name: "Caledon Meals on Wheels",
+    url: "https://cmow.org/volunteer/",
+    group: "Volunteering",
+    area: "Caledon",
+    description:
+      "Explore community-support volunteering and check role-specific age, driving and availability requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "bethell-hospice",
+    name: "Bethell Hospice volunteering",
+    url: "https://bethellhospice.org/volunteer-3/",
+    group: "Volunteering",
+    area: "Caledon & Peel",
+    description:
+      "Review hospice and community volunteer pathways; some roles have adult eligibility and specialized training requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "lakeridge-health-volunteering",
+    name: "Lakeridge Health volunteering",
+    url: "https://www.lh.ca/careers-volunteering/volunteering/",
+    group: "Volunteering",
+    area: "Durham Region",
+    description:
+      "Explore hospital volunteer opportunities and check student-program age and application requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "mabellearts",
+    name: "MABELLEarts",
+    url: "https://mabellearts.ca/",
+    group: "Volunteering",
+    area: "Etobicoke",
+    description:
+      "Explore community arts, neighbourhood activities and ways to get involved.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "youth-without-shelter",
+    name: "Youth Without Shelter",
+    url: "https://yws.on.ca/",
+    group: "Volunteering",
+    area: "Etobicoke & GTA",
+    description:
+      "Read youth-shelter volunteer and community-support information; role eligibility and screening vary.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "muslim-welfare-canada",
+    name: "Muslim Welfare Canada",
+    url: "https://mwcanada.org/volunteer-with-us/",
+    group: "Volunteering",
+    area: "GTA",
+    description:
+      "Explore food and community-support volunteering and check youth participation and location requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "second-harvest",
+    name: "Second Harvest",
+    url: "https://www.secondharvest.ca/get-involved/volunteer",
+    group: "Volunteering",
+    area: "GTA",
+    description:
+      "Explore food-rescue volunteering and check role-specific age, safety and transportation requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "toronto-cat-rescue",
+    name: "Toronto Cat Rescue volunteering",
+    url: "https://torontocatrescue.ca/volunteer/",
+    group: "Volunteering",
+    area: "GTA",
+    description:
+      "Explore rescue-support volunteering; many roles require age 18+, and foster, event and store roles have different requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "islamic-relief-canada",
+    name: "Islamic Relief Canada volunteering",
+    url: "https://www.islamicreliefcanada.org/get-involved/volunteer",
+    group: "Volunteering",
+    area: "GTA & Ontario",
+    description:
+      "Read official volunteer pathways and check local role eligibility and screening requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "markham-volunteering",
+    name: "City of Markham volunteering",
+    url: "https://www.markham.ca/about-city-markham/volunteering",
+    group: "Volunteering",
+    area: "Markham",
+    description:
+      "Explore city volunteer roles and review registration, age and training requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "oak-valley-health-volunteering",
+    name: "Oak Valley Health volunteering",
+    url: "https://www.oakvalleyhealth.ca/careers-and-volunteering/volunteering-at-oak-valley-health/becoming-a-volunteer/",
+    group: "Volunteering",
+    area: "Markham & York Region",
+    description:
+      "Review hospital volunteer programs and student eligibility directly with the provider.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "city-of-mississauga-volunteering",
+    name: "City of Mississauga volunteering",
+    url: "https://www.mississauga.ca/our-organization/jobs-and-volunteer/volunteer/",
+    group: "Volunteering",
+    area: "Mississauga",
+    description:
+      "Find municipal volunteer programs and review age, screening and commitment requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "the-compass",
+    name: "The Compass Food Bank & Outreach Centre",
+    url: "https://thecompass.ca/volunteer/",
+    group: "Volunteering",
+    area: "Mississauga",
+    description:
+      "Read food-bank volunteer information and check age, training and shift requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "trillium-health-partners-volunteering",
+    name: "Trillium Health Partners volunteering",
+    url: "https://www.thp.ca/volunteers/Pages/Overview.aspx",
+    group: "Volunteering",
+    area: "Mississauga & Etobicoke",
+    description:
+      "Explore hospital volunteer information and check student intake, age and commitment requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "newmarket-volunteering",
+    name: "Newmarket recreation volunteering",
+    url: "https://www.newmarket.ca/recreation-parks/jobs-volunteering/volunteer-recreation-culture",
+    group: "Volunteering",
+    area: "Newmarket & York Region",
+    description:
+      "Explore recreation and culture volunteer opportunities and check youth eligibility, training and intake requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "southlake-volunteering",
+    name: "Southlake Health volunteering",
+    url: "https://southlake.ca/volunteer/",
+    group: "Volunteering",
+    area: "Newmarket & York Region",
+    description:
+      "Find hospital volunteer information and review youth participation requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "oakville-library-volunteering",
+    name: "Oakville Public Library volunteering",
+    url: "https://opl.ca/about-opl/volunteer",
+    group: "Volunteering",
+    area: "Oakville",
+    description:
+      "Read library volunteer information and check student roles, age requirements and intake dates.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "oakville-milton-humane",
+    name: "Oakville & Milton Humane Society volunteering",
+    url: "https://hsomh.ca/volunteer/",
+    group: "Volunteering",
+    area: "Oakville & Milton",
+    description:
+      "Explore animal-welfare volunteering and check youth-specific participation and supervision requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "oshawa-volunteering",
+    name: "City of Oshawa volunteering",
+    url: "https://www.oshawa.ca/explore-play/volunteering/",
+    group: "Volunteering",
+    area: "Oshawa",
+    description:
+      "Find volunteer participation information and check individual program requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "sai-dham-food-bank",
+    name: "Sai Dham Food Bank",
+    url: "https://saidhamfoodbank.com/volunteer-with-us/",
+    group: "Volunteering",
+    area: "Peel Region & GTA",
+    description:
+      "Explore food-bank volunteer information and check each role's eligibility, location and availability requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "pickering-volunteering",
+    name: "City of Pickering volunteering",
+    url: "https://www.pickering.ca/parks-recreation-culture/volunteer/",
+    group: "Volunteering",
+    area: "Pickering",
+    description:
+      "Explore municipal volunteer programs and check age, screening and availability rules.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "mackenzie-health-volunteering",
+    name: "Mackenzie Health volunteering",
+    url: "https://www.mackenziehealth.ca/support-us/volunteer-and-community-resources",
+    group: "Volunteering",
+    area: "Richmond Hill & Vaughan",
+    description:
+      "Explore hospital volunteer programs and check student eligibility and intake requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "agincourt-community-services",
+    name: "Agincourt Community Services Association",
+    url: "https://acsa.ca/volunteer/",
+    group: "Volunteering",
+    area: "Toronto",
+    description:
+      "Find community-service volunteer information and check role-specific age and scheduling requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "city-of-toronto-volunteering",
+    name: "City of Toronto volunteering",
+    url: "https://www.toronto.ca/community-people/get-involved/volunteer-with-the-city/",
+    group: "Volunteering",
+    area: "Toronto",
+    description:
+      "Explore city volunteer programs and check each program's application and participation rules.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "covenant-house-toronto",
+    name: "Covenant House Toronto volunteering",
+    url: "https://covenanthousetoronto.ca/how-to-help/volunteer/",
+    group: "Volunteering",
+    area: "Toronto",
+    description:
+      "Review youth-service volunteer pathways and check role-specific age, screening and commitment rules.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "culturelink",
+    name: "CultureLink volunteering",
+    url: "https://www.culturelink.ca/get-involved/volunteer/",
+    group: "Volunteering",
+    area: "Toronto",
+    description:
+      "Explore newcomer and community-support volunteering and review eligibility and training requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "daily-bread-food-bank",
+    name: "Daily Bread Food Bank",
+    url: "https://www.dailybread.ca/get-involved/volunteer/",
+    group: "Volunteering",
+    area: "Toronto",
+    description:
+      "Explore food-bank volunteer pathways and review age, supervision and booking rules.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "dixon-hall",
+    name: "Dixon Hall volunteering",
+    url: "https://dixonhall.org/volunteer/",
+    group: "Volunteering",
+    area: "Toronto",
+    description:
+      "Explore neighbourhood and community-service volunteering and check individual role requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "evas-initiatives",
+    name: "Eva's Initiatives volunteering",
+    url: "https://www.evas.ca/get-involved-old/volunteer/",
+    group: "Volunteering",
+    area: "Toronto",
+    description:
+      "Explore ways to support youth-homelessness services and check whether individual volunteer roles accept students.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "evergreen-brick-works",
+    name: "Evergreen Brick Works volunteering",
+    url: "https://www.evergreen.ca/take-action/volunteer/",
+    group: "Volunteering",
+    area: "Toronto",
+    description:
+      "Explore urban environmental and event volunteering and check individual role requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "foodshare-toronto",
+    name: "FoodShare Toronto volunteering",
+    url: "https://foodshare.net/volunteer/",
+    group: "Volunteering",
+    area: "Toronto",
+    description:
+      "Explore food-justice volunteer information and check youth participation and role requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "good-shepherd-toronto",
+    name: "Good Shepherd Ministries volunteering",
+    url: "https://goodshepherd.ca/volunteer/",
+    group: "Volunteering",
+    area: "Toronto",
+    description:
+      "Read community-support volunteer requirements and check age, screening and scheduling rules.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "holland-bloorview-volunteering",
+    name: "Holland Bloorview volunteering",
+    url: "https://hollandbloorview.ca/get-involved-give/volunteering-with-us",
+    group: "Volunteering",
+    area: "Toronto",
+    description:
+      "Explore rehabilitation-hospital volunteer roles and check age, training and availability requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "michael-garron-volunteering",
+    name: "Michael Garron Hospital volunteering",
+    url: "https://www.tehn.ca/careers-volunteering/volunteering/student-volunteer-program",
+    group: "Volunteering",
+    area: "Toronto",
+    description:
+      "Read hospital volunteer and student-program requirements and application timing.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "north-york-harvest",
+    name: "North York Harvest Food Bank",
+    url: "https://northyorkharvest.com/volunteer/",
+    group: "Volunteering",
+    area: "Toronto",
+    description:
+      "Find food-bank volunteer information and check youth eligibility and shift requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "scarborough-centre-healthy-communities",
+    name: "Scarborough Centre for Healthy Communities volunteering",
+    url: "https://schcontario.ca/get-involved/volunteer/",
+    group: "Volunteering",
+    area: "Toronto",
+    description:
+      "Explore community volunteer roles and check youth eligibility, screening and availability requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "sickkids-volunteering",
+    name: "SickKids volunteering",
+    url: "https://www.sickkids.ca/en/careers-volunteer/volunteering/opportunities/",
+    group: "Volunteering",
+    area: "Toronto",
+    description:
+      "Review hospital volunteer programs, intake dates and student eligibility directly with the hospital.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "sinai-health-volunteering",
+    name: "Sinai Health volunteering",
+    url: "https://www.sinaihealth.ca/volunteer-at-sinai-health",
+    group: "Volunteering",
+    area: "Toronto",
+    description:
+      "Volunteering is generally for adults 18+, with a high-school co-op exception. Sinai does not provide graduation community-service hours; check placement requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "st-felix-centre",
+    name: "St. Felix Centre volunteering",
+    url: "https://stfelixcentre.org/volunteer-with-us/",
+    group: "Volunteering",
+    area: "Toronto",
+    description:
+      "Explore community-support volunteer information and check age, screening and shift requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "the-519",
+    name: "The 519 volunteering",
+    url: "https://www.the519.org/support-the-519/volunteer/",
+    group: "Volunteering",
+    area: "Toronto",
+    description:
+      "Volunteer roles require age 18+. The page currently offers a waitlist for its closed 2026 recruitment; check future intake and orientation requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "the-stop",
+    name: "The Stop Community Food Centre",
+    url: "https://www.thestop.org/volunteer/",
+    group: "Volunteering",
+    area: "Toronto",
+    description:
+      "Explore community-food volunteering and review eligibility, intake and commitment requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "toronto-humane-society",
+    name: "Toronto Humane Society volunteering",
+    url: "https://www.torontohumanesociety.com/support-us/become-a-volunteer/",
+    group: "Volunteering",
+    area: "Toronto",
+    description:
+      "Explore animal-welfare volunteer information and check age, training and commitment rules.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "toronto-wildlife-centre",
+    name: "Toronto Wildlife Centre volunteering",
+    url: "https://www.torontowildlifecentre.com/volunteer/",
+    group: "Volunteering",
+    area: "Toronto",
+    description:
+      "Read wildlife-support volunteer requirements; some roles require adult applicants and substantial commitments.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "west-neighbourhood-house",
+    name: "West Neighbourhood House volunteering",
+    url: "https://www.westnh.org/volunteer/",
+    group: "Volunteering",
+    area: "Toronto",
+    description:
+      "Read neighbourhood volunteer information and check age, skills and commitment requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "woodgreen",
+    name: "WoodGreen Community Services volunteering",
+    url: "https://www.woodgreen.org/volunteer",
+    group: "Volunteering",
+    area: "Toronto",
+    description:
+      "Explore community volunteer roles and check which opportunities accept youth and students.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "youth-assisting-youth",
+    name: "Youth Assisting Youth",
+    url: "https://youthassistingyouth.com/",
+    group: "Volunteering",
+    area: "Toronto & York Region",
+    description:
+      "Explore peer-mentoring volunteer information and check age, training and commitment requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "vaughan-volunteering",
+    name: "City of Vaughan volunteering",
+    url: "https://www.vaughan.ca/residential/recreation-programs-and-fitness/events/event-volunteers",
+    group: "Volunteering",
+    area: "Vaughan",
+    description:
+      "Find recreation volunteer information and confirm role-specific participation requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "whitby-volunteering",
+    name: "Town of Whitby volunteering",
+    url: "https://www.whitby.ca/community-and-people/volunteer-with-the-town/",
+    group: "Volunteering",
+    area: "Whitby & Durham Region",
+    description:
+      "Explore town volunteer pathways and check age, training, screening and commitment requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "caledon-community-services",
+    name: "Caledon Community Services",
+    url: "https://ccs4u.org/",
+    group: "Programs & competitions",
+    area: "Caledon & Peel",
+    description:
+      "Explore community and employment supports and ask about youth-specific eligibility.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "durham-college-dual-credit",
+    name: "Durham College dual credit",
+    url: "https://durhamcollege.ca/academic-faculties/faculty-of-liberal-studies-old/services/scwi/dual-credit-programs",
+    group: "Programs & competitions",
+    area: "Durham Region",
+    description:
+      "Explore school-college dual-credit pathways and ask your school about eligibility.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "ontario-tech-engineering-outreach",
+    name: "Ontario Tech Engineering Outreach",
+    url: "https://engineering.ontariotechu.ca/outreach/",
+    group: "Programs & competitions",
+    area: "Durham Region & GTA",
+    description:
+      "Explore engineering and STEM outreach and check school-grade and session requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "ecospark",
+    name: "EcoSpark",
+    url: "https://www.ecospark.ca/",
+    group: "Programs & competitions",
+    area: "GTA",
+    description:
+      "Explore environmental education and community-science programs; check school and volunteer participation routes.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "girl-e-mentorship",
+    name: "GEM — Girls E-Mentorship",
+    url: "https://girlsementorship.com/",
+    group: "Programs & competitions",
+    area: "GTA",
+    description:
+      "Explore high-school mentoring and career-development programs and check eligibility and recruitment timing.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "visions-of-science",
+    name: "Visions of Science",
+    url: "https://visionsofscience.ca/",
+    group: "Programs & competitions",
+    area: "GTA",
+    description:
+      "Explore community-based STEM learning and youth leadership programs; check service-area eligibility.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "her-volution",
+    name: "hEr VOLUTION",
+    url: "https://hervolution.org/",
+    group: "Programs & competitions",
+    area: "GTA",
+    description:
+      "Explore STEM learning and career pathways for underserved youth, with program-specific eligibility.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "jays-care-foundation",
+    name: "Jays Care Foundation",
+    url: "https://www.mlb.com/bluejays/community/jays-care",
+    group: "Programs & competitions",
+    area: "GTA & Canada",
+    description:
+      "Explore youth sport and development programs and check whether participation is through a school or community partner.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "pathways-to-education",
+    name: "Pathways to Education",
+    url: "https://www.pathwaystoeducation.ca/",
+    group: "Programs & competitions",
+    area: "GTA & Canada",
+    description:
+      "Check participating communities for high-school academic, mentoring and transition supports.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "canada-learning-code",
+    name: "Canada Learning Code",
+    url: "https://www.canadalearningcode.ca/",
+    group: "Programs & competitions",
+    area: "GTA & online",
+    description:
+      "Explore coding workshops and learning programs; check age group, registration and any program fees.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "hackergal",
+    name: "Hackergal",
+    url: "https://hackergal.org/",
+    group: "Programs & competitions",
+    area: "GTA & online",
+    description:
+      "Explore coding and technology learning for girls and gender-diverse learners; check grade and school participation requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "waterloo-cemc-contests",
+    name: "University of Waterloo CEMC contests",
+    url: "https://cemc.uwaterloo.ca/contests",
+    group: "Programs & competitions",
+    area: "GTA schools & online",
+    description:
+      "Explore school mathematics and computing contests; grade, teacher registration and fee requirements differ.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "halton-youth-services",
+    name: "Halton Region youth services",
+    url: "https://www.halton.ca/for-residents/youth",
+    group: "Programs & competitions",
+    area: "Halton Region",
+    description:
+      "Explore official youth-service information and check each program's age, location and eligibility requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "milton-youth-programs",
+    name: "Milton youth programs",
+    url: "https://www.milton.ca/explore-play/youth/",
+    group: "Programs & competitions",
+    area: "Milton & Halton Region",
+    description:
+      "Explore youth spaces, recreation and community programs; check age, registration and fees for each activity.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "dixie-bloor-neighbourhood-centre",
+    name: "Dixie Bloor Neighbourhood Centre",
+    url: "https://www.dixiebloor.ca/",
+    group: "Programs & competitions",
+    area: "Mississauga & Peel",
+    description:
+      "Explore youth, community and employment-related programs and check eligibility.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "ecosource",
+    name: "Ecosource",
+    url: "https://ecosource.ca/",
+    group: "Programs & competitions",
+    area: "Mississauga & Peel",
+    description:
+      "Explore environmental learning, youth leadership and community growing programs.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "malton-neighbourhood-services",
+    name: "Malton Neighbourhood Services",
+    url: "https://www.mnsinfo.org/",
+    group: "Programs & competitions",
+    area: "Mississauga & Peel",
+    description:
+      "Explore youth, settlement and community programs with program-specific participation rules.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "newmarket-youth-programs",
+    name: "Newmarket youth programs",
+    url: "https://www.newmarket.ca/recreation-parks/programs-camps/youth",
+    group: "Programs & competitions",
+    area: "Newmarket & York Region",
+    description:
+      "Explore youth recreation, leadership and participation programs and check each activity's age and fee requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "future-aces",
+    name: "Future Aces Foundation",
+    url: "https://futureaces.org/",
+    group: "Programs & competitions",
+    area: "Ontario",
+    description:
+      "Explore youth leadership, school programs and scholarship information and check each program's requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "actua",
+    name: "Actua youth STEM programs",
+    url: "https://actua.ca/",
+    group: "Programs & competitions",
+    area: "Ontario & Canada",
+    description:
+      "Find STEM learning through a national network of member organizations and check local program requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "duke-of-edinburgh-canada",
+    name: "Duke of Edinburgh's International Award Canada",
+    url: "https://www.dukeofed.org/",
+    group: "Programs & competitions",
+    area: "Ontario & Canada",
+    description:
+      "Explore youth service, skills and adventure challenges; participation fees and supervision requirements apply.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "jack-org",
+    name: "Jack.org youth leadership",
+    url: "https://www.jack.org/",
+    group: "Programs & competitions",
+    area: "Ontario & Canada",
+    description:
+      "Explore youth mental-health leadership and education programs and check school, age and participation requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "shad-canada",
+    name: "Shad Canada",
+    url: "https://www.shad.ca/",
+    group: "Programs & competitions",
+    area: "Ontario & Canada",
+    description:
+      "Explore the high-school STEAM and entrepreneurship program; selection, location, fees and financial assistance vary.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "youth-science-canada",
+    name: "Youth Science Canada",
+    url: "https://youthscience.ca/",
+    group: "Programs & competitions",
+    area: "Ontario & Canada",
+    description:
+      "Explore science-fair pathways and check regional participation and project rules.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "stem-fellowship",
+    name: "STEM Fellowship",
+    url: "https://www.stemfellowship.org/",
+    group: "Programs & competitions",
+    area: "Ontario & online",
+    description:
+      "Explore student research, data-science and mentoring programs; eligibility and participation rules differ by program.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "sheridan-dual-credit",
+    name: "Sheridan dual credit",
+    url: "https://www.sheridancollege.ca/admissions/pathways-and-transfers/dual-credit",
+    group: "Programs & competitions",
+    area: "Peel & Halton regions",
+    description:
+      "Explore school-coordinated college learning for secondary students and confirm eligibility with your school.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "bgc-peel",
+    name: "BGC Peel",
+    url: "https://www.bgcpeel.org/",
+    group: "Programs & competitions",
+    area: "Peel Region",
+    description:
+      "Explore local youth learning, recreation and leadership programs; check each activity's eligibility and registration requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "punjabi-community-health-services",
+    name: "Punjabi Community Health Services",
+    url: "https://pchs4u.com/",
+    group: "Programs & competitions",
+    area: "Peel Region",
+    description:
+      "Explore community and youth supports; check each program's service area and participation requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "big-brothers-big-sisters-peel-york",
+    name: "Big Brothers Big Sisters of Peel York",
+    url: "https://peelyork.bigbrothersbigsisters.ca/",
+    group: "Programs & competitions",
+    area: "Peel Region & York Region",
+    description:
+      "Explore youth mentoring and volunteer information; program eligibility and matching requirements vary.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "pickering-youth-programs",
+    name: "Pickering teen recreation services",
+    url: "https://www.pickering.ca/parks-recreation-culture/teen-recreation-services/",
+    group: "Programs & competitions",
+    area: "Pickering & Durham Region",
+    description:
+      "Explore teen recreation and youth participation programs and check registration, age and fee requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "artreach-toronto",
+    name: "ArtReach Toronto",
+    url: "https://www.artreach.org/",
+    group: "Programs & competitions",
+    area: "Toronto",
+    description:
+      "Explore youth arts support, workshops and funding information; grants and programs have specific age and project rules.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "bgc-east-scarborough",
+    name: "BGC East Scarborough",
+    url: "https://esbgc.ca/",
+    group: "Programs & competitions",
+    area: "Toronto",
+    description:
+      "Find youth recreation, leadership and learning programs and review registration and participation requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "bgc-st-albans",
+    name: "BGC St. Alban's Club",
+    url: "https://www.stalbansclub.ca/",
+    group: "Programs & competitions",
+    area: "Toronto",
+    description:
+      "Explore youth recreation, skills and community programs; check location and activity requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "bgc-toronto-kiwanis",
+    name: "BGC Toronto Kiwanis",
+    url: "https://www.bgctk.org/",
+    group: "Programs & competitions",
+    area: "Toronto",
+    description:
+      "Explore youth clubs, learning and leadership programs and check membership and activity requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "culturelink-newcomer-youth",
+    name: "CultureLink newcomer youth programs",
+    url: "https://www.culturelink.ca/newcomer-youth-success/",
+    group: "Programs & competitions",
+    area: "Toronto",
+    description:
+      "Explore newcomer youth and high-school transition supports and check program-specific eligibility and enrolment requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "holland-bloorview-high-school-coop",
+    name: "Holland Bloorview high-school co-op",
+    url: "https://hollandbloorview.ca/get-involved-give/volunteering-with-us/volunteering-client-patient-programs/high-school-co-op-education-opportunities",
+    group: "Programs & competitions",
+    area: "Toronto",
+    description:
+      "Read high-school co-op placement requirements and application steps; coordinate participation through your school.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "mlse-launchpad",
+    name: "MLSE LaunchPad",
+    url: "https://www.mlselaunchpad.org/",
+    group: "Programs & competitions",
+    area: "Toronto",
+    description:
+      "Explore sport-based youth development and learning programs and check membership and activity requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "youthlink",
+    name: "YouthLink",
+    url: "https://youthlink.ca/",
+    group: "Programs & competitions",
+    area: "Toronto",
+    description:
+      "Find youth support, education and community programs, with service-specific eligibility.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "black-boys-code",
+    name: "Black Boys Code",
+    url: "https://blackboyscode.ca/",
+    group: "Programs & competitions",
+    area: "Toronto & Canada",
+    description:
+      "Explore technology workshops and youth coding programs and check local age and registration requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "holland-bloorview-youth-employment",
+    name: "Holland Bloorview youth employment pathways",
+    url: "https://hollandbloorview.ca/services/programs-services/youth-employment-pathways-programs",
+    group: "Programs & competitions",
+    area: "Toronto & GTA",
+    description:
+      "Explore employment-learning pathways for youth with disabilities; check age, referral and program eligibility requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "holland-bloorview-youth-mentorship",
+    name: "Holland Bloorview youth mentorship",
+    url: "https://hollandbloorview.ca/services/programs-services/youth-mentorship-program",
+    group: "Programs & competitions",
+    area: "Toronto & GTA",
+    description:
+      "Explore peer mentorship for youth with disabilities and check age, referral and participation requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "york-spark-lab",
+    name: "York University youth science programs",
+    url: "https://www.yorku.ca/science/youth-programs/",
+    group: "Programs & competitions",
+    area: "Toronto & GTA",
+    description:
+      "Explore high-school science enrichment, Spark Lab summer programs and student volunteering; check grades, dates, fees and eligibility.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "york-k2i-academy",
+    name: "York University k2i academy",
+    url: "https://lassonde.yorku.ca/k2i/",
+    group: "Programs & competitions",
+    area: "Toronto & GTA",
+    description:
+      "Explore kindergarten-to-industry STEM outreach, school partnerships and youth learning programs.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "the-knowledge-society",
+    name: "The Knowledge Society",
+    url: "https://www.tks.world/",
+    group: "Programs & competitions",
+    area: "Toronto & online",
+    description:
+      "Explore a teen innovation and career-exploration program; check tuition, financial support and selection requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "whitby-youth-programs",
+    name: "Whitby youth programs",
+    url: "https://www.whitby.ca/community-and-people/youth/",
+    group: "Programs & competitions",
+    area: "Whitby & Durham Region",
+    description:
+      "Find youth spaces, activities and participation information; check registration and eligibility requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "girls-inc-york-region",
+    name: "Girls Inc. of York Region",
+    url: "https://www.girlsincyork.org/",
+    group: "Programs & competitions",
+    area: "York Region",
+    description:
+      "Explore youth learning, confidence and leadership programs; eligibility differs by activity.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "360kids",
+    name: "360°kids",
+    url: "https://www.360kids.ca/",
+    group: "Programs & competitions",
+    area: "York Region",
+    description:
+      "Explore youth support, education and employment programs and check eligibility for each service.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "ajax-public-library-teens",
+    name: "Ajax Public Library jobs and volunteering",
+    url: "https://www.ajaxlibrary.ca/jobs-volunteers",
+    group: "Volunteering",
+    area: "Ajax",
+    description:
+      "Read library employment and volunteer information and check youth eligibility, intake dates and application requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "bacd-durham",
+    name: "Business Advisory Centre Durham",
+    url: "https://www.bacd.ca/",
+    group: "Events & learning",
+    area: "Durham Region",
+    description:
+      "Explore entrepreneurship advice, workshops and student business programs and check application requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "arts-etobicoke",
+    name: "Arts Etobicoke",
+    url: "https://www.artsetobicoke.com/",
+    group: "Events & learning",
+    area: "Etobicoke",
+    description:
+      "Explore community arts learning, youth activities and ways to get involved; check fees and registration requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "markham-public-library-teens",
+    name: "Markham Public Library teens",
+    url: "https://markhampubliclibrary.ca/teens/",
+    group: "Events & learning",
+    area: "Markham",
+    description:
+      "Find library programs and learning resources designed for teens.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "milton-public-library-teens",
+    name: "Milton Public Library teens",
+    url: "https://beinspired.ca/teens/",
+    group: "Events & learning",
+    area: "Milton",
+    description:
+      "Find teen library activities and resources and check participation requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "living-arts-centre",
+    name: "Living Arts Centre",
+    url: "https://www.mississauga.ca/arts-and-culture/locations/living-arts-centre/",
+    group: "Events & learning",
+    area: "Mississauga",
+    description:
+      "Explore arts workshops, performances and participation information; confirm fees, ages and current dates.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "mississauga-library-teens",
+    name: "Mississauga Library programs",
+    url: "https://www.mississauga.ca/library/programs/",
+    group: "Events & learning",
+    area: "Mississauga",
+    description:
+      "Explore teen and teen-led library programs, learning activities and registration information.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "visual-arts-mississauga",
+    name: "Visual Arts Mississauga",
+    url: "https://visualartsmississauga.com/",
+    group: "Events & learning",
+    area: "Mississauga",
+    description:
+      "Explore visual-arts classes, youth programs and community activities; fees and age requirements vary.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "oakville-public-library-teens",
+    name: "Oakville Public Library programs",
+    url: "https://opl.ca/programs-and-events",
+    group: "Events & learning",
+    area: "Oakville",
+    description:
+      "Explore library programs and events and filter for age-appropriate activities; registration rules vary.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-17",
+  },
+  {
+    id: "richmond-hill-library-teens",
+    name: "Richmond Hill Public Library teens",
+    url: "https://www.rhpl.ca/teen-hub",
+    group: "Events & learning",
+    area: "Richmond Hill",
+    description:
+      "Explore teen library programs, learning resources and participation opportunities.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "toronto-public-library-teens",
+    name: "Toronto Public Library teens",
+    url: "https://tpl.ca/teens/",
+    group: "Events & learning",
+    area: "Toronto",
+    description:
+      "Explore teen library programs, homework support, reading and participation opportunities.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "ontario-universities-fair",
+    name: "Ontario Universities' Fair",
+    url: "https://www.ouevents.ca/",
+    group: "Events & learning",
+    area: "Toronto & online",
+    description:
+      "Find official Ontario university fairs and information sessions and check current event dates.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "vaughan-public-libraries-teens",
+    name: "Vaughan Public Libraries teens",
+    url: "https://www.vaughanpl.info/teens/",
+    group: "Events & learning",
+    area: "Vaughan",
+    description:
+      "Explore teen library programs, resources and participation opportunities.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "whitby-library-teens",
+    name: "Whitby Public Library teens",
+    url: "https://whitbylibrary.ca/teens",
+    group: "Events & learning",
+    area: "Whitby",
+    description:
+      "Explore library programs and resources for teens and check registration requirements.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
+  },
+  {
+    id: "york-small-business",
+    name: "York Small Business Enterprise Centre",
+    url: "https://yorklink.ca/smallbusiness/",
+    group: "Events & learning",
+    area: "York Region",
+    description:
+      "Explore small-business learning and student entrepreneurship support, subject to program eligibility.",
+    reviewStatus: "verified",
+    reviewedOn: "2026-10-16",
   },
 ];

@@ -1,6 +1,7 @@
 import robotsParser from "robots-parser";
 import { XMLParser } from "fast-xml-parser";
-import { serverFetch, boundedText } from "@/lib/security/fetch";
+import { serverFetch, boundedBytes, boundedText } from "@/lib/security/fetch";
+import { createHash } from "node:crypto";
 import {
   listingSchema,
   type SourceConfig,
@@ -8,6 +9,15 @@ import {
   type NormalizedListing,
 } from "../types";
 import { publicUrl } from "../quality";
+import { bramptonListings } from "./brampton";
+import { mcdonaldsJobLinks, mcdonaldsListings } from "./mcdonalds";
+import { skillsOntarioCamps } from "./skills-ontario";
+import { bramptonJobLinks, bramptonJobs } from "./brampton-jobs";
+import { hackClubCommunity } from "./hack-club";
+import { reviewedPageUrls, reviewedPrograms } from "./reviewed-programs";
+import { mississaugaJobs } from "./mississauga-jobs";
+import { ajaxJobLinks, ajaxJobs } from "./ajax-jobs";
+import { richmondJobLinks, richmondJobs } from "./richmond-jobs";
 const agent = "HIREEducationBot";
 function permitted(url: string, source: SourceConfig) {
   const u = new URL(url);
@@ -24,7 +34,8 @@ async function get(url: string, source: SourceConfig, signal: AbortSignal) {
       redirect: "manual",
       headers: {
         "User-Agent": `${agent}/1.0 (student opportunity directory)`,
-        Accept: "application/json,text/calendar,text/html,text/plain",
+        Accept:
+          "application/json,application/xml,text/xml,text/calendar,text/html,text/plain,application/pdf;q=0.9,*/*;q=0.5",
       },
     });
     if ([301, 302, 303, 307, 308].includes(response.status)) {
@@ -38,7 +49,7 @@ async function get(url: string, source: SourceConfig, signal: AbortSignal) {
   }
   throw new Error("Too many source redirects");
 }
-export async function fetchApprovedSource(
+export async function fetchApprovedPage(
   source: SourceConfig,
   signal: AbortSignal,
 ) {
@@ -67,7 +78,64 @@ export async function fetchApprovedSource(
     throw new Error("Source crawl delay requires a slower adapter");
   const response = await get(source.url, source, signal);
   if (!response.ok) throw new Error(`Source returned HTTP ${response.status}`);
+  if (
+    response.headers
+      .get("content-type")
+      ?.toLowerCase()
+      .startsWith("application/pdf")
+  ) {
+    const bytes = await boundedBytes(response);
+    if (bytes.subarray(0, 5).toString("ascii") !== "%PDF-")
+      throw new Error("Source PDF identity could not be checked");
+    // Facts are reviewed from the public document. Any byte change requires a new review.
+    return JSON.stringify({
+      documentType: "pdf",
+      sha256: createHash("sha256").update(bytes).digest("hex"),
+    });
+  }
   return boundedText(response);
+}
+export async function fetchApprovedSource(
+  source: SourceConfig,
+  signal: AbortSignal,
+  fetchPage = fetchApprovedPage,
+) {
+  if (!source.automationApproved)
+    throw new Error("Source permission has not been approved");
+  const body = await fetchPage(source, signal);
+  if (source.adapter === "reviewed-programs") {
+    const pages = [{ url: source.url, body }];
+    for (const url of reviewedPageUrls(source).filter(
+      (url) => url !== source.url,
+    ))
+      pages.push({ url, body: await fetchPage({ ...source, url }, signal) });
+    return JSON.stringify({ pages });
+  }
+  if (
+    source.adapter !== "mcdonalds-jobs" &&
+    source.adapter !== "brampton-careers-sitemap" &&
+    source.adapter !== "ajax-careers-sitemap" &&
+    source.adapter !== "richmond-careers-sitemap"
+  )
+    return body;
+  // A bounded first-page selection, never a complete employer inventory.
+  // Each detail page goes through the same host, redirect and robots checks.
+  const details: { url: string; body: string }[] = [];
+  const links =
+    source.adapter === "mcdonalds-jobs"
+      ? mcdonaldsJobLinks(body)
+      : source.adapter === "ajax-careers-sitemap"
+        ? ajaxJobLinks(body)
+        : source.adapter === "richmond-careers-sitemap"
+          ? richmondJobLinks(body)
+          : bramptonJobLinks(body);
+  for (const url of links) {
+    details.push({
+      url,
+      body: await fetchPage({ ...source, url, adapter: "jsonld" }, signal),
+    });
+  }
+  return JSON.stringify({ search: body, details });
 }
 const text = (value: unknown) =>
   typeof value === "string"
@@ -223,7 +291,23 @@ export function parseSource(body: string, source: SourceConfig): SourceResult {
         : [];
     if (!Array.isArray(parsed) && !Array.isArray(parsed.items))
       throw new Error("Feed format changed");
-  } else if (source.adapter === "ics") raw = icsItems(body, source);
+  } else if (source.adapter === "mcdonalds-jobs") raw = mcdonaldsListings(body);
+  else if (source.adapter === "brampton-careers-sitemap")
+    raw = bramptonJobs(body);
+  else if (source.adapter === "mississauga-careers-rss")
+    raw = mississaugaJobs(body);
+  else if (source.adapter === "ajax-careers-sitemap") raw = ajaxJobs(body);
+  else if (source.adapter === "richmond-careers-sitemap")
+    raw = richmondJobs(body);
+  else if (source.adapter === "hack-club-community")
+    raw = hackClubCommunity(body, source);
+  else if (source.adapter === "reviewed-programs")
+    raw = reviewedPrograms(body, source);
+  else if (source.adapter === "skills-ontario-camps")
+    raw = skillsOntarioCamps(body, source);
+  else if (source.adapter.startsWith("brampton-"))
+    raw = bramptonListings(body, source);
+  else if (source.adapter === "ics") raw = icsItems(body, source);
   else raw = jsonLdItems(body).map((v) => jobFromLd(v, source));
   if (raw.length > 5000) throw new Error("Source item limit exceeded");
   const items: NormalizedListing[] = [];

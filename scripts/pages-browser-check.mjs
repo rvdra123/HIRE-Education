@@ -71,7 +71,7 @@ try {
     .click();
   await page
     .getByRole("heading", {
-      name: "Student opportunities in Brampton",
+      name: "Student opportunities in Peel and the GTA",
       exact: true,
     })
     .waitFor();
@@ -85,7 +85,7 @@ try {
   await page.reload({ waitUntil: "networkidle" });
   await page
     .getByRole("heading", {
-      name: "Student opportunities in Brampton",
+      name: "Student opportunities in Peel and the GTA",
       exact: true,
     })
     .waitFor();

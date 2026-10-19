@@ -20,3 +20,11 @@ export function displayTime(value: string | null) {
       }).format(new Date(value))
     : "Confirm with organizer";
 }
+export function displayDateOnly(value: string, includeYear = false) {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "UTC",
+    month: "short",
+    day: "numeric",
+    ...(includeYear ? { year: "numeric" as const } : {}),
+  }).format(new Date(`${value}T00:00:00Z`));
+}

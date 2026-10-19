@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { torontoBoundary } from "./time";
 import type { NormalizedListing, OpportunityStatus } from "./types";
 export function publicUrl(value: string) {
   try {
@@ -38,7 +39,7 @@ export function fingerprint(item: NormalizedListing) {
         normalize(item.title),
         normalize(item.organization),
         normalize(item.location),
-        item.startDate?.slice(0, 10) || "",
+        item.startDate?.slice(0, 10) || item.startDateOnly || "",
       ].join("|"),
     )
     .digest("hex");
@@ -63,6 +64,7 @@ export function suitableForStudents(item: NormalizedListing) {
   return (
     positive &&
     (item.remote ||
+      item.eligibleCountries?.includes("Canada") ||
       /brampton|peel|mississauga|caledon|toronto|gta|ontario|canada/i.test(
         `${item.location} ${item.city} ${item.province} ${item.country}`,
       ))
@@ -75,7 +77,7 @@ export function qualityNotes(item: NormalizedListing) {
   if (!suitableForStudents(item))
     notes.push("Not suitable for the student catalogue");
   if (
-    /pay.*(apply|application)|guaranteed.*income|send.*(bitcoin|crypto)/i.test(
+    /\bpay\b[^.!?\n]{0,100}\b(?:to apply|(?:an? |the )?application fee)\b|guaranteed.*income|send.*(bitcoin|crypto)/i.test(
       item.description,
     )
   )
@@ -90,17 +92,31 @@ export function statusFor(
   item: NormalizedListing,
   now = new Date(),
 ): OpportunityStatus {
+  // Date-only closing notices remain valid through the published Toronto day.
+  const closingParts = item.applicationClosingDate?.split("-").map(Number);
+  const closingBoundary = closingParts
+    ? Date.parse(
+        torontoBoundary(
+          closingParts[0],
+          closingParts[1] - 1,
+          closingParts[2] + 1,
+        ),
+      )
+    : null;
   if (item.applicationStatus === "closed") return "expired";
+  if (closingBoundary !== null && now.getTime() >= closingBoundary)
+    return "expired";
+  if (item.endDateOnly) {
+    const [year, month, day] = item.endDateOnly.split("-").map(Number);
+    if (now.getTime() >= Date.parse(torontoBoundary(year, month - 1, day + 1)))
+      return "expired";
+  }
   if (
     item.applicationDeadline &&
     Date.parse(item.applicationDeadline) <= now.getTime()
   )
     return "expired";
-  if (
-    item.opportunityType === "event" &&
-    item.endDate &&
-    Date.parse(item.endDate) <= now.getTime()
-  )
+  if (item.endDate && Date.parse(item.endDate) <= now.getTime())
     return "expired";
   if (
     item.opportunityType === "event" &&
@@ -110,6 +126,11 @@ export function statusFor(
   )
     return "expired";
   if (qualityNotes(item).length) return "needs-review";
+  if (
+    closingBoundary !== null &&
+    closingBoundary - now.getTime() <= 7 * 86400000
+  )
+    return "expiring-soon";
   if (
     item.applicationDeadline &&
     Date.parse(item.applicationDeadline) - now.getTime() <= 7 * 86400000
