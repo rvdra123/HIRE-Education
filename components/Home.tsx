@@ -8,6 +8,8 @@ import {
   ChevronRight,
   FileText,
   GraduationCap,
+  MessageSquare,
+  Play,
   Search,
 } from "lucide-react";
 import SiteHeader from "./SiteHeader";
@@ -146,7 +148,8 @@ export default function Home({ staticMode = false }: { staticMode?: boolean }) {
                 {
                   icon: FileText,
                   title: "Prepare an application",
-                  description: "Use the guides or get a resume review.",
+                  description:
+                    "Write your resume and check it before applying.",
                   url: "#resume",
                 },
               ].map(({ icon: Icon, title, description, url }) => (
@@ -163,6 +166,36 @@ export default function Home({ staticMode = false }: { staticMode?: boolean }) {
               ))}
             </aside>
           </div>
+          <nav
+            className="container section-shortcuts"
+            aria-label="Jump to a section"
+          >
+            {[
+              {
+                title: "Opportunities",
+                url: "#opportunities",
+                icon: BriefcaseBusiness,
+              },
+              { title: "Free learning", url: "#certifications", icon: Award },
+              { title: "Resume tools", url: "#resume", icon: FileText },
+              {
+                title: "Interview practice",
+                url: "#interview-practice",
+                icon: MessageSquare,
+              },
+              {
+                title: "YouTube channels",
+                url: "#youtube-resources",
+                icon: Play,
+              },
+            ].map(({ title, url, icon: Icon }) => (
+              <a href={url} key={title}>
+                <Icon size={16} aria-hidden="true" />
+                {title}
+                <ArrowUpRight size={14} aria-hidden="true" />
+              </a>
+            ))}
+          </nav>
         </section>
         <section className="about-section" id="about">
           <div className="container about-concise">
@@ -170,10 +203,10 @@ export default function Home({ staticMode = false }: { staticMode?: boolean }) {
               <h2 className="section-title">About HIRE Education</h2>
             </div>
             <p>
-              HIRE Education helps high school students in Brampton, Peel and
-              the GTA prepare for work and find ways to gain experience. We
-              bring opportunities, learning resources, and application guidance
-              together so it’s easier to work out your next step.
+              Looking for your first job or a place to volunteer? HIRE Education
+              brings local opportunities, free courses, and application help
+              together for high school students across Brampton, Peel, and the
+              GTA. Pick what you need and start there.
             </p>
           </div>
         </section>

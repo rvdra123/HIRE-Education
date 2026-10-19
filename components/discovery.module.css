@@ -1569,11 +1569,15 @@
 }
 
 .learningSearchRow {
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 10px;
 }
 .learningSearchRow .searchInput {
-  flex: 1 1 270px;
+  grid-column: 1 / -1;
+  min-height: 52px;
+  height: 52px;
+  border-radius: 10px;
 }
 .learningCost {
   color: #c5d5e8;
@@ -1584,8 +1588,19 @@
 }
 .learningSearchRow > select,
 .learningSearchRow > select:last-child {
-  flex: 1 1 150px;
-  max-width: 230px;
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  height: 52px;
+  font-size: 12px;
+  border-radius: 10px;
+}
+.learningTabs button {
+  min-height: 44px;
+  border-radius: 8px;
+}
+.searchInput input {
+  font-size: 13px;
 }
 .freeBadge {
   white-space: normal;
@@ -1607,11 +1622,20 @@
     transform: translateY(0);
   }
 }
+@media (max-width: 1000px) {
+  .learningSearchRow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .learningSearchRow .searchInput {
+    grid-column: 1 / -1;
+  }
+}
 @media (max-width: 640px) {
-  .learningSearchRow > select,
-  .learningSearchRow > select:last-child {
-    max-width: none;
-    flex-basis: 130px;
+  .learningSearchRow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .searchInput input {
+    font-size: 16px;
   }
 }
 @media (prefers-reduced-motion: reduce) {

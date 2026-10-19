@@ -297,14 +297,15 @@
 
 .resourceTabs {
   display: flex;
+  flex-wrap: wrap;
   gap: 7px;
   padding: 7px;
   background: #0c192a;
   border: 1px solid #1c2b3f;
   border-radius: 11px;
-  width: fit-content;
+  width: 100%;
   max-width: 100%;
-  overflow-x: auto;
+  overflow: visible;
   scrollbar-width: thin;
 }
 .resourceFilters {
@@ -326,13 +327,13 @@
 .resourceControl select {
   width: 100%;
   min-width: 0;
-  min-height: 44px;
+  min-height: 52px;
   padding: 11px 12px;
   font: inherit;
   color: #e6f0ff;
   background: #0a1828;
   border: 1px solid #334b69;
-  border-radius: 7px;
+  border-radius: 10px;
   color-scheme: dark;
 }
 .resourceControl input::placeholder {
@@ -350,6 +351,9 @@
   gap: 12px;
   margin-top: 22px;
 }
+.mobileResourceTopic {
+  display: none;
+}
 .resourceAudience {
   color: #b8cbe3;
   font-size: 11px;
@@ -357,6 +361,12 @@
   margin-top: 14px;
 }
 @media (max-width: 760px) {
+  .resourceTabs {
+    display: none;
+  }
+  .mobileResourceTopic {
+    display: flex;
+  }
   .resourceFilters {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

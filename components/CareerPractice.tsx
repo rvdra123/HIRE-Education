@@ -188,9 +188,8 @@ export default function CareerPractice() {
                   />
                 </label>
                 <p className="small-note">
-                  Drafts stay only in this page’s memory. They are not sent for
-                  analysis or saved after a reload. Avoid including private
-                  information.
+                  Your answers stay on this page. Leaving or reloading clears
+                  them. Keep private information out of your drafts.
                 </p>
                 <div className="practice-buttons">
                   <button

@@ -245,7 +245,7 @@ export default function Discovery() {
           )}
         </div>
         {filtered.length ? (
-          <div className={styles.certificationGrid}>
+          <div className={styles.certificationGrid} data-stagger>
             {filtered.slice(0, visible).map((c) => (
               <CertificationCard key={c.id} certification={c} />
             ))}

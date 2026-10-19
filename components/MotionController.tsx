@@ -7,6 +7,7 @@ export default function MotionController() {
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
     let frame = 0;
+    let scanFrame = 0;
     const update = () => {
       frame = 0;
       const height = document.documentElement.scrollHeight - window.innerHeight;
@@ -20,6 +21,7 @@ export default function MotionController() {
       if (!frame) frame = requestAnimationFrame(update);
     };
     window.addEventListener("scroll", scroll, { passive: true });
+    window.addEventListener("resize", scroll);
     update();
     const seen = new WeakSet<Element>();
     const observer = new IntersectionObserver(
@@ -36,7 +38,7 @@ export default function MotionController() {
     const scan = () => {
       document
         .querySelectorAll(
-          "main > section > .container, main.feature-page > .page-heading",
+          "main > section > .container, main.feature-page > .page-heading, [data-stagger] > *",
         )
         .forEach((element) => {
           if (seen.has(element)) return;
@@ -47,11 +49,27 @@ export default function MotionController() {
           )
             return;
           element.setAttribute("data-motion", "pending");
+          if (element.parentElement?.hasAttribute("data-stagger")) {
+            const index = Array.from(element.parentElement.children).indexOf(
+              element,
+            );
+            (element as HTMLElement).style.setProperty(
+              "--motion-delay",
+              `${(index % 4) * 55}ms`,
+            );
+          }
           observer.observe(element);
         });
     };
     scan();
-    const mutations = new MutationObserver(scan);
+    const mutations = new MutationObserver(() => {
+      if (!scanFrame)
+        scanFrame = requestAnimationFrame(() => {
+          scanFrame = 0;
+          scan();
+          scroll();
+        });
+    });
     mutations.observe(document.body, { childList: true, subtree: true });
     const motionChanged = () => {
       if (reduced.matches) {
@@ -62,12 +80,27 @@ export default function MotionController() {
       }
     };
     reduced.addEventListener("change", motionChanged);
+    const revealFocused = (event: FocusEvent) => {
+      if (!(event.target instanceof Element)) return;
+      let element: Element | null = event.target;
+      while (element) {
+        if (element.getAttribute("data-motion") === "pending") {
+          element.setAttribute("data-motion", "visible");
+          observer.unobserve(element);
+        }
+        element = element.parentElement;
+      }
+    };
+    document.addEventListener("focusin", revealFocused);
     return () => {
       window.removeEventListener("scroll", scroll);
+      window.removeEventListener("resize", scroll);
       cancelAnimationFrame(frame);
+      cancelAnimationFrame(scanFrame);
       observer.disconnect();
       mutations.disconnect();
       reduced.removeEventListener("change", motionChanged);
+      document.removeEventListener("focusin", revealFocused);
     };
   }, []);
   return (

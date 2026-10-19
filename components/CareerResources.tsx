@@ -28,6 +28,7 @@ import {
 import styles from "./career-resources.module.css";
 import Brand from "./Brand";
 import CareerPractice from "./CareerPractice";
+import YouTubeChannels from "./YouTubeChannels";
 import {
   resources,
   resourceCategories,
@@ -359,8 +360,8 @@ export default function CareerResources() {
                 Skills employers look for
               </h2>
               <p className="section-description">
-                You’re building them in class, in your community, and in
-                everyday life. Learn how to make them count.
+                Find examples from class, clubs, and volunteering that you can
+                use in an application or interview.
               </p>
             </div>
             <span className={styles.headingHint}>
@@ -368,7 +369,7 @@ export default function CareerResources() {
               explore
             </span>
           </div>
-          <div className={styles.skillsGrid}>
+          <div className={styles.skillsGrid} data-stagger>
             {skills.map((skill, index) => (
               <details className={styles.skillCard} key={skill.title}>
                 <summary>
@@ -505,9 +506,9 @@ export default function CareerResources() {
                 Career resource library
               </h2>
               <p className="section-description">
-                {resources.length} source links for school, your first job,
-                money, wellbeing and what comes next. Start with Peel and GTA
-                supports, or explore Canadian and online learning.
+                Find local support, job-search advice, study help, and useful
+                videos. Browse {resources.length} resources or search for what
+                you need.
               </p>
             </div>
             <span className={styles.externalHint}>
@@ -534,6 +535,23 @@ export default function CareerResources() {
               </button>
             ))}
           </div>
+          <label
+            className={`${styles.resourceControl} ${styles.mobileResourceTopic}`}
+          >
+            Browse by topic
+            <select
+              aria-label="Resource topic"
+              value={resourceFilters.category}
+              onChange={(event) =>
+                changeResourceFilter("category", event.target.value)
+              }
+            >
+              <option value="">All topics</option>
+              {resourceCategories.map((category) => (
+                <option key={category}>{category}</option>
+              ))}
+            </select>
+          </label>
           <div id="youtube-resources" className={styles.resourceFilters}>
             <label className={styles.resourceControl}>
               Search resources
@@ -621,7 +639,16 @@ export default function CareerResources() {
               the filters.
             </p>
           )}
-          <div id="resource-results" className={styles.resourceGrid}>
+          {resourceFilters.category === "YouTube learning" &&
+            !resourceFilters.query &&
+            !resourceFilters.region &&
+            !resourceFilters.audience &&
+            !resourceFilters.organization && <YouTubeChannels />}
+          <div
+            id="resource-results"
+            className={styles.resourceGrid}
+            data-stagger
+          >
             {visibleResources.map((resource) => (
               <a
                 className={styles.resourceCard}
@@ -700,8 +727,8 @@ export default function CareerResources() {
               Common questions
             </h2>
             <p className="section-description">
-              Taking your first step comes with questions. Here are a few we
-              hear a lot.
+              Answers about first jobs, student resumes, and volunteer
+              experience.
             </p>
             <span className={styles.faqTag}>
               <GraduationCap size={17} aria-hidden="true" /> Made for your first
@@ -797,6 +824,7 @@ export default function CareerResources() {
               <a href="#resume">Resume & cover letter</a>
               <a href="#skills">Career skills</a>
               <a href="#resources">Resource library</a>
+              <a href="#youtube-resources">YouTube channels</a>
             </div>
             <div className={styles.footerConnect}>
               <h3>Your privacy</h3>

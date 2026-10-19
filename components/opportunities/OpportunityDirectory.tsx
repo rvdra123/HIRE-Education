@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
-import { ArrowUpRight, ChevronDown, Search } from "lucide-react";
+import { useEffect, useId, useMemo, useState } from "react";
+import { ArrowUpRight, ChevronDown, Search, X } from "lucide-react";
 import { opportunityDirectory } from "@/lib/opportunities/directory";
 import {
   directoryAreas,
@@ -16,9 +16,17 @@ export default function OpportunityDirectory({
   events?: boolean;
 }) {
   const [search, setSearch] = useState("");
+  const searchId = useId();
   const [group, setGroup] = useState("All");
   const [area, setArea] = useState("All areas");
   const [visible, setVisible] = useState(compact ? 6 : 12);
+  const active = !!search || group !== "All" || area !== "All areas";
+  const clear = () => {
+    setSearch("");
+    setGroup("All");
+    setArea("All areas");
+    document.getElementById(searchId)?.focus({ preventScroll: true });
+  };
   useEffect(() => setVisible(compact ? 6 : 12), [search, group, area, compact]);
   const entries = useMemo(
     () =>
@@ -59,54 +67,90 @@ export default function OpportunityDirectory({
               : `Explore ${opportunityDirectory.length} employers and programs`}
           </h3>
           <p>
-            Search official career pages, volunteering portals, and student
-            programs. Current vacancies, intake dates, and age requirements must
-            be checked on each organization’s website.
+            Find career pages, volunteer portals, and student programs. Check
+            openings, dates, and age requirements with each organization.
           </p>
         </div>
-        <span className="directory-label">Source directory</span>
+        <span className="directory-label">Official websites</span>
       </div>
       <div className="directory-search-row">
-        <label className="catalogue-search">
-          <Search size={18} />
-          <input
-            aria-label="Search employers and programs"
-            placeholder="Search an employer, interest, or program"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </label>
+        <div className="directory-search-field">
+          <label htmlFor={searchId} className="directory-field-label">
+            Search
+          </label>
+          <span className="directory-input-wrap">
+            <Search size={18} aria-hidden="true" />
+            <input
+              id={searchId}
+              aria-label="Search employers and programs"
+              placeholder="Employer, interest, or program"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            {search && (
+              <button
+                type="button"
+                className="directory-clear-search"
+                aria-label="Clear directory search"
+                onClick={() => {
+                  setSearch("");
+                  document
+                    .getElementById(searchId)
+                    ?.focus({ preventScroll: true });
+                }}
+              >
+                <X size={16} />
+              </button>
+            )}
+          </span>
+        </div>
         {!events && (
+          <label className="directory-filter-field">
+            <span className="directory-field-label">Category</span>
+            <select
+              aria-label="Directory category"
+              value={group}
+              onChange={(e) => setGroup(e.target.value)}
+            >
+              {[
+                "All",
+                "Jobs",
+                "Volunteering",
+                "Programs & competitions",
+                "Events & learning",
+              ].map((g) => (
+                <option key={g} value={g}>
+                  {g === "All" ? "All categories" : g}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
+        <label className="directory-filter-field">
+          <span className="directory-field-label">Location</span>
           <select
-            aria-label="Directory category"
-            value={group}
-            onChange={(e) => setGroup(e.target.value)}
+            aria-label="Directory area"
+            value={area}
+            onChange={(e) => setArea(e.target.value)}
           >
-            {[
-              "All",
-              "Jobs",
-              "Volunteering",
-              "Programs & competitions",
-              "Events & learning",
-            ].map((g) => (
-              <option key={g}>{g}</option>
+            {directoryAreas.map((a) => (
+              <option key={a}>{a}</option>
             ))}
           </select>
-        )}
-        <select
-          aria-label="Directory area"
-          value={area}
-          onChange={(e) => setArea(e.target.value)}
-        >
-          {directoryAreas.map((a) => (
-            <option key={a}>{a}</option>
-          ))}
-        </select>
+        </label>
       </div>
-      <p className="directory-count" role="status">
-        {entries.length} sources · showing {Math.min(entries.length, visible)}
-      </p>
-      <div className="directory-grid">
+      <div className="directory-results-bar">
+        <p className="directory-count" role="status">
+          {entries.length} {entries.length === 1 ? "website" : "websites"} ·
+          showing {Math.min(entries.length, visible)}
+        </p>
+        {active && (
+          <button className="directory-reset" onClick={clear}>
+            Clear filters <X size={13} aria-hidden="true" />
+          </button>
+        )}
+      </div>
+      <div className="directory-grid" data-stagger>
         {entries.slice(0, visible).map((entry, index) => (
           <article
             className="directory-card"
@@ -134,14 +178,7 @@ export default function OpportunityDirectory({
         <div className="catalogue-empty">
           <h4>No sources match your search</h4>
           <p>Try a broader interest or another area.</p>
-          <button
-            className="btn btn-outline"
-            onClick={() => {
-              setSearch("");
-              setGroup("All");
-              setArea("All areas");
-            }}
-          >
+          <button className="btn btn-outline" onClick={clear}>
             Clear directory filters
           </button>
         </div>
