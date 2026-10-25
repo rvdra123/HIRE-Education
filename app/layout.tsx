@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import "@fontsource-variable/manrope";
 import "./globals.css";
 import PrivacyControls from "@/components/privacy/PrivacyControls";
@@ -53,6 +54,7 @@ export default function RootLayout({
         {children}
         <MotionController />
         <PrivacyControls />
+        <Analytics />
       </body>
     </html>
   );
