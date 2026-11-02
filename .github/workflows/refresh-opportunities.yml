@@ -12,7 +12,9 @@ on:
       - "scripts/run-sync.mjs"
       - ".github/workflows/refresh-opportunities.yml"
   schedule:
-    - cron: "17 */6 * * *"
+    # Check hourly; each source is collected at most once per six-hour interval.
+    # This also retries failed imports and avoids a delayed run skipping 12 hours.
+    - cron: "17 * * * *"
   workflow_dispatch:
 permissions:
   contents: read
@@ -32,7 +34,7 @@ jobs:
           node-version: "24"
       - name: Run protected refresh
         env:
-          NEXT_PUBLIC_SITE_URL: ${{ vars.HIRE_SITE_URL || 'https://hire-education.vercel.app' }}
+          NEXT_PUBLIC_SITE_URL: ${{ vars.HIRE_SITE_URL || 'https://hire-edu.vercel.app' }}
           CRON_SECRET: ${{ secrets.HIRE_CRON_SECRET }}
           EXPECTED_DEPLOYMENT_SHA: ${{ github.event_name == 'push' && github.sha || '' }}
         run: |
