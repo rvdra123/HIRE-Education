@@ -12,7 +12,9 @@ export async function GET(request: Request) {
       { status: 401, headers: privateHeaders },
     );
   try {
-    const result = await synchronize();
+    const result = await synchronize({
+      force: new URL(request.url).searchParams.get("force") === "true",
+    });
     await cleanupFiles();
     return NextResponse.json(result, { headers: privateHeaders });
   } catch {

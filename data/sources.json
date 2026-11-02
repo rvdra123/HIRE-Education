@@ -346,8 +346,8 @@
     "adapter": "reviewed-programs",
     "intervalHours": 6,
     "automationApproved": true,
-    "enabledByDefault": true,
-    "approvalNote": "Reviewed 2026-10-16: public primary-source pages and robots reviewed; paths allow bounded collection. Original factual summary with attribution; no accounts, submissions or contact/profile records collected. Current role explicitly invites applications and publishes responsibilities, qualifications and linked intake. General volunteer page confirms independent age14; details disclose role-specific18+ exceptions. Privacy statement linked; no separate automation restriction found. Better Impact application page is linked, not collected.",
+    "enabledByDefault": false,
+    "approvalNote": "Retired from default collection 2026-11-02: the reviewed ReclaimFRESH role URL returns HTTP 404 and the current official volunteer directory no longer advertises that intake. Existing reviewed facts remain archived; do not re-enable until a real current role and its age/eligibility are verified. Separate 18+ tax-clinic roles are not replacements for the former youth intake. Reviewed 2026-10-16: public primary-source pages and robots reviewed; paths allow bounded collection. Original factual summary with attribution; no accounts, submissions or contact/profile records collected. Current role explicitly invites applications and publishes responsibilities, qualifications and linked intake. General volunteer page confirms independent age14; details disclose role-specific18+ exceptions. Privacy statement linked; no separate automation restriction found. Better Impact application page is linked, not collected.",
     "completeFeed": false,
     "allowedHosts": ["www.foodbanksmississauga.ca", "app.betterimpact.com"]
   },
@@ -393,7 +393,7 @@
     "intervalHours": 6,
     "automationApproved": true,
     "enabledByDefault": true,
-    "approvalNote": "Reviewed 2026-10-17: public primary-source pages and robots reviewed; paths allow bounded collection. Original factual summary with attribution; no accounts, submissions or private contact/profile records collected. Counts one consolidated volunteer program, not separate branches. Three specific limited-application notices are required; branches explicitly closed are excluded. Official volunteer and policy pages reviewed; generic robots permits this program path. No numerical minimum age or free course credential inferred.",
+    "approvalNote": "Rechecked 2026-11-02: public primary-source page and robots fetched successfully. Barbara Frum still explicitly accepts limited Monday 6:45 pm and Wednesday 5:30 pm applications; York Woods still explicitly accepts the 6:45 pm session. Mount Dennis now explicitly does not accept applications and has been removed from the summary. Both remaining specific open notices remain required. Reviewed 2026-10-17: public primary-source pages and robots reviewed; paths allow bounded collection. Original factual summary with attribution; no accounts, submissions or private contact/profile records collected. Counts one consolidated volunteer program, not separate branches. Official volunteer and policy pages reviewed; generic robots permits this program path. No numerical minimum age or free course credential inferred.",
     "completeFeed": false,
     "allowedHosts": ["tpl.ca", "www.torontopubliclibrary.ca"]
   },
@@ -435,7 +435,7 @@
     "intervalHours": 6,
     "automationApproved": true,
     "enabledByDefault": true,
-    "approvalNote": "Reviewed 2026-10-17: public primary-source pages and robots reviewed; paths allow bounded collection. Original factual summary with attribution; no accounts, submissions or private contact/profile records collected. Official City page /our-organization/jobs-and-volunteer/volunteer/ links this portal. Reviewed current Youth Volunteers search and six distinct public position pages; each must remain listed with its exact gviGuid and an Apply control. Generic robots permits public enterprise paths; /Application/ paths are disallowed and NEVER collected. Application action leads to allowed public detail with the official apply link. City copyright terms reviewed: original factual summaries only. Parade closing date is explicitly2026; inconsistent training weekday labels are disclosed, and no event date is invented. Two undated Halloween records held pending year corroboration. Seven evidence URLs total.",
+    "approvalNote": "Rechecked 2026-11-02: Cooksville Teen Advisory Group gviGuid b3994048-df3d-47ec-a6ff-21b26d5a73db is absent from the official current search and its public detail returns HTTP404; only that withdrawn definition has been retired. The other five reviewed positions remain listed, their public details return HTTP200, and their facts and Apply controls still match. Six evidence URLs total. Reviewed 2026-10-17: public primary-source pages and robots reviewed; paths allow bounded collection. Original factual summary with attribution; no accounts, submissions or private contact/profile records collected. Official City page /our-organization/jobs-and-volunteer/volunteer/ links this portal. Each retained position must remain listed with its exact gviGuid and an Apply control. Generic robots permits public enterprise paths; /Application/ paths are disallowed and NEVER collected. Application action leads to allowed public detail with the official apply link. City copyright terms reviewed: original factual summaries only. Parade closing date is explicitly2026; inconsistent training weekday labels are disclosed, and no event date is invented. Two undated Halloween records held pending year corroboration.",
     "completeFeed": false,
     "allowedHosts": ["app.betterimpact.com", "www.mississauga.ca"],
     "collectionTimeoutSeconds": 75
@@ -463,10 +463,10 @@
     "adapter": "reviewed-programs",
     "intervalHours": 6,
     "automationApproved": true,
-    "enabledByDefault": true,
+    "enabledByDefault": false,
     "completeFeed": false,
     "allowedHosts": ["www.ajaxlibrary.ca"],
-    "approvalNote": "Reviewed 2026-10-17: official public jobs page explicitly advertises three existing permanent part-time Page vacancies and an October 23, 2026 5 p.m. deadline. Linked public PDF reviewed in full; a bounded SHA-256 check requires that exact reviewed document, alongside current HTML intake and link evidence. Any document edit fails for new review. Public robots and linked policies checked; no application or contact message submitted, no personal information collected. Original factual summary only. Grade 10 is preferred, no minimum age is inferred. Published under-18 and over-18 wages omit exactly-age-18 wording, so the ambiguity is disclosed."
+    "approvalNote": "Retired from default collection 2026-11-02: the reviewed Page vacancies closed October 23, 2026 and the official jobs page no longer contains that advertised intake. Retain the reviewed record and PDF evidence for history, not as an active vacancy. Any new posting requires a fresh factual and document review before re-enabling. Reviewed 2026-10-17: official public jobs page explicitly advertises three existing permanent part-time Page vacancies and an October 23, 2026 5 p.m. deadline. Linked public PDF reviewed in full; a bounded SHA-256 check requires that exact reviewed document, alongside current HTML intake and link evidence. Any document edit fails for new review. Public robots and linked policies checked; no application or contact message submitted, no personal information collected. Original factual summary only. Grade 10 is preferred, no minimum age is inferred. Published under-18 and over-18 wages omit exactly-age-18 wording, so the ambiguity is disclosed."
   },
   {
     "id": "second-harvest-student-volunteers",

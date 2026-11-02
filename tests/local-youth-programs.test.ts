@@ -38,14 +38,48 @@ const envelope = (pages: Record<string, string>, id: string) =>
       body: pages[url],
     })),
   });
+
+test("current library intake excludes the withdrawn Mount Dennis branch and still verifies both open branches", async () => {
+  const source = config("toronto-library-literacy-volunteers");
+  const body = await readFile(
+    new URL(
+      "./fixtures/feeds/tpl-leading-to-reading-current.html",
+      import.meta.url,
+    ),
+    "utf8",
+  );
+  const parse = (html: string) =>
+    parseSource(envelope({ [source.url]: html }, source.id), source);
+  const result = parse(body);
+  assert.equal(result.items.length, 1);
+  const item = result.items[0];
+  assert.equal(item.applicationStatus, "open");
+  assert.match(item.description, /Barbara Frum and York Woods/);
+  assert.doesNotMatch(item.description, /Mount Dennis/);
+  assert.deepEqual(qualityNotes(item), []);
+  for (const notice of [
+    "This location is currently only accepting limited applications for Monday at 6:45 pm and Wednesday at 5:30 pm sessions.",
+    "This location is currently only accepting limited applications for the 6:45 pm session.",
+  ]) {
+    assert.ok(body.includes(notice));
+    assert.throws(
+      () =>
+        parse(
+          body.replace(notice, "This branch is not accepting applications."),
+        ),
+      /facts or intake changed/,
+      "A changed remaining intake still requires new review",
+    );
+  }
+});
 const allItems = (pages: Record<string, string>) =>
   sourceIds.flatMap((id) => parseSource(envelope(pages, id), config(id)).items);
 
-test("current local evidence produces fifteen distinct student intakes with honest eligibility and fees", async () => {
+test("current local evidence produces fourteen distinct student intakes with honest eligibility and fees", async () => {
   const { pages } = await fixture();
   const items = allItems(pages);
-  assert.equal(items.length, 15);
-  assert.equal(new Set(items.map((item) => item.title)).size, 15);
+  assert.equal(items.length, 14);
+  assert.equal(new Set(items.map((item) => item.title)).size, 14);
   for (const item of items) {
     assert.deepEqual(qualityNotes(item), [], item.title);
     assert.equal(item.applicationStatus, "open");
@@ -62,7 +96,7 @@ test("current local evidence produces fifteen distinct student intakes with hone
   }
   assert.equal(
     items.filter((item) => item.opportunityType === "volunteer").length,
-    11,
+    10,
   );
   assert.equal(
     items.filter((item) => item.opportunityType === "leadership").length,
@@ -178,7 +212,7 @@ test("closed intake text, changed membership fees and removed public application
   }
   const id = "mississauga-current-youth-volunteers";
   const url = reviewedPageUrls(config(id)).find((value) =>
-    value.includes("gviGuid=b3994048"),
+    value.includes("gviGuid=ca9b35ca"),
   )!;
   const changed = pages[url].replaceAll(
     "/Application/LoggedInApplicationRedirect",
@@ -196,7 +230,7 @@ test("closed intake text, changed membership fees and removed public application
           {
             ...pages,
             [search]: pages[search].replaceAll(
-              "gviGuid=b3994048-df3d-47ec-a6ff-21b26d5a73db",
+              "gviGuid=ca9b35ca-bfdd-45fa-8761-1c35f8a0e23e",
               "gviGuid=removed-position",
             ),
           },
@@ -223,9 +257,15 @@ test("bounded public collection preserves complete evidence and never visits app
       return pages[page.url];
     },
   );
-  assert.equal(calls.length, 7);
-  assert.equal(new Set(calls).size, 7);
-  assert.equal(parseSource(body, source).items.length, 6);
+  assert.equal(calls.length, 6);
+  assert.equal(new Set(calls).size, 6);
+  assert.ok(
+    calls.every((url) => !url.includes("b3994048-df3d-47ec-a6ff-21b26d5a73db")),
+    "The retired Cooksville role is no longer fetched even if a historical fixture contains it",
+  );
+  const items = parseSource(body, source).items;
+  assert.equal(items.length, 5);
+  assert.ok(items.every((item) => !item.title.includes("Cooksville")));
   const incomplete = JSON.parse(body);
   incomplete.pages.pop();
   assert.throws(

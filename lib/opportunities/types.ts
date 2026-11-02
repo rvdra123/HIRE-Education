@@ -124,6 +124,9 @@ export type SourceResult = {
   items: NormalizedListing[];
   complete: boolean;
   rejected: number;
+  // An adapter recognized a valid inventory with no matching student listings.
+  // This does not make a bounded selection a complete employer inventory.
+  emptyConfirmed?: boolean;
 };
 export type SourceHealth = {
   source: string;

@@ -83,14 +83,14 @@ async function main() {
     throw new Error("The production catalogue database is unavailable.");
   if (!before.sources?.enabled)
     throw new Error("The production catalogue has no enabled sources.");
-  const response = await fetch(
-    new URL("/api/cron/update-opportunities", origin),
-    {
-      redirect: "error",
-      headers: { Authorization: `Bearer ${secret}` },
-      signal: AbortSignal.timeout(300000),
-    },
-  );
+  const refreshUrl = new URL("/api/cron/update-opportunities", origin);
+  if (process.env.FORCE_REFRESH === "true")
+    refreshUrl.searchParams.set("force", "true");
+  const response = await fetch(refreshUrl, {
+    redirect: "error",
+    headers: { Authorization: `Bearer ${secret}` },
+    signal: AbortSignal.timeout(300000),
+  });
   if (!response.ok) throw new Error(`Refresh returned ${response.status}`);
   const result = await response.json();
   validateRefresh(result);

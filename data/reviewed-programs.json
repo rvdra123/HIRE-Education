@@ -737,7 +737,7 @@
     "listing": {
       "title": "Toronto Public Library — Leading to Reading teen volunteers",
       "organization": "Toronto Public Library",
-      "description": "Help children in grades 1–6 develop reading and writing skills in a supervised one-hour weekly library session. The official page currently confirms limited volunteer applications at Barbara Frum, Mount Dennis and York Woods, for specified session times. Other branches have different availability, and many are closed to applications. Submit the application form in person or through the official email on the page; interviews take place as openings arise.",
+      "description": "Help children in grades 1–6 develop reading and writing skills in a supervised one-hour weekly library session. The official page currently confirms limited volunteer applications at Barbara Frum and York Woods, for specified session times. Other branches have different availability, and many are closed to applications. Submit the application form in person or through the official email on the page; interviews take place as openings arise.",
       "opportunityType": "volunteer",
       "category": "Education",
       "location": "Selected Toronto Public Library branches, Toronto, Ontario",
@@ -759,10 +759,8 @@
           "one hour weekly scheduled session",
           "hours qualify towards the 40 hours of community service graduation requirement",
           "Barbara Frum",
-          "Mount Dennis",
           "York Woods",
           "This location is currently only accepting limited applications for Monday at 6:45 pm and Wednesday at 5:30 pm sessions.",
-          "This location is currently only accepting limited applications for 9:30 am, 10:30 am and 2:15 pm sessions.",
           "This location is currently only accepting limited applications for the 6:45 pm session.",
           "Please fill out an application form and submit it in person at a branch or email it",
           "four to six weeks"
@@ -902,48 +900,6 @@
           "please email your resume and cover letter",
           "Subject: Volunteer Opportunity + (the area)",
           "criminal reference check (vulnerable sector)"
-        ]
-      }
-    ]
-  },
-  {
-    "id": "mississauga-cooksville-tag",
-    "sourceId": "mississauga-current-youth-volunteers",
-    "listing": {
-      "title": "Cooksville Library — Teen Advisory Group volunteer",
-      "organization": "City of Mississauga",
-      "description": "Current Cooksville Library Teen Advisory Group intake. Meet other high-school students, advise library staff on teen needs, and help plan and organize teen programs and community initiatives. The City’s official volunteer portal currently lists the group as recruiting and provides an Apply to Volunteer control. Placement is subject to the City’s volunteer screening and available spaces.",
-      "opportunityType": "volunteer",
-      "category": "Community",
-      "location": "Cooksville Library, 3024 Hurontario Street, Mississauga, Ontario",
-      "sourceUrl": "https://app.betterimpact.com/PublicEnterprise/EnterpriseGvi?enterpriseGuid=e3200288-2b64-4ed8-a26d-5bd0f4c5170b&gviGuid=b3994048-df3d-47ec-a6ff-21b26d5a73db",
-      "applicationUrl": "https://app.betterimpact.com/PublicEnterprise/EnterpriseGvi?enterpriseGuid=e3200288-2b64-4ed8-a26d-5bd0f4c5170b&gviGuid=b3994048-df3d-47ec-a6ff-21b26d5a73db",
-      "eligibility": "High-school students aged 14+. Review the detailed position description and City screening requirements on the official page. Schedule and ongoing commitment are not stated in the summary.",
-      "city": "Mississauga",
-      "paid": "volunteer",
-      "compensation": "Unpaid volunteering",
-      "minimumAge": 14,
-      "eligibleGrades": [9, 10, 11, 12],
-      "commitment": "ongoing"
-    },
-    "evidence": [
-      {
-        "kind": "html",
-        "url": "https://app.betterimpact.com/PublicEnterprise/EnterpriseGvi?enterpriseGuid=e3200288-2b64-4ed8-a26d-5bd0f4c5170b&gviGuid=b3994048-df3d-47ec-a6ff-21b26d5a73db",
-        "text": [
-          "Join the Teen Advisory Group",
-          "High school students’ ages 14+",
-          "Cooksville Library: 3024 Hurontario St #212",
-          "Apply to Volunteer"
-        ],
-        "selectors": ["a[href*=\"/Application/LoggedInApplicationRedirect\"]"]
-      },
-      {
-        "kind": "html",
-        "url": "https://app.betterimpact.com/PublicEnterprise/EnterpriseSearch?EnterpriseGuid=e3200288-2b64-4ed8-a26d-5bd0f4c5170b&SearchType=SuitabilityClassification&SearchId=3273",
-        "text": ["Search Results"],
-        "selectors": [
-          "a[href*=\"gviGuid=b3994048-df3d-47ec-a6ff-21b26d5a73db\"]"
         ]
       }
     ]

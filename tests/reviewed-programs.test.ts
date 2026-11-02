@@ -196,15 +196,40 @@ test("Hack Club activity status and date-only schedules are not repurposed as ap
     "expired",
   );
   const feed = JSON.parse(pages[url]);
-  feed.data[0].status = "ended";
-  assert.throws(
-    () =>
-      parseSource(
-        envelope({ ...pages, [url]: JSON.stringify(feed) }, source.id),
-        source,
-      ),
-    /status or schedule changed/,
+  const dyad = feed.data.find(
+    (program: { slug: string }) => program.slug === "dyad",
   );
+  dyad.status = "ended";
+  const afterClosure = parseSource(
+    envelope({ ...pages, [url]: JSON.stringify(feed) }, source.id),
+    source,
+  ).items;
+  assert.equal(afterClosure.length, 2);
+  assert.equal(afterClosure[0].applicationStatus, "closed");
+  assert.equal(statusFor(afterClosure[0]), "expired");
+  assert.equal(
+    afterClosure[1].applicationStatus,
+    "open",
+    "An ended program must not block its still-open sibling",
+  );
+  for (const change of [
+    { status: "unknown" },
+    { status: "ended", endDate: "2027-11-01" },
+    { status: "ended", url: "https://example.org/unrelated" },
+    { status: "ended", format: "in-person" },
+  ]) {
+    const original = { ...dyad };
+    Object.assign(dyad, change);
+    assert.throws(
+      () =>
+        parseSource(
+          envelope({ ...pages, [url]: JSON.stringify(feed) }, source.id),
+          source,
+        ),
+      /status or schedule changed/,
+    );
+    Object.assign(dyad, original);
+  }
 });
 
 test("reviewed collection requests only configured public evidence pages and aborts a failed secondary check", async () => {

@@ -182,14 +182,16 @@ export function bramptonListings(
       .toArray()
       .map((el) => clean($(el).text()))
       .join(" ");
-    const link =
-      section
-        .find("a")
-        .filter((_, el) => clean($(el).text()) === "Apply online")
-        .attr("href") || "";
+    const apply = section
+      .find("a")
+      .filter((_, el) => clean($(el).text()) === "Apply online");
+    const link = apply.attr("href") || "";
     if (
       title !== "Program Assistant" ||
-      !/^https:\/\/form\.jotform\.com\/\d+$/.test(link)
+      !description.includes(
+        "Program Assistants support Library staff with programs and activities for children, teens, and families.",
+      ) ||
+      (apply.length > 0 && !/^https:\/\/form\.jotform\.com\/\d+$/.test(link))
     )
       throw new Error("Library youth volunteer application changed");
     return [
@@ -205,8 +207,9 @@ export function bramptonListings(
         eligibility:
           "Youth Volunteer Opportunities; check eligibility with Brampton Library.",
         sourceUrl: source.url,
-        applicationUrl: link,
+        applicationUrl: link || source.url,
         applicationStatus:
+          !!link &&
           /please complete|apply online/i.test(description) &&
           !/closed|not accepting/i.test(description)
             ? "open"

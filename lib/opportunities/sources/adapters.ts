@@ -320,7 +320,17 @@ export function parseSource(body: string, source: SourceConfig): SourceResult {
     if (result.success) items.push(result.data);
     else rejected++;
   }
-  return { items, complete: source.completeFeed && rejected === 0, rejected };
+  return {
+    items,
+    complete: source.completeFeed && rejected === 0,
+    rejected,
+    // bramptonJobs validates the sitemap and exact detail selection before
+    // returning. A valid sitemap containing only unrelated jobs is a successful
+    // check with zero matches, rather than a broken collector.
+    ...(source.adapter === "brampton-careers-sitemap" && raw.length === 0
+      ? { emptyConfirmed: true }
+      : {}),
+  };
 }
 // XML feeds can be transformed by an approved source-specific adapter without rendering HTML.
 export const xmlParser = new XMLParser({

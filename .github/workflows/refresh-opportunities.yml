@@ -16,6 +16,11 @@ on:
     # This also retries failed imports and avoids a delayed run skipping 12 hours.
     - cron: "17 * * * *"
   workflow_dispatch:
+    inputs:
+      force:
+        description: Recheck sources now, bypassing collection intervals
+        type: boolean
+        default: false
 permissions:
   contents: read
 concurrency:
@@ -37,6 +42,7 @@ jobs:
           NEXT_PUBLIC_SITE_URL: ${{ vars.HIRE_SITE_URL || 'https://hire-edu.vercel.app' }}
           CRON_SECRET: ${{ secrets.HIRE_CRON_SECRET }}
           EXPECTED_DEPLOYMENT_SHA: ${{ github.event_name == 'push' && github.sha || '' }}
+          FORCE_REFRESH: ${{ github.event_name == 'workflow_dispatch' && inputs.force && 'true' || 'false' }}
         run: |
           if [ -z "$CRON_SECRET" ]; then
             echo "::error::Set HIRE_CRON_SECRET in repository secrets to match the Vercel project's CRON_SECRET. No refresh was attempted."

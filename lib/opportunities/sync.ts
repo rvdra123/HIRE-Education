@@ -91,6 +91,7 @@ export async function synchronize({
         const parsed = parseSource(body, source);
         if (
           !parsed.items.length &&
+          !parsed.emptyConfirmed &&
           !(
             parsed.complete &&
             (source.adapter === "json" || body.includes("BEGIN:VCALENDAR"))

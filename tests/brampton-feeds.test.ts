@@ -1,6 +1,10 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { closeDatabase } from "../lib/opportunities/db";
+import { getOpportunity, saveOpportunity } from "../lib/opportunities/store";
 import { parseSource } from "../lib/opportunities/sources/adapters";
 import { sources, enabledSources } from "../lib/opportunities/sources/registry";
 import { torontoDateTime } from "../lib/opportunities/time";
@@ -75,6 +79,63 @@ test("only the explicitly offered youth library role is imported, without guesse
     config,
   );
   assert.equal(closed.items[0].applicationStatus, "unknown");
+});
+
+test("a removed library application link withdraws publication without inventing a closed status", async () => {
+  const config = source("brampton-library-volunteer");
+  const body = await fixture("library-volunteer");
+  // The current official section retains just this known role and description.
+  const withdrawnBody = `<h2>Youth Volunteer Opportunities</h2><h3>Program Assistant</h3>
+    <p>Program Assistants support Library staff with programs and activities for children, teens, and families.</p>
+    <h2>Adult Volunteer Opportunities</h2>`;
+  const withdrawn = parseSource(withdrawnBody, config).items[0];
+  assert.equal(withdrawn.title, "Program Assistant");
+  assert.equal(withdrawn.applicationStatus, "unknown");
+  assert.equal(withdrawn.applicationUrl, config.url);
+  for (const link of ["https://example.org/apply", "javascript:alert(1)", ""]) {
+    assert.throws(
+      () =>
+        parseSource(
+          body.replaceAll("https://form.jotform.com/261055879728067", link),
+          config,
+        ),
+      /application changed/,
+    );
+  }
+  assert.throws(
+    () =>
+      parseSource(
+        withdrawnBody.replace("Program Assistant</h3>", "New role</h3>"),
+        config,
+      ),
+    /application changed/,
+  );
+  const directory = await mkdtemp(join(tmpdir(), "hire-library-withdrawal-"));
+  const previousDatabase = process.env.DATABASE_URL;
+  process.env.DATABASE_URL = `file:${join(directory, "catalogue.db")}`;
+  try {
+    const now = new Date();
+    const open = await saveOpportunity(
+      parseSource(body, config).items[0],
+      config,
+      now,
+    );
+    assert.ok(await getOpportunity(open.record.id));
+    const hidden = await saveOpportunity(withdrawn, config, now);
+    assert.equal(
+      hidden.record.id,
+      open.record.id,
+      "Withdrawal updates the existing role",
+    );
+    assert.equal(hidden.record.verified, false);
+    assert.equal(hidden.record.status, "needs-review");
+    assert.equal(await getOpportunity(open.record.id), null);
+  } finally {
+    await closeDatabase();
+    if (previousDatabase === undefined) delete process.env.DATABASE_URL;
+    else process.env.DATABASE_URL = previousDatabase;
+    await rm(directory, { recursive: true, force: true });
+  }
 });
 
 test("the city open intake is one opportunity and its yearless deadline is never manufactured", async () => {
@@ -195,14 +256,12 @@ test("only verified adapters default on, explicit source selection/disable is re
       "hack-club-leadership",
       "hack-club-project-programs",
       "mississauga-careers",
-      "food-banks-mississauga-youth",
       "canadian-cadets-registration",
       "toronto-library-literacy-volunteers",
       "toronto-ltc-youth-volunteers",
       "bgc-peel-youth-intakes",
       "mississauga-current-youth-volunteers",
       "ajax-careers",
-      "ajax-library-paid-pages",
       "second-harvest-student-volunteers",
       "toronto-youth-cabinet-working-groups",
       "richmond-hill-youth-jobs",

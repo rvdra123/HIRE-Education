@@ -93,6 +93,7 @@ export function reviewedPrograms(
   return records
     .filter((record) => record.sourceId === source.id)
     .map((record) => {
+      let applicationStatus: "open" | "closed" = "open";
       for (const check of record.evidence) {
         const html = pages.get(check.url)!;
         if (check.kind === "pdf-sha256") {
@@ -172,7 +173,7 @@ export function reviewedPrograms(
           if (
             !program ||
             !program.url ||
-            program.status !== "ongoing" ||
+            !["ongoing", "ended"].includes(program.status) ||
             program.format !== "online" ||
             linkIdentity(program.url, check.url) !==
               linkIdentity(check.programUrl, check.url) ||
@@ -180,6 +181,9 @@ export function reviewedPrograms(
             program.endDate !== check.end
           )
             throw new Error("Hack Club program status or schedule changed");
+          // Explicit closure is valid source evidence, not a collection failure.
+          // Keep checking the reviewed identity and facts before saving history.
+          if (program.status === "ended") applicationStatus = "closed";
         } else {
           const $ = load(html);
           $("script,style,noscript").remove();
@@ -219,6 +223,6 @@ export function reviewedPrograms(
         if (!source.allowedHosts.includes(new URL(url).hostname))
           throw new Error("Program listing host is not approved");
       // Curated factual summaries are published only while every live evidence check passes.
-      return { ...record.listing, applicationStatus: "open" };
+      return { ...record.listing, applicationStatus };
     });
 }

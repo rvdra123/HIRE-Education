@@ -13,7 +13,7 @@ test("verified real sources default on without blaming a working database", () =
   assert.equal(report.database.querySucceeded, true);
   assert.equal(report.sources.candidates, 36);
   assert.equal(report.sources.approved, 31);
-  assert.equal(report.sources.enabled, 31);
+  assert.equal(report.sources.enabled, 29);
   assert.equal(report.refresh.lastSuccessfulSync, null);
   assert.ok(report.nextSteps.some((step) => step.includes("CRON_SECRET")));
 });
