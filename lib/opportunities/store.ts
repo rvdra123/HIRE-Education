@@ -10,13 +10,51 @@ import type {
   SourceHealth,
 } from "./types";
 const decode = (data: unknown) => JSON.parse(String(data)) as Opportunity;
-export async function getOpportunity(id: string, includeHidden = false) {
+// Keep public reads accurate even when the scheduled importer is delayed. Apply
+// these conditions before counting/pagination, without writing on each request.
+function publicVisibility(now: Date) {
+  const parts = Object.fromEntries(
+    new Intl.DateTimeFormat("en-CA", {
+      timeZone: "America/Toronto",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    })
+      .formatToParts(now)
+      .map((part) => [part.type, part.value]),
+  );
+  const today = `${parts.year}-${parts.month}-${parts.day}`;
+  const stamp = now.toISOString();
+  return {
+    where: [
+      "status IN ('active','expiring-soon')",
+      "last_verified_at >= ?",
+      "(json_extract(data,'$.applicationDeadline') IS NULL OR julianday(json_extract(data,'$.applicationDeadline')) > julianday(?))",
+      "(json_extract(data,'$.endDate') IS NULL OR julianday(json_extract(data,'$.endDate')) > julianday(?))",
+      "(type <> 'event' OR json_extract(data,'$.endDate') IS NOT NULL OR json_extract(data,'$.startDate') IS NULL OR julianday(json_extract(data,'$.startDate')) > julianday(?))",
+      "(json_extract(data,'$.applicationClosingDate') IS NULL OR json_extract(data,'$.applicationClosingDate') >= ?)",
+      "(json_extract(data,'$.endDateOnly') IS NULL OR json_extract(data,'$.endDateOnly') >= ?)",
+    ],
+    args: [
+      new Date(now.getTime() - 72 * 3600000).toISOString(),
+      stamp,
+      stamp,
+      stamp,
+      today,
+      today,
+    ],
+  };
+}
+export async function getOpportunity(
+  id: string,
+  includeHidden = false,
+  now = new Date(),
+) {
   await initDatabase();
+  const visibility = publicVisibility(now);
   const result = await database().execute({
-    sql: `SELECT data FROM opportunities WHERE id=? ${includeHidden ? "" : "AND status IN ('active','expiring-soon') AND last_verified_at >= ?"}`,
-    args: includeHidden
-      ? [id]
-      : [id, new Date(Date.now() - 72 * 3600000).toISOString()],
+    sql: `SELECT data FROM opportunities WHERE id=? ${includeHidden ? "" : `AND ${visibility.where.join(" AND ")}`}`,
+    args: includeHidden ? [id] : [id, ...visibility.args],
   });
   return result.rows[0] ? decode(result.rows[0].data) : null;
 }
@@ -194,16 +232,18 @@ export type CatalogQuery = {
   until?: string;
   ids?: string[];
 };
-export async function queryCatalog(q: CatalogQuery = {}, events = false) {
+export async function queryCatalog(
+  q: CatalogQuery = {},
+  events = false,
+  now = new Date(),
+) {
   await initDatabase();
+  const visibility = publicVisibility(now);
   const where = [
-    "status IN ('active','expiring-soon')",
-    "last_verified_at >= ?",
+    ...visibility.where,
     events ? "type='event'" : "type<>'event'",
   ];
-  const args: (string | number)[] = [
-    new Date(Date.now() - 72 * 3600000).toISOString(),
-  ];
+  const args: (string | number)[] = [...visibility.args];
   const add = (sql: string, value: string) => {
     where.push(sql);
     args.push(value);
@@ -250,7 +290,7 @@ export async function queryCatalog(q: CatalogQuery = {}, events = false) {
   if (q.commitment) add("commitment=?", q.commitment);
   if (q.paid) add("paid=?", q.paid);
   if (q.view === "new")
-    add("first_seen_at>=?", new Date(Date.now() - 7 * 86400000).toISOString());
+    add("first_seen_at>=?", new Date(now.getTime() - 7 * 86400000).toISOString());
   if (q.view === "closing") where.push("status='expiring-soon'");
   if (q.view === "saved") {
     if (!q.ids?.length) where.push("1=0");

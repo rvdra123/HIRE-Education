@@ -66,8 +66,14 @@ export async function synchronize({
       const old = previous.find((x) => x.source === source.id);
       if (
         !force &&
-        old?.lastRun &&
-        Date.parse(old.lastRun) > now.getTime() - source.intervalHours * 3600000
+        ((old?.lastSuccessfulRun &&
+          Date.parse(old.lastSuccessfulRun) >
+            now.getTime() - source.intervalHours * 3600000) ||
+          // Failed collection must not postpone the next attempt for six hours.
+          // A short backoff still protects sources from repeated manual calls.
+          (old?.state === "failed" &&
+            old.lastRun &&
+            Date.parse(old.lastRun) > now.getTime() - 15 * 60000))
       )
         continue;
       let added = 0,

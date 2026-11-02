@@ -41,12 +41,14 @@ test("scheduler treats partial source failures and unconfigured feeds as failure
   assert.throws(() => validateSourceHealth({ sources: { enabled: 0 } }, now));
 });
 
-test("deployment import and scheduled refresh use the same six-hour workflow and safe runner", async () => {
+test("deployment import and hourly watchdog use production code and the current site", async () => {
   const workflow = await readFile(
     new URL("../.github/workflows/refresh-opportunities.yml", import.meta.url),
     "utf8",
   );
-  assert.match(workflow, /cron: "17 \*\/6 \* \* \*"/);
+  assert.match(workflow, /cron: "17 \* \* \* \*"/);
+  assert.match(workflow, /https:\/\/hire-edu\.vercel\.app/);
+  assert.doesNotMatch(workflow, /https:\/\/hire-education\.vercel\.app/);
   assert.match(workflow, /branches: \[main\]/);
   assert.match(workflow, /ref: main/);
   assert.match(workflow, /EXPECTED_DEPLOYMENT_SHA/);

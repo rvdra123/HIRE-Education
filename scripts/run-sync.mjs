@@ -53,7 +53,9 @@ async function main() {
       signal: AbortSignal.timeout(20000),
     });
     if (!response.ok)
-      throw new Error(`Catalogue status returned ${response.status}`);
+      throw new Error(
+        `Catalogue status at ${origin.origin} returned ${response.status}. Check HIRE_SITE_URL points to the live production origin.`,
+      );
     return response.json();
   };
   const expected = process.env.EXPECTED_DEPLOYMENT_SHA;
@@ -74,6 +76,13 @@ async function main() {
         "Vercel has not published the pushed commit; no refresh was attempted.",
       );
   }
+  // Check the public origin before sending the protected refresh request. A moved
+  // or deleted deployment should fail with an actionable destination error.
+  const before = await status();
+  if (!before.database?.querySucceeded)
+    throw new Error("The production catalogue database is unavailable.");
+  if (!before.sources?.enabled)
+    throw new Error("The production catalogue has no enabled sources.");
   const response = await fetch(
     new URL("/api/cron/update-opportunities", origin),
     {

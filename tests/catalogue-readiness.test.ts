@@ -93,6 +93,7 @@ test("a successful import does not claim the scheduler is verified or expose cre
     environment,
     configuredSources: [source],
     health: [health],
+    now: new Date("2026-10-15T22:00:00Z"),
   });
   assert.equal(report.state, "has_refreshed");
   assert.equal(report.refresh.lastSuccessfulSync, health.lastSuccessfulRun);
@@ -116,4 +117,81 @@ test("a successful import does not claim the scheduler is verified or expose cre
   });
   assert.equal(disabled.sources.enabled, 0);
   assert.equal(disabled.refresh.lastSuccessfulSync, null);
+});
+
+test("readiness identifies all overdue sources at the seven-hour boundary", () => {
+  const source = {
+    ...sources()[0],
+    automationApproved: true,
+    enabledByDefault: true,
+    intervalHours: 6,
+  };
+  const health: SourceHealth = {
+    source: source.id,
+    name: source.name,
+    lastRun: "2026-10-15T16:00:00Z",
+    lastSuccessfulRun: "2026-10-15T16:00:00Z",
+    itemsFound: 2,
+    itemsAdded: 2,
+    itemsUpdated: 0,
+    error: null,
+    state: "ok",
+  };
+  const options = {
+    databaseQuerySucceeded: true,
+    environment: { CRON_SECRET: "a".repeat(32) },
+    configuredSources: [source],
+    health: [health],
+  };
+  const current = catalogueReadiness({
+    ...options,
+    now: new Date("2026-10-15T22:59:59.999Z"),
+  });
+  assert.equal(current.state, "has_refreshed");
+  assert.deepEqual(current.refresh.overdueSourceIds, []);
+  assert.equal(current.refresh.sources[0].overdue, false);
+  const overdue = catalogueReadiness({
+    ...options,
+    now: new Date("2026-10-15T23:00:00Z"),
+  });
+  assert.equal(overdue.state, "refresh_overdue");
+  assert.deepEqual(overdue.refresh.overdueSourceIds, [source.id]);
+  assert.equal(overdue.refresh.sources[0].overdue, true);
+  assert.ok(overdue.nextSteps.some((step) => step.includes("HIRE_SITE_URL")));
+});
+
+test("one recent import cannot conceal stale or never-imported enabled sources", () => {
+  const configuredSources = ["recent", "stale", "never"].map((id) => ({
+    ...sources()[0],
+    id,
+    automationApproved: true,
+    enabledByDefault: true,
+    intervalHours: 6,
+  }));
+  const health: SourceHealth[] = [
+    ["recent", "2026-10-15T22:00:00Z"],
+    ["stale", "2026-10-14T16:00:00Z"],
+  ].map(([source, lastSuccessfulRun]) => ({
+    source,
+    name: source,
+    lastRun: lastSuccessfulRun,
+    lastSuccessfulRun,
+    itemsFound: 1,
+    itemsAdded: 1,
+    itemsUpdated: 0,
+    error: null,
+    state: "ok",
+  }));
+  const report = catalogueReadiness({
+    databaseQuerySucceeded: true,
+    environment: { CRON_SECRET: "a".repeat(32) },
+    configuredSources,
+    health,
+    now: new Date("2026-10-15T23:00:00Z"),
+  });
+  assert.equal(report.state, "refresh_overdue");
+  assert.equal(report.refresh.lastSuccessfulSync, "2026-10-15T22:00:00Z");
+  assert.deepEqual(report.refresh.overdueSourceIds, ["stale", "never"]);
+  assert.equal(report.refresh.sources[0].overdue, false);
+  assert.equal(report.refresh.sources[2].state, "awaiting_first_import");
 });

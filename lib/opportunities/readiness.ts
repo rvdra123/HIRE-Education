@@ -7,11 +7,13 @@ export function catalogueReadiness({
   health = [],
   environment = process.env,
   configuredSources = sources(),
+  now = new Date(),
 }: {
   databaseQuerySucceeded: boolean;
   health?: SourceHealth[];
   environment?: Record<string, string | undefined>;
   configuredSources?: SourceConfig[];
+  now?: Date;
 }) {
   const approved = configuredSources.filter(
     (source) => source.automationApproved,
@@ -33,6 +35,26 @@ export function catalogueReadiness({
       )
       .sort()
       .at(-1) || null;
+  const sourceReports = enabled.map((source) => {
+    const entry = health.find((item) => item.source === source.id);
+    const lastSuccessfulRun = entry?.lastSuccessfulRun || null;
+    const successfulAt = Date.parse(lastSuccessfulRun || "");
+    // Allow one hour beyond the collection interval for scheduler delays.
+    const overdue =
+      !Number.isFinite(successfulAt) ||
+      now.getTime() - successfulAt >= (source.intervalHours + 1) * 3600000;
+    return {
+      id: source.id,
+      state: entry?.state || "awaiting_first_import",
+      lastRun: entry?.lastRun || null,
+      lastSuccessfulRun,
+      itemsFound: entry?.itemsFound || 0,
+      overdue,
+    };
+  });
+  const overdueSourceIds = sourceReports
+    .filter((source) => source.overdue)
+    .map((source) => source.id);
   const nextSteps: string[] = [];
   if (!databaseQuerySucceeded)
     nextSteps.push(
@@ -58,6 +80,10 @@ export function catalogueReadiness({
     nextSteps.push(
       "After the database, feeds, and refresh secret are configured, run the Refresh student opportunity catalogue workflow in GitHub Actions for the first import.",
     );
+  else if (overdueSourceIds.length)
+    nextSteps.push(
+      "Some enabled sources have no recent successful import. Check failed Refresh student opportunity catalogue runs in GitHub Actions, confirm HIRE_SITE_URL matches the current production origin rather than an old deployment address, and rerun the workflow after correcting the failure.",
+    );
   else
     nextSteps.push(
       "Check GitHub Actions to confirm that scheduled six-hour refreshes are running. This public report cannot inspect the scheduler's settings or run history.",
@@ -71,7 +97,9 @@ export function catalogueReadiness({
       !refreshSecretConfigured
         ? "needs_setup"
         : lastSuccessfulSync
-          ? "has_refreshed"
+          ? overdueSourceIds.length
+            ? "refresh_overdue"
+            : "has_refreshed"
           : "awaiting_first_import",
     commit: /^[a-f0-9]{40}$/i.test(sha) ? sha.slice(0, 7) : null,
     database: {
@@ -92,20 +120,12 @@ export function catalogueReadiness({
     refresh: {
       authenticationConfigured: refreshSecretConfigured,
       lastSuccessfulSync,
+      overdueSourceIds,
       schedulerExecution: "not_verified_by_this_report",
       configuredCadenceHours: [
         ...new Set(enabled.map((source) => source.intervalHours)),
       ].sort((a, b) => a - b),
-      sources: enabled.map((source) => {
-        const entry = health.find((item) => item.source === source.id);
-        return {
-          id: source.id,
-          state: entry?.state || "awaiting_first_import",
-          lastRun: entry?.lastRun || null,
-          lastSuccessfulRun: entry?.lastSuccessfulRun || null,
-          itemsFound: entry?.itemsFound || 0,
-        };
-      }),
+      sources: sourceReports,
     },
     nextSteps,
   };
